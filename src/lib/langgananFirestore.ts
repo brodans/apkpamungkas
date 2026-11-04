@@ -7,9 +7,9 @@
  * `firebase/firestore` (SDK 140 kB gzip, 35% bundle):
  *
  * ```
- * loadPengaturanBilling()   jatim_pengaturan/billing
- * loadLangganan()          jatim_langganan/{username}
- * loadTagihan()            jatim_tagihan where username == 
+ * loadPengaturanBilling()   madiun_pengaturan/billing
+ * loadLangganan()          madiun_langganan/{username}
+ * loadTagihan()            madiun_tagihan where username == 
  * ```
  *
  * Dua alasan, dan yang kedua jauh lebih serius dari yang pertama.
@@ -24,7 +24,7 @@
  * diambil dari DevTools lalu dipakai lewat REST API tanpa membuka aplikasi:
  *
  * ```
- * GET https://firestore.googleapis.com/v1/projects/<id>/databases/(default)/documents/jatim_tagihan
+ * GET https://firestore.googleapis.com/v1/projects/<id>/databases/(default)/documents/madiun_tagihan
  * ```
  *
  * Yang keluar bukan data teknis: `usernameLabel` (nama orang), `nominal`,
@@ -127,7 +127,7 @@ export async function loadPengaturanBilling(): Promise<PengaturanBilling> {
 /**
  *  `savePengaturanBilling()` **dihapus**, bukan dipindah.
  *
- * `setDoc` ke `jatim_pengaturan/billing` dari peramban pasti ditolak
+ * `setDoc` ke `madiun_pengaturan/billing` dari peramban pasti ditolak
  * `firestore.rules` (`allow write: if false`), jadi ia tidak pernah berhasil 
  * hanya *kelihatan* berhasil kalau rules yang aktif di proyek ternyata longgar.
  * Jalur yang benar `simpanBillingServer()` di `lib/serverBilling.ts`, dipanggil
@@ -191,7 +191,7 @@ export async function mapLangganan(): Promise<Map<string, DokumenLangganan>> {
  *    menulis dengan Admin SDK. Fungsi lama *menerima* `nominal` dan `durasi`
  *    dari peramban  artinya siapa pun yang bisa membuka DevTools bisa menambah
  *    masa aktif sendiri dengan nilai pilihan.
- * 2. **Tidak bisa jalan.** `setDoc` ke `jatim_langganan` dan `jatim_tagihan`
+ * 2. **Tidak bisa jalan.** `setDoc` ke `madiun_langganan` dan `madiun_tagihan`
  *    ditolak rules.
  *
  * Dihapus, bukan dibiarkan: tidak ada lagi jalur pembayaran yang bisa dipanggil,
@@ -201,7 +201,7 @@ export async function mapLangganan(): Promise<Map<string, DokumenLangganan>> {
 /*
  *  `perpanjangManual()` **dihapus**  digantikan `perpanjangManualServer()`.
  *
- * Perpanjangan masa aktif adalah perubahan `masaAkhir`, dan `jatim_langganan`
+ * Perpanjangan masa aktif adalah perubahan `masaAkhir`, dan `madiun_langganan`
  * tertutup untuk tulis klien. Jadi versi perambannya pasti ditolak rules;
  * sekarang lewat aksi `langganan:perpanjang` di `POST /api/panel-auth`, dengan
  * admin diverifikasi server dan durasi dibatasi.

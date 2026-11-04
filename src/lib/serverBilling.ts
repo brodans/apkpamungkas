@@ -255,8 +255,8 @@ export async function verifikasiMidtrans(
 // 
 //  Operasi admin
 //
-//  Semuanya menulis ke `jatim_langganan` / `jatim_tagihan` /
-//  `jatim_pengaturan/billing`, yang ketiganya `write: if false` di
+//  Semuanya menulis ke `madiun_langganan` / `madiun_tagihan` /
+//  `madiun_pengaturan/billing`, yang ketiganya `write: if false` di
 //  `firestore.rules`. Jadi **tidak ada** versi peramban yang bisa bekerja 
 //  pemanggilannya harus lewat server. Fungsi-fungsi di sini adalah satu-satunya
 //  jalan tulis, dan seluruhnya memakai Admin SDK.
@@ -813,8 +813,8 @@ export async function hapusSemuaTagihanServer(
 //
 //   Kenapa baca-baca ini ada di server, bukan di peramban
 //
-//  `firestore.rules` punya `allow read: if true` untuk `jatim_langganan` dan
-//  `jatim_tagihan`  alasannya "Gerbang Langganan butuh tahu masa aktif".
+//  `firestore.rules` punya `allow read: if true` untuk `madiun_langganan` dan
+//  `madiun_tagihan`  alasannya "Gerbang Langganan butuh tahu masa aktif".
 //  Tapi aplikasi ini **tidak memakai Firebase Authentication**: setiap
 //  permintaan dari peramban datang sebagai anonim.
 //
@@ -826,9 +826,9 @@ export async function hapusSemuaTagihanServer(
 //
 //  Yang bocor bukan hal sepele:
 //
-//  - `jatim_langganan`  nama lengkap dan NIP tiap akun, masa aktifnya,
+//  - `madiun_langganan`  nama lengkap dan NIP tiap akun, masa aktifnya,
 //    dan apakah ditandai gratis oleh admin (yaitu siapa yang belum bayar).
-//  - `jatim_tagihan`   `usernameLabel` (nama orang), `nominal`, `buktiUrl`
+//  - `madiun_tagihan`   `usernameLabel` (nama orang), `nominal`, `buktiUrl`
 //    (tautan bukti transfer), dan catatan admin.
 //
 //  Membacanya lewat `GET /api/panel-auth` menutupnya: server memverifikasi
@@ -997,7 +997,7 @@ export async function bacaSemuaTagihan(
  *
  * Satu-satunya koleksi yang tetap boleh dibaca peramban: isinya paket,
  * rekening, QRIS, dan nomor WA  bukan rahasia, dan memang harus tampil
- * sebelum pengguna masuk. `firestore.rules` membiarkan `jatim_pengaturan/billing`
+ * sebelum pengguna masuk. `firestore.rules` membiarkan `madiun_pengaturan/billing`
  * terbuka untuk baca; fungsi ini hanya membatasi **bentuk** yang dikirim,
  * supaya field baru yang tidak sengaja ditambahkan tidak ikut terbawa.
  */
@@ -1060,7 +1060,7 @@ export async function simpanBillingServer(
    * hasil normalisasi  bukan objek mentah dari body.
    *
    * Dulu baris tulisnya `{ ...nilai }`: seluruh body diteruskan apa adanya ke
-   * dokumen `jatim_pengaturan/billing`. Dua masalah sekaligus:
+   * dokumen `madiun_pengaturan/billing`. Dua masalah sekaligus:
    *
    * 1. **Mass assignment.** Field apa pun yang tidak sengaja ikut 
    *    `createdAt`, `internal`, atau apa pun yang ditambahkan klien 
@@ -1266,7 +1266,7 @@ export async function aktifkanLangganan(
    * menghitung tanggal akhir yang sama dari dasar yang sama, lalu menimpanya.
    * `batch.set(..., { merge: true })` tidak penjumlahan  hasil akhirnya
    * **satu bulan, padahal dua bulan sudah dibayar**. Uang hilang tanpa
-   * jejak: `jatim_tagihan` mencatat dua tagihan lunas, `jatim_langganan`
+   * jejak: `madiun_tagihan` mencatat dua tagihan lunas, `madiun_langganan`
    * hanya bertambah satu.
    *
    * `runTransaction` mengunci dokumen yang dibaca, dan Firestore

@@ -4,7 +4,7 @@
  * 
  *
  *  `presensiContract.ts` berisi bentuk payloads apa adanya, disalin
- *  persis dari balasan gateway `presensi.bkd.jatimprov.go.id` (version 89).
+ *  persis dari balasan gateway `presensi.bkd.madiunprov.go.id` (version 89).
  *  Bentuk itu apa adanya: `Id`/`Nama` kapital, `latlong` sebagai
  *  satu string, tanggal izin terformat bahasa Indonesia, dan status izin
  *  hanya berupa boolean `approval`.

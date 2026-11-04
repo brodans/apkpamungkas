@@ -20,7 +20,7 @@
  * akun user. Gejalanya persis yang dilaporkan: "saya di akun admin tapi
  * saya refresh malah kembali ke user".
  *
- * Perbaikannya: `epresensi_jatim_sesi_aktif` menunjuk akun yang sedang
+ * Perbaikannya: `epresensi_madiun_sesi_aktif` menunjuk akun yang sedang
  * dipakai, dan `saveSession()` membuang sesi peran lain sehingga admin dan
  * user tidak pernah hidup berdampingan.
  *
@@ -88,8 +88,8 @@ const cek = (nama: string, ok: unknown, detail = ''): void => {
   if (!ok) fail++;
   console.log(`${ok ? 'OK  ' : 'FAIL'} ${nama}${detail ? ` — ${detail}` : ''}`);
 };
-const PREFIX = 'epresensi_jatim_session_';
-const AKTIF = 'epresensi_jatim_sesi_aktif';
+const PREFIX = 'epresensi_madiun_session_';
+const AKTIF = 'epresensi_madiun_sesi_aktif';
 
 /** Bentuk akun yang dipakai skrip ini; sama dengan hasil `loadSession()`. */
 interface AkunUji {
@@ -443,14 +443,14 @@ cek('clearAllSessions membuang penunjuk', sessionStorage.getItem(AKTIF) === null
 console.log('\n=== 8. Kunci lain di sessionStorage tidak ikut tersentuh');
 // ═════════════════════════════════════════════════════════════════════
 reset();
-sessionStorage.setItem('jatim_titik_budi', 'data');
-sessionStorage.setItem('jatim_developer_mode', 'false');
+sessionStorage.setItem('madiun_titik_budi', 'data');
+sessionStorage.setItem('madiun_developer_mode', 'false');
 simpan(admin(), {});
 simpan(user('budi'), {});
-cek('kunci non-sesi tetap ada setelah ganti akun', sessionStorage.getItem('jatim_titik_budi') === 'data');
+cek('kunci non-sesi tetap ada setelah ganti akun', sessionStorage.getItem('madiun_titik_budi') === 'data');
 SM.clearAllSessions();
-cek('clearAllSessions tidak menghapus kunci non-sesi', sessionStorage.getItem('jatim_titik_budi') === 'data');
-cek('clearAllSessions tidak menghapus setelan non-sesi', sessionStorage.getItem('jatim_developer_mode') === 'false');
+cek('clearAllSessions tidak menghapus kunci non-sesi', sessionStorage.getItem('madiun_titik_budi') === 'data');
+cek('clearAllSessions tidak menghapus setelan non-sesi', sessionStorage.getItem('madiun_developer_mode') === 'false');
 
 // ═════════════════════════════════════════════════════════════════════
 console.log('\n=== 9. Bentuk kode yang mencegah bug ini kembali');
@@ -461,7 +461,7 @@ const srcKode = src.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^[ \t]*\/\/.*$/gm,
 cek('loadSession tidak lagi memakai loop "kembalikan yang pertama"',
   !/loadSession\(\)[\s\S]{0,400}for \(let index[\s\S]{0,400}return session;\s*\}\s*\}\s*catch/.test(src),
   'pola "return sesi valid pertama" adalah penyebab bug-nya');
-cek('ada penunjuk akun aktif', src.includes('epresensi_jatim_sesi_aktif'));
+cek('ada penunjuk akun aktif', src.includes('epresensi_madiun_sesi_aktif'));
 cek('penunjuk dibaca loadSession', /const aktif = akunAktif\(\)/.test(src));
 cek('saveSession membuang SEMUA sesi lain, bukan hanya beda peran',
   /for \(const key of semuaKunciSesi\(\)\) \{\s*if \(key !== kunci\) storageSesi\(\)\.removeItem\(key\);/.test(src),

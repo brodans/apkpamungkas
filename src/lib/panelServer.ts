@@ -4,10 +4,10 @@
  * ## Kenapa modul ini harus ada
  *
  * Sebelumnya seluruh autentikasi panel berjalan **di peramban**: `LoginScreen`
- * membaca `jatim_pengguna/{username}` lalu membandingkan hash password dengan
+ * membaca `madiun_pengguna/{username}` lalu membandingkan hash password dengan
  * bcrypt di dalam browser. Konsekuensinya bukan teoritis:
  *
- * - `firestore.rules` harus `allow read/write: if true` pada `jatim_pengguna`,
+ * - `firestore.rules` harus `allow read/write: if true` pada `madiun_pengguna`,
  *   jadi **hash password semua orang** bisa dibaca siapa pun, dan **role bisa
  *   ditulis sendiri**: `setDoc({ role: 'admin' })` lalu refresh  jadi admin.
  * - Pemeriksaan peran hanya ada di peramban.
@@ -83,7 +83,7 @@ const COLL_TAGIHAN = 'madiun_tagihan';
 /**
  * Batas jumlah akun panel yang boleh dipindai penuh.
  *
- *  Dua aksi memindai seluruh `jatim_pengguna`: `daftarAkun` (daftar untuk
+ *  Dua aksi memindai seluruh `madiun_pengguna`: `daftarAkun` (daftar untuk
  * Manajemen Akun) dan `ringkasSemuaKredensial` (kolom NIP/IMEI). Keduanya
  * memang butuh isi keseluruhan  tidak ada operator "ambil semua yang
  * berawalan" di Firestore, dan daftar akun tidak bisa dipotong diam-diam
@@ -437,7 +437,7 @@ const pesanGagal = 'ID pengguna atau kata sandi salah.';
  *    bawaan yang sama dengan yang ditampilkan di dialog Pengaturan), bukan
  *    "apa pun".
  *
- * 2. Baru dicoba dokumen `jatim_pengguna`. Akun dengan username yang sama
+ * 2. Baru dicoba dokumen `madiun_pengguna`. Akun dengan username yang sama
  *    tetap bisa masuk lewat jalurnya sendiri, jadi admin bawaan tidak
  *    "menabrak" akun panel bernama sama.
  *
@@ -1250,7 +1250,7 @@ export async function hapusAkun(
 /*
  * Kenapa kredensial pindah ke server.
  *
- * Semula `jatim_pengaturan/kredensial_server__*` bisa dibaca siapa pun
+ * Semula `madiun_pengaturan/kredensial_server__*` bisa dibaca siapa pun
  * (`allow read: if true`), dan isinya `AES(password, VITE_APP_SECRET)` dengan
  * kunci yang ada di bundle peramban. Artinya password server pusat **semua
  * pengguna** bisa diambil dari Firebase Console lalu didekripsi di luar

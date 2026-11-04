@@ -413,7 +413,7 @@ export default function BayarLanggananModal({
          * jadi di situ pula modulnya baru diunduh.
          *
          * ⚠️ Sekarang dari `akunFirestore`, bukan `langgananFirestore`:
-         * penulisan tagihan harus lewat server, karena `jatim_tagihan` ditutup
+         * penulisan tagihan harus lewat server, karena `madiun_tagihan` ditutup
          * untuk tulis klien. Lihat catatan panjang di kepala
          * `lib/langgananFirestore.ts`.
          */

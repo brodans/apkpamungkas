@@ -5,8 +5,8 @@
  *
  * Semula modul ini mengimpor `firebase/app` dan
  * `firebase/firestore` secara dinamis, lalu mengekspor `db` dan `fstore()`.
- * Pemanggilnya `langgananFirestore.ts` yang membaca `jatim_langganan` dan
- * `jatim_tagihan` langsung dari peramban.
+ * Pemanggilnya `langgananFirestore.ts` yang membaca `madiun_langganan` dan
+ * `madiun_tagihan` langsung dari peramban.
  *
  * Itu dihapus, dan dua hal hilang sekaligus:
  *

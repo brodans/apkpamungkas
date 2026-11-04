@@ -93,7 +93,7 @@ if (existsSync(manifestPath)) {
   if (!manifest.includes('PamungkasForegroundService')) {
     const serviceTag = `
         <service
-            android:name="id.go.jatim.pamungkas.PamungkasForegroundService"
+            android:name="id.go.madiun.pamungkas.PamungkasForegroundService"
             android:enabled="true"
             android:exported="false"
             android:foregroundServiceType="specialUse">
@@ -103,7 +103,7 @@ if (existsSync(manifestPath)) {
         </service>
 
         <receiver
-            android:name="id.go.jatim.pamungkas.PamungkasBootReceiver"
+            android:name="id.go.madiun.pamungkas.PamungkasBootReceiver"
             android:exported="true"
             android:directBootAware="true">
             <intent-filter android:priority="999">
@@ -119,8 +119,8 @@ if (existsSync(manifestPath)) {
   writeFileSync(manifestPath, manifest);
 }
 
-const activity = join(root, 'java/id/go/jatim/pamungkas/MainActivity.kt');
-put(activity, `package id.go.jatim.pamungkas
+const activity = join(root, 'java/id/go/madiun/pamungkas/MainActivity.kt');
+put(activity, `package id.go.madiun.pamungkas
 
 import android.content.res.Configuration
 import android.graphics.Color
@@ -545,8 +545,8 @@ class MainActivity : TauriActivity() {
 }
 `);
 
-const fgService = join(root, 'java/id/go/jatim/pamungkas/PamungkasForegroundService.kt');
-put(fgService, `package id.go.jatim.pamungkas
+const fgService = join(root, 'java/id/go/madiun/pamungkas/PamungkasForegroundService.kt');
+put(fgService, `package id.go.madiun.pamungkas
 
 import ${androidIdentifier}.R
 import android.app.NotificationChannel
@@ -567,8 +567,8 @@ class PamungkasForegroundService : Service() {
   companion object {
     const val CHANNEL_ID = "pamungkas_automation_channel"
     const val NOTIFICATION_ID = 9912
-    const val ACTION_START = "id.go.jatim.pamungkas.START_FOREGROUND"
-    const val ACTION_STOP = "id.go.jatim.pamungkas.STOP_FOREGROUND"
+    const val ACTION_START = "id.go.madiun.pamungkas.START_FOREGROUND"
+    const val ACTION_STOP = "id.go.madiun.pamungkas.STOP_FOREGROUND"
     const val EXTRA_TITLE = "extra_title"
     const val EXTRA_CONTENT = "extra_content"
   }
@@ -673,8 +673,8 @@ class PamungkasForegroundService : Service() {
 }
 `);
 
-const notifHelper = join(root, 'java/id/go/jatim/pamungkas/PamungkasNotificationHelper.kt');
-put(notifHelper, `package id.go.jatim.pamungkas
+const notifHelper = join(root, 'java/id/go/madiun/pamungkas/PamungkasNotificationHelper.kt');
+put(notifHelper, `package id.go.madiun.pamungkas
 
 import ${androidIdentifier}.R
 import android.app.NotificationChannel
@@ -801,7 +801,7 @@ const isiGradle = [
   `    namespace = "${androidIdentifier}"`,
   '    defaultConfig {',
   '        manifestPlaceholders["usesCleartextTraffic"] = "false"',
-  '        applicationId = "id.go.jatim.pamungkas"',
+  '        applicationId = "id.go.madiun.pamungkas"',
   '        minSdk = 24',
   '        targetSdk = 37',
   '        versionCode = tauriProperties.getProperty("tauri.android.versionCode", "1").toInt()',
@@ -878,8 +878,8 @@ const isiGradle = [
 ].join('\n');
 writeFileSync(gradle, isiGradle);
 
-const bootReceiver = join(root, 'java/id/go/jatim/pamungkas/PamungkasBootReceiver.kt');
-put(bootReceiver, `package id.go.jatim.pamungkas
+const bootReceiver = join(root, 'java/id/go/madiun/pamungkas/PamungkasBootReceiver.kt');
+put(bootReceiver, `package id.go.madiun.pamungkas
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -961,8 +961,8 @@ if (existsSync(proguardPath)) {
 }
 
 // PamungkasKeepaliveWorker.kt — Worker biasa (bukan CoroutineWorker)
-const keepaliveWorker = join(root, 'java/id/go/jatim/pamungkas/PamungkasKeepaliveWorker.kt');
-put(keepaliveWorker, `package id.go.jatim.pamungkas
+const keepaliveWorker = join(root, 'java/id/go/madiun/pamungkas/PamungkasKeepaliveWorker.kt');
+put(keepaliveWorker, `package id.go.madiun.pamungkas
 
 import android.content.Context
 import android.os.Build

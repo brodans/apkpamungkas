@@ -694,7 +694,7 @@ export function Badge({ children, tone = 'slate' }: { children: ReactNode; tone?
  *
  * Di halaman Presensi itu yang terlihat:
  *
- *     Waktu sekarang 08:56 WIB - jadwal (JATIM) PEMPROV 5 HARI KERJA
+ *     Waktu sekarang 08:56 WIB - jadwal (MADIUN) PEMPROV 5 HARI KERJA
  *     berada di dalam rentang jam kerja.
  *
  * tampil dengan segitiga peringatan *dan* ikon info, padahal kalimat itu

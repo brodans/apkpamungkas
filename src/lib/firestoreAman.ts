@@ -8,7 +8,7 @@
  * ```
  * Function setDoc() called with invalid data.
  * Unsupported field value: undefined (found in field alasanGratis
- * in document jatim_langganan/basith)
+ * in document madiun_langganan/basith)
  * ```
  *
  * Itu bukan kode yang ditulis salah  `alasanGratis: lama?.alasanGratis`

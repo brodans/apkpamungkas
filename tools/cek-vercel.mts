@@ -92,7 +92,7 @@ const stub = createServer((req, res) => {
     }
     if (tipeBalasan === 'badan-kosong') {
       /*
-       * Bentuk yang terverifikasi keluar dari `presensi.bkd.jatimprov.go.id`:
+       * Bentuk yang terverifikasi keluar dari `presensi.bkd.madiunprov.go.id`:
        * HTTP 500 + `text/html` + badan **nol byte**. Semula ini dijawab
        * `502 'respons bukan JSON'` — sama persis dengan kasus halaman galat,
        * padahal penyebab dan obatnya beda.
@@ -143,7 +143,7 @@ const stubUrl = `http://127.0.0.1:${stubAddr.port}/service`;
  */
 const kerja = mkdtempSync(join(root, 'node_modules', '.pamungkas-vercel-'));
 process.env.PRESENSI_BASE_URL = stubUrl;
-process.env.ALLOWED_ORIGINS = 'https://presensi.bkd.jatimprov.go.id';
+process.env.ALLOWED_ORIGINS = 'https://presensi.bkd.madiunprov.go.id';
 process.env.NODE_ENV = 'test';
 
 /*
@@ -276,7 +276,7 @@ if (handlers.has('rpc')) {
   upstreamTerpanggil = 0;
 
   let res = await panggil('rpc', {
-    headers: { origin: 'https://presensi.bkd.jatimprov.go.id' },
+    headers: { origin: 'https://presensi.bkd.madiunprov.go.id' },
     body: { object: 'login', param: { nip: '123', password: 'rahasia' } },
   });
   cek('POST login → 200', res.statusCode === 200, `status ${res.statusCode}`);
@@ -304,7 +304,7 @@ if (handlers.has('rpc')) {
   cek('imei tidak diisi server saat kosong', (paramUpstream().imei ?? '') === '',
     'kalau proxy mengisinya, semua perangkat berbagi satu identitas');
   cek('param asli diteruskan', paramUpstream().nip === '123');
-  cek('CORS: Allow-Origin sesuai allow-list', res.header['access-control-allow-origin'] === 'https://presensi.bkd.jatimprov.go.id');
+  cek('CORS: Allow-Origin sesuai allow-list', res.header['access-control-allow-origin'] === 'https://presensi.bkd.madiunprov.go.id');
   cek('CORS: Vary: Origin ada', res.header.vary === 'Origin');
 
   console.log('\n=== 3. rpc: upstream bermasalah → error TERJAGA (bukan 500)');
@@ -801,7 +801,7 @@ cek('SDK peramban `firebase` tidak ada sama sekali di package.json',
 
   cek('seed-admin tidak memakai SDK peramban',
     !/from 'firebase\//.test(srcSeed),
-    'permintaan SDK peramban tiba sebagai anonim, dan jatim_pengguna adalah allow read,write: if false');
+    'permintaan SDK peramban tiba sebagai anonim, dan madiun_pengguna adalah allow read,write: if false');
 
   cek('seed-admin lewat jalur privileged yang sama dengan handler produksi',
     /firestoreAdmin/.test(srcSeed) && /firebase-admin|service account|service_account|FIREBASE_SERVICE_ACCOUNT/i.test(srcSeed),
@@ -948,7 +948,7 @@ console.log('\n=== 9b. Host pusat menu Web hanya lewat env');
  * Sekarang semuanya lewat `src/lib/epTarget.ts`.
  */
 const tanpaHostPusat = (teks: string): string => teks.replace(/^\s*\*.*$/gm, '').replace(/\/\*[\s\S]*?\*\//g, '');
-const HOST_PUSAT = 'presensi\\?\\.bkd\\.jatimprov\\.go\\.id';
+const HOST_PUSAT = 'presensi\\?\\.bkd\\.madiunprov\\.go\\.id';
 const bearerHost = [
   ['src/serverless/ep.ts', 'src/serverless/ep.ts'],
   ['vite.config.ts', 'vite.config.ts'],
@@ -1266,7 +1266,7 @@ cek('semua pemakai sisi server mengambil base URL dari midtransEnv',
  * ═══ 11. Ketahanan galat sesaat: satu daftar, satu pengaman ═══════════════
  *
  * Server pusat membalas `HTTP 500` + badan nol byte untuk sementara waktu.
- * Verifikasi langsung ke `presensi.bkd.jatimprov.go.id/service` pada
+ * Verifikasi langsung ke `presensi.bkd.madiunprov.go.id/service` pada
  * 2026-09-30: permintaan yang identik gagal lalu berhasil pada percobaan
  * berikutnya, dan 200 permintaan paralel lain semuanya 200. Jadi ini kondisi
  * sementara di sisi server pusat, bukan kesalahan pada permintaan.

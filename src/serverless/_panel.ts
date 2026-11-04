@@ -404,8 +404,8 @@ export async function tanganiPanelAuth(
       /*
        * Ketiga aksi ini menggantikan pembacaan langsung dari peramban.
        *
-       * Semula `firestore.rules` membiarkan `jatim_langganan` dan
-       * `jatim_tagihan` dengan `allow read: if true`, karena aplikasi ini
+       * Semula `firestore.rules` membiarkan `madiun_langganan` dan
+       * `madiun_tagihan` dengan `allow read: if true`, karena aplikasi ini
        * tidak memakai Firebase Auth dan rules tidak punya identitas untuk
        * diperiksa. Akibatnya **seluruh** koleksi terbuka: API key-nya ada di
        * bundle peramban, jadi siapa pun bisa membacanya lewat REST API dan
@@ -451,7 +451,7 @@ export async function tanganiPanelAuth(
       //  Langganan & billing 
       /*
        * Ketiga operasi ini **tidak punya versi peramban**  `firestore.rules`
-       * menutup `jatim_langganan`, `jatim_tagihan`, dan `jatim_pengaturan/billing`
+       * menutup `madiun_langganan`, `madiun_tagihan`, dan `madiun_pengaturan/billing`
        * untuk tulis. Yang ada sebelumnya di `langgananFirestore.ts` akan
        * ditolak rules, jadi pemindahannya ke server bukan pilihan gaya tapi
        * memperbaiki operasi yang memang tidak bisa jalan.

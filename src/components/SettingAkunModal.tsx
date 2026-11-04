@@ -51,16 +51,16 @@ function validateAdminUsername(u: string): string {
 /**
  * ⚠️ Fungsi verifikasi password admin **sudah tidak ada** — dan itu disengaja.
  *
- * Semuanya berjalan di peramban: `getDoc(jatim_pengaturan/auth)` lalu bandingkan
+ * Semuanya berjalan di peramban: `getDoc(madiun_pengaturan/auth)` lalu bandingkan
  * `pinEncrypted` atau `pinHash` dengan `verifyPinLayered`. Dua masalah nyata:
  *
  * 1. `pinHash` **terbaca publik** dari Firestore (`allow read: if true` pada
- *    `jatim_pengaturan/{docId}`), jadi siapa pun bisa mengambil hash admin dan
+ *    `madiun_pengaturan/{docId}`), jadi siapa pun bisa mengambil hash admin dan
  *    memecahnya secara offline tanpa batas percobaan.
  * 2. Login admin bisa dicoba dari mana saja dengan password yang ditebak,
  *    karena seluruh prosesnya berjalan di browser orang yang sedang menebak.
  *
- * Sekarang `jatim_pengaturan/auth` hanya bisa dibaca server, dan verifikasi
+ * Sekarang `madiun_pengaturan/auth` hanya bisa dibaca server, dan verifikasi
  * password terjadi di `POST /api/panel-auth` (`ubahAdminBawaan` /
  * `gantiPasswordSendiri`) yang juga punya pembatas percobaannya sendiri.
  *
@@ -201,7 +201,7 @@ export default function SettingAkunModal({ onClose }: SettingAkunModalProps) {
   /*
    * Username admin saat ini, dari server.
    *
-   * Semula `getDoc(jatim_pengaturan/auth)` langsung dari peramban. Sekarang
+   * Semula `getDoc(madiun_pengaturan/auth)` langsung dari peramban. Sekarang
    * lewat `bacaNamaAdminBawaan()`, yang mengembalikan nilai yang **sama** dengan
    * yang dipakai server saat membandingkan nama di `masukPanel()` — jadi nilai
    * yang tampil di layar dan yang benar-benar berlaku tidak bisa berbeda.

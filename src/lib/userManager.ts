@@ -17,8 +17,8 @@
  *
  * Koleksi yang dipakai modul pasangannya:
  *
- *   jatim_pengguna/{username}
- *   jatim_pengaturan/kredensial_server__{username}   NIP + password + IMEI
+ *   madiun_pengguna/{username}
+ *   madiun_pengaturan/kredensial_server__{username}   NIP + password + IMEI
  */
 
 export type UserRole = 'admin' | 'user';

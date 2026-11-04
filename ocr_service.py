@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Layanan OCR captcha e-Presensi BKD Jatim.
+"""Layanan OCR captcha e-Presensi BKD Madiun.
 
 Model ddddocr dimuat SEKALI lalu melayani banyak permintaan (HTTP lokal),
 supaya proses login di frontend tidak perlu menunggu pemuatan model tiap kali.

@@ -232,8 +232,8 @@ console.log('\n=== 5. Titik lokal ikut username setelah akun di-rename');
   Object.defineProperty(globalThis, 'indexedDB', { configurable: true, value: createIndexedDbMock() });
 
   const { migrasiTitikUsernameLokal, bacaTitik, bacaTitikAktif } = await import('../src/lib/lokasiTersimpan.ts');
-  const lama = 'epresensi_jatim_lokasi__nama-lama';
-  const lamaAktif = 'epresensi_jatim_lokasi_aktif__nama-lama';
+  const lama = 'epresensi_madiun_lokasi__nama-lama';
+  const lamaAktif = 'epresensi_madiun_lokasi_aktif__nama-lama';
   const dataTitik = JSON.stringify([
     { id: 'kantor', nama: 'Kantor', latitude: -7.2, longitude: 112.7, dipakai: true, dibuatPada: 1 },
   ]);
@@ -247,8 +247,8 @@ console.log('\n=== 5. Titik lokal ikut username setelah akun di-rename');
   cek('kunci lokal username lama dibersihkan setelah tersalin',
     !lokasiStore.has(lama) && !lokasiStore.has(lamaAktif));
 
-  const lamaLain = 'epresensi_jatim_lokasi__nama-lama-lain';
-  const baruLain = 'epresensi_jatim_lokasi__nama-baru-lain';
+  const lamaLain = 'epresensi_madiun_lokasi__nama-lama-lain';
+  const baruLain = 'epresensi_madiun_lokasi__nama-baru-lain';
   const dataLamaLain = dataTitik.replace('kantor', 'kantor-lama');
   const dataTujuanLain = dataTitik.replace('kantor', 'kantor-tujuan');
   lokasiStore.set(lamaLain, dataLamaLain);

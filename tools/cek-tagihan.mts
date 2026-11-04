@@ -438,7 +438,7 @@ console.log('\n=== 11. Pengaturan billing: hanya field layar yang ditulis server
 // ═══════════════════════════════════════════════════════════════════════
 /*
  * ⚠️ Dulu baris tulisnya `{ ...nilai }`: seluruh body diteruskan apa adanya ke
- * dokumen `jatim_pengaturan/billing`, yang dibaca semua orang.
+ * dokumen `madiun_pengaturan/billing`, yang dibaca semua orang.
  *
  * Dua masalah sekaligus:
  *

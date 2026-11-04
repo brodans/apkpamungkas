@@ -20,7 +20,7 @@
  * redirect ke luar, lalu cookie tidak pernah tersimpan di `/ep`.
  *
  * Dua di antaranya juga tidak terlihat kalau hanya `grep "https://"`: bentuknya
- * regex, bukan string URL  `presensi\.bkd\.jatimprov\.go\.id` dengan titik
+ * regex, bukan string URL  `presensi\.bkd\.madiunprov\.go\.id` dengan titik
  * ter-escape. Pemeriksaan yang hanya mencari `https://` akan menganggap aman.
  *
  * ## Aturannya
@@ -78,7 +78,7 @@ export function epTargetOrigin(): string {
  * Regex yang mencabut `http(s)://host` dari nilai `Location` milik upstream.
  *
  *  Host **tidak** ditulis langsung di sini. Diturunkan dari origin aktif,
- * termasuk titik yang harus di-escape (`presensi.bkd.jatimprov.go.id` punya
+ * termasuk titik yang harus di-escape (`presensi.bkd.madiunprov.go.id` punya
  * titik yang, kalau tidak di-escape, cocok juga dengan `presensiXbkdY`).
  *
  * Skema tetap `https?` walau target memakai `https`, karena upstream bisa

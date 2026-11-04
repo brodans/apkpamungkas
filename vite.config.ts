@@ -9,9 +9,9 @@ import { epAsalRegex, epTargetOrigin } from './src/lib/epTarget';
 
 const DIR_PROYEK = path.dirname(fileURLToPath(import.meta.url));
 
-// ─── Proxy e-Presensi BKD Jatim ───────────────────────────────────────────
+// ─── Proxy e-Presensi BKD Madiun ───────────────────────────────────────────
 // Semua request ke /ep/* diteruskan ke server e-presensi.
-// Cookie session (epresensi-bkdjatim) tanpa atribut Domain, jadi browser
+// Cookie session (epresensi-bkdmadiun) tanpa atribut Domain, jadi browser
 // menyimpannya di localhost dan proxy meneruskannya bolak-balik dengan benar.
 //
 // ⚠️ Host pusat lewat `src/lib/epTarget.ts` (env `EP_TARGET_ORIGIN`, atau

@@ -7,7 +7,7 @@
  * (lihat `presensiContract.ts` dan `ENDPOINT.md`).
  *
  * Semua nama RPC di sini sudah diverifikasi terhadap gateway asli
- * `presensi.bkd.jatimprov.go.id` pada version 89.
+ * `presensi.bkd.madiunprov.go.id` pada version 89.
  */
 
 import { rpc, uploadMultipart } from '../api';

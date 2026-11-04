@@ -429,7 +429,7 @@ console.log('\n=== 15. Gaya kalender klasik dihapus seluruhnya');
  * Semuanya dihapus, bukan disembunyikan:
  *
  * - `datePickerStyle` / `setDatePickerStyle` dari `AppContext`
- * - prefs `jatim_date_picker_style` dari `sessionStorage`
+ * - prefs `madiun_date_picker_style` dari `sessionStorage`
  * - kartu "Gaya Pemilih Tanggal" dari `SettingAkunModal`
  * - prop `style` dan seluruh cabang `isCompact` dari `DatePicker`
  *
@@ -442,7 +442,7 @@ const ctxSrc = baca('src/context/AppContext.tsx');
 const setSrc = baca('src/components/SettingAkunModal.tsx');
 
 cek('tidak ada lagi prefs gaya kalender di AppContext',
-  !/datePickerStyle|jatim_date_picker_style/.test(ctxSrc),
+  !/datePickerStyle|madiun_date_picker_style/.test(ctxSrc),
   'prefs yang tidak pernah dibaca hanya menambah kunci storage basi');
 cek('tidak ada lagi setter-nya', !/setDatePickerStyle/.test(ctxSrc));
 cek('kartu Gaya Pemilih Tanggal hilang dari Pengaturan',

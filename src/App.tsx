@@ -1638,7 +1638,7 @@ function AppShell({ isDarkMode, toggleDarkMode }: { isDarkMode: boolean; toggleD
    * `tabPermissions` apa adanya dari storage, jadi nilai `role` di sana
    * menentukan menu apa yang tampil — dan storage bisa disunting dari DevTools
    * atau, lebih buruk, ditulis bebas karena `firestore.rules` pernah membuka
-   * `jatim_pengguna` untuk semua orang. Gejalanya persis yang dilaporkan:
+   * `madiun_pengguna` untuk semua orang. Gejalanya persis yang dilaporkan:
    * "saya login user, terus refresh malah jadi admin".
    *
    * Sekarang: storage hanya menyimpan token bertanda tangan, dan `cekingSesi`

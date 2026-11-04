@@ -163,7 +163,7 @@ try {
   const { admin } = await import('../src/lib/firestoreAdmin.ts');
   const db = await admin();
   await db
-    .collection('jatim_pengguna')
+    .collection('madiun_pengguna')
     .doc(AKUN_UJI)
     .set(
       {

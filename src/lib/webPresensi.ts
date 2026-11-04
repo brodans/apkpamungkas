@@ -1,7 +1,7 @@
 /**
- * Modul komunikasi dengan e-Presensi BKD Jatim.
+ * Modul komunikasi dengan e-Presensi BKD Madiun.
  *
- * Semua path /ep/* diproxy ke https://presensi.bkd.jatimprov.go.id
+ * Semua path /ep/* diproxy ke https://presensi.bkd.madiunprov.go.id
  * - Local dev: lewat proxy dev-server Vite (vite.config.ts)
  * - Vercel: lewat serverless function api/ep.ts
  *
@@ -209,7 +209,7 @@ export async function ocrCaptchaOtomatis(imageBlob: Blob): Promise<string | null
 
 /** Minta session baru lalu ambil gambar captcha + OCR otomatis. */
 export async function muatCaptcha(): Promise<CaptchaResult> {
-  // Init sesi lewat proxy agar cookie epresensi-bkdjatim tersimpan di browser.
+  // Init sesi lewat proxy agar cookie epresensi-bkdmadiun tersimpan di browser.
   try {
     await req(`${DATA_BASE}/p/`);
   } catch {
@@ -258,7 +258,7 @@ export async function muatCaptcha(): Promise<CaptchaResult> {
  * hanya bisa diselesaikan browser asli. Browser membawa cookie `cf_clearance`
  * miliknya sendiri — proxy server tidak bisa melakukan ini.
  *
- * `credentials: 'include'` memastikan cookie `epresensi-bkdjatim` (sesi
+ * `credentials: 'include'` memastikan cookie `epresensi-bkdmadiun` (sesi
  * captcha) ikut dikirim ke upstream.
  */
 export async function login({ nip, password, captcha }: { nip: string; password: string; captcha: string }): Promise<boolean> {

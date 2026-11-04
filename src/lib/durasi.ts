@@ -170,7 +170,7 @@ export function normalisasiPaket(mentah: unknown): PaketLangganan | null {
      * keterangannya akan membawa `undefined` ikut ke dokumen.
      *
      * Hasil fungsi ini bukan hanya untuk ditampilkan: `simpanBillingServer()`
-     * menulis ulang daftar paket ini apa adanya ke `jatim_pengaturan/billing`,
+     * menulis ulang daftar paket ini apa adanya ke `madiun_pengaturan/billing`,
      * dan Firestore **menolak** `undefined` dengan pesan yang tidak menyebut
      * sumbernya  `found in field paket.0.keterangan`. Gejalanya ento baru
      * muncul saat admin menekan "Simpan", dan hanya untuk paket yang

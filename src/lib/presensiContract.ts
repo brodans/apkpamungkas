@@ -6,12 +6,12 @@
  *
  *   Nama "E-Presensi" yang muncul di berkas ini BUKAN nama aplikasi ini.
  *  Aplikasi ini adalah **PAMUNGKAS** / *Portal Presensi Kabupaten Madiun*
- *  lihat `appIdentity.ts`. "E-Presensi Jatim" di sini adalah nama *aplikasi
+ *  lihat `appIdentity.ts`. "E-Presensi Madiun" di sini adalah nama *aplikasi
  *  Android yang terpisah* dan nama gateway-nya, yang memang menjadi
  * ultimate sumber kontrak ini. Nama perlu dibedakan supaya tidak mengira
  * ini sisa penamaan yang belum dibersihkan.
  *
- *  APK  : Jatim+Presensi_1.11.21_APKPure.xapk
+ *  APK  : Madiun+Presensi_1.11.21_APKPure.xapk
  *  PKG  : dev.pti.bkdattendance  (kode: dev.nullpointer.bkdattendance)
  *  VER  : 1.11.21 (versionCode 89)
  *
@@ -19,7 +19,7 @@
  *  Aplikasi Android tidak memakai REST path per-fungsi. Semua request
  *  dikirim ke SATU JSON-RPC gateway:
  *
- *      POST https://presensi.bkd.jatimprov.go.id/service
+ *      POST https://presensi.bkd.madiunprov.go.id/service
  *      Content-Type: application/json; charset=UTF-8
  *      User-Agent: okhttp/4.12.0
  *
@@ -73,7 +73,7 @@ export const PRESENSI_SERVICE_URL = 'https://absen.madiunkab.go.id/service';
  * `sessionManager.getString("server") + "/importfile"`.
  *
  *  Perhatikan penyusunannya: nilai `SERVER` di SharedPreferences
- * adalah `"https://presensi.bkd.jatimprov.go.id/service"`,
+ * adalah `"https://presensi.bkd.madiunprov.go.id/service"`,
  * jadi URL akhirnya adalah `/service/importfile`  **bukan**
  * `/importfile`. (Petunjuk pendukung: `UploadPhotoService` memakai
  * `@POST("../service")` dengan baseUrl `server + "/"`, yaitu
@@ -1040,7 +1040,7 @@ export function cuplikanAman(teks: string): string {
  * berbeda total.
  *
  * 1. **Gateway hidup, jawabannya 5xx dengan badan kosong.** Terverifikasi
- *    langsung terhadap `presensi.bkd.jatimprov.go.id/service`: `getlokasiabsen`
+ *    langsung terhadap `presensi.bkd.madiunprov.go.id/service`: `getlokasiabsen`
  *    sesekali membalas `HTTP 500` + `Content-Type: text/html` + badan
  *    **nol byte**. Header dan muatan sudah dicocokkan dengan yang dikirim
  *    aplikasi Android, dan permintaan yang identik berhasil pada percobaan

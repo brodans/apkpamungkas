@@ -426,7 +426,7 @@ export default function Laporan() {
 
         {visible.length > 0 && (
           <p className="mt-4 pt-4 border-t border-slate-200 dark:border-slate-700 text-[11px] text-slate-400 dark:text-slate-500 print:hidden">
-            Sumber data: <span className="font-mono">presensi.bkd.jatimprov.go.id/service</span> · akun{' '}
+            Sumber data: <span className="font-mono">presensi.bkd.madiunprov.go.id/service</span> · akun{' '}
             {currentUser?.username ?? '-'}
             {reportType === 'rekap' && ' · rekap dihitung lokal'}
           </p>

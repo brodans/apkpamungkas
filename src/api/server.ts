@@ -562,8 +562,8 @@ export async function startServer() {
 
   // ─── Aktivasi langganan (server-side) ──────────────────────────────
   //
-  // ⚠️ Ini satu-satunya jalur yang boleh menulis `jatim_langganan` dan
-  //    `jatim_tagihan` dari sisi server. Klien **tidak** bisa menulis
+  // ⚠️ Ini satu-satunya jalur yang boleh menulis `madiun_langganan` dan
+  //    `madiun_tagihan` dari sisi server. Klien **tidak** bisa menulis
   //    dokumen itu sendiri (lihat `firestore.rules`), jadi mengedit
   //    `masaAkhir` lewat DevTools tidak ada efeknya.
   //
@@ -753,7 +753,7 @@ export async function startServer() {
   // ─── Proxy Web e-Presensi (/ep/*) via curl ────────────────────────
   //
   // Node.js fetch diblokir Cloudflare TLS fingerprint — semua request /ep/*
-  // (termasuk login) harus lewat curl. Cookie browser (epresensi-bkdjatim)
+  // (termasuk login) harus lewat curl. Cookie browser (epresensi-bkdmadiun)
   // diteruskan dari header Cookie request asli.
   {
     const EP_TARGET_DEV = PRESENSI_SERVICE_URL.replace(/\/service\/?$/, '');

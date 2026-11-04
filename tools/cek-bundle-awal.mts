@@ -96,7 +96,7 @@ cek(
  * ⚠️ Klien **tidak lagi** memakai `firebase/firestore` sama sekali.
  *
  * Semula `langgananFirestore.ts` mengimpornya untuk membaca
- * `jatim_langganan` dan `jatim_tagihan` langsung dari peramban. Dua alasan
+ * `madiun_langganan` dan `madiun_tagihan` langsung dari peramban. Dua alasan
  * mendorong perubahan itu, dan keduanya independen:
  *
  * 1. **Keamanan.** `firestore.rules` membiarkan kedua koleksi dengan

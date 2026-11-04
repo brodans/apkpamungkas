@@ -13,7 +13,7 @@ rules_version = '2';
  * server memakai Firebase Admin SDK:
  *
  *   POST /api/panel-auth {aksi:"masuk"}
- *     → admin() → get(jatim_pengguna/{username}) → bcrypt.compare()
+ *     → admin() → get(madiun_pengguna/{username}) → bcrypt.compare()
  *
  * Semua permintaan Firestore **dari peramban** datang sebagai *anonim*. Rules
  * tidak bisa membedakan admin dari pengguna biasa — jadi rules tidak boleh
@@ -21,17 +21,17 @@ rules_version = '2';
  *
  * ## Yang dikunci di sini
  *
- *   jatim_pengguna/{username}                    akun, hash, role  → server
- *   jatim_pengaturan/auth                       kredensial admin   → server
- *   jatim_pengaturan/kredensial_server__*       password pusat     → server
- *   jatim_pengaturan/billing                    harga paket        → server
- *   jatim_langganan/{username}                  masa aktif         → server
- *   jatim_tagihan/{orderId}                     tagihan            → server
+ *   madiun_pengguna/{username}                    akun, hash, role  → server
+ *   madiun_pengaturan/auth                       kredensial admin   → server
+ *   madiun_pengaturan/kredensial_server__*       password pusat     → server
+ *   madiun_pengaturan/billing                    harga paket        → server
+ *   madiun_langganan/{username}                  masa aktif         → server
+ *   madiun_tagihan/{orderId}                     tagihan            → server
  *
- * **Hanya satu koleksi yang boleh dibaca peramban:** `jatim_pengaturan/billing`
+ * **Hanya satu koleksi yang boleh dibaca peramban:** `madiun_pengaturan/billing`
  * (paket, rekening, nomor WA, QRIS) — dan itu memang harus tampil sebelum
- * pengguna masuk. Enam lainnya **server-only**, termasuk `jatim_langganan`
- * dan `jatim_tagihan` yang dulu masih `allow read: if true`.
+ * pengguna masuk. Enam lainnya **server-only**, termasuk `madiun_langganan`
+ * dan `madiun_tagihan` yang dulu masih `allow read: if true`.
  *
  * ### Kenapa `allow read: if true` berarti "terbuka untuk semua"
  *
@@ -42,7 +42,7 @@ rules_version = '2';
  *
  * API key Firestore bukan rahasia: ia ada di `VITE_FIREBASE_API_KEY`, yang
  * Vite suntikkan ke bundle dan bisa diambil dari DevTools. Setelah itu,
- * `GET https://firestore.googleapis.com/v1/projects/…/databases/(default)/documents/jatim_tagihan`
+ * `GET https://firestore.googleapis.com/v1/projects/…/databases/(default)/documents/madiun_tagihan`
  * langsung mengembalikan isi koleksi tanpa membuka aplikasi sama sekali.
  *
  * Yang bocor dari kedua koleksi itu bukan hal abstrak: nama lengkap + NIP +
@@ -52,12 +52,12 @@ rules_version = '2';
  * `POST /api/panel-auth` (`langganan:saya` / `tagihan:saya`), yang memverifikasi
  * token dan mengembalikan **hanya** dokumen milik pemanggil.
  *
- * ## Kenapa `jatim_pengguna` ditutup total
+ * ## Kenapa `madiun_pengguna` ditutup total
  *
  * Sebelumnya:
  *
  * ```
- * match /jatim_pengguna/{username} {
+ * match /madiun_pengguna/{username} {
  *   allow read: if true;
  *   allow create, update, delete: if true;
  * }
@@ -65,7 +65,7 @@ rules_version = '2';
  *
  * Dua akibat yang berbeda:
  *
- * 1. **Baca** — `getDoc(jatim_pengguna/{nama})` mengembalikan `passwordHash`
+ * 1. **Baca** — `getDoc(madiun_pengguna/{nama})` mengembalikan `passwordHash`
  *    milik siapa pun. Dikombinasikan dengan verifikasi bcrypt yang dulu
  *    berjalan di peramban, itu berarti seluruh basis password panel bisa
  *    dicuri dan dipecah secara offline tanpa batas percobaan.
@@ -133,7 +133,7 @@ service cloud.firestore {
     //   createUserAccount   → POST /api/panel-auth {aksi:"akun:buat"}
     //   updateUserAccount   → POST /api/panel-auth {aksi:"akun:ubah"}
     //   deleteUserAccount   → POST /api/panel-auth {aksi:"akun:hapus"}
-    match /jatim_pengguna/{username} {
+    match /madiun_pengguna/{username} {
       allow read, write: if false;
     }
 
@@ -147,7 +147,7 @@ service cloud.firestore {
     // pengguna. `pinEncrypted` pernah `AES(password, VITE_APP_SECRET)` dengan
     // kunci yang ada di bundle peramban — jadi "terenkripsi"-nya hanya
     // ilusi. Sekarang keduanya tidak bisa dibaca dari klien sama sekali.
-    match /jatim_pengaturan/{docId} {
+    match /madiun_pengaturan/{docId} {
       allow read, write: if false;
     }
 
@@ -160,7 +160,7 @@ service cloud.firestore {
     //
     // ⚠️ Rules hanya menutup **klien**. Admin SDK di server tetap bisa menulis
     // apa pun di sini — itu memang konsekuensi yang dibiarkan begitu.
-    match /jatim_pengaturan/billing {
+    match /madiun_pengaturan/billing {
       allow read: if true;
       allow write: if false;
     }
@@ -193,7 +193,7 @@ service cloud.firestore {
     // rules ini. Sebelum rules ada, peramban menulis `masaAkhir` sendiri lewat
     // `catatPembayar()` — siapa pun yang membuka DevTools bisa memanggil fungsi
     // yang sama dengan `durasiHari: 36500`.
-    match /jatim_langganan/{username} {
+    match /madiun_langganan/{username} {
       allow read, write: if false;
     }
 
@@ -213,7 +213,7 @@ service cloud.firestore {
     // Tulis tetap server-only: klien membuat tagihan secara lokal (orderId
     // dibuat di peramban lalu dikirim ke Midtrans), jadi status dan masa
     // aktifnya hanya boleh diisi server setelah verifikasi pembayaran.
-    match /jatim_tagihan/{orderId} {
+    match /madiun_tagihan/{orderId} {
       allow read, write: if false;
     }
 

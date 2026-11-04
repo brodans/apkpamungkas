@@ -9,7 +9,7 @@
  * yang harus diubah manual kalau hostnya berganti.
  *
  * Fitur:
- * - Meneruskan cookies sesi (epresensi-bkdjatim) bolak-balik
+ * - Meneruskan cookies sesi (epresensi-bkdmadiun) bolak-balik
  * - Menulis ulang header Location pada redirect agar tetap same-origin
  * - Meneruskan semua method (GET, POST, dll.)
  * - Meneruskan body untuk POST/PUT
@@ -63,7 +63,7 @@ const HOP_BY_HOP_RESPONSE = new Set([
 
 /**
  * Tulis ulang URL redirect agar menunjuk ke proxy, bukan ke upstream langsung.
- * Contoh: https://presensi.bkd.jatimprov.go.id/index.php/ -> /ep/index.php/
+ * Contoh: https://presensi.bkd.madiunprov.go.id/index.php/ -> /ep/index.php/
  *
  *  Host diambil dari `ASAL_UPSTREAM` (lihat `epTarget.ts`), bukan ditulis
  * di sini  kalau tidak, perubahan host hanya berlaku di satu dari dua tempat.

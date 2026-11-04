@@ -2,9 +2,9 @@
 /**
  * Seed akun admin awal ke Firestore.
  *
- * Menulis satu dokumen ke `jatim_pengguna/{username}` dengan password yang
+ * Menulis satu dokumen ke `madiun_pengguna/{username}` dengan password yang
  * di-hash memakai algoritma yang sama persis dengan aplikasi:
- *   bcrypt(SHA256(password + "epresensi-jatim-pin-salt-v1"))
+ *   bcrypt(SHA256(password + "epresensi-madiun-pin-salt-v1"))
  *
  * Jalankan:
  *   npm run seed:admin -- admin admin
@@ -19,7 +19,7 @@
  * berhasil:
  *
  * ```
- * match /jatim_pengguna/{username} {
+ * match /madiun_pengguna/{username} {
  *   allow read, write: if false;
  * }
  * ```
@@ -143,7 +143,7 @@ try {
   process.exit(1);
 }
 
-// 'jatim_pengguna' adalah koleksi, username adalah id dokumen.
+// 'madiun_pengguna' adalah koleksi, username adalah id dokumen.
 const ref = db.collection('madiun_pengguna').doc(username);
 const ada = await ref.get();
 

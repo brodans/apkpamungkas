@@ -10,7 +10,7 @@
  * "Saya login sebagai user, terus refresh malah jadi admin."
  *
  * Akar masalahnya bukan di komponen React: `firestore.rules` pernah
- * mengizinkan `allow read, write: if true` pada `jatim_pengguna`, dan peran
+ * mengizinkan `allow read, write: if true` pada `madiun_pengguna`, dan peran
  * dibaca peramban saat login. `setDoc({ role: 'admin' })` pada dokumen sendiri
  * sudah cukup.
  *
@@ -79,8 +79,8 @@ process.env.NODE_ENV = 'test';
  */
 const dokumen = new Map<string, Record<string, unknown>>();
 const KUNCI = {
-  pengguna: (u: string): string => `jatim_pengguna/${u}`,
-  pengaturan: (d: string): string => `jatim_pengaturan/${d}`,
+  pengguna: (u: string): string => `madiun_pengguna/${u}`,
+  pengaturan: (d: string): string => `madiun_pengaturan/${d}`,
 };
 
 const adminDoc = {
@@ -220,7 +220,7 @@ function Collection(koleksi: string): any {
 async function getAll(...refs: Array<{ id: string }>): Promise<unknown[]> {
   return refs.map(ref => {
     const id = ref.id;
-    const data = dokumen.get(`jatim_pengaturan/${id}`);
+    const data = dokumen.get(`madiun_pengaturan/${id}`);
     return {
       exists: Boolean(data),
       id,
@@ -681,17 +681,17 @@ console.log('\n=== 1g3. Pembacaan langganan/tagihan — lewat server, bukan Fire
  * bukan dari `input`, sehingga tidak ada request yang bisa diarahkan ke akun
  * lain.
  */
-dokumen.set('jatim_langganan/budi', { masaAkhir: '2027-01-01T00:00:00.000Z', gratis: false });
-dokumen.set('jatim_langganan/siti', { masaAkhir: '2027-06-01T00:00:00.000Z', gratis: true });
-dokumen.set('jatim_tagihan/ORD-BUDI-1', {
+dokumen.set('madiun_langganan/budi', { masaAkhir: '2027-01-01T00:00:00.000Z', gratis: false });
+dokumen.set('madiun_langganan/siti', { masaAkhir: '2027-06-01T00:00:00.000Z', gratis: true });
+dokumen.set('madiun_tagihan/ORD-BUDI-1', {
   orderId: 'ORD-BUDI-1', username: 'budi', usernameLabel: 'Budi Santoso',
   nominal: 50000, status: 'lunas', createdAt: '2026-03-01T00:00:00.000Z',
 });
-dokumen.set('jatim_tagihan/ORD-BUDI-2', {
+dokumen.set('madiun_tagihan/ORD-BUDI-2', {
   orderId: 'ORD-BUDI-2', username: 'budi', usernameLabel: 'Budi Santoso',
   nominal: 75000, status: 'lunas', createdAt: '2026-02-01T00:00:00.000Z',
 });
-dokumen.set('jatim_tagihan/ORD-SITI-1', {
+dokumen.set('madiun_tagihan/ORD-SITI-1', {
   orderId: 'ORD-SITI-1', username: 'siti', usernameLabel: 'Siti Aminah',
   nominal: 100000, status: 'lunas', createdAt: '2026-01-01T00:00:00.000Z',
 });
@@ -742,14 +742,14 @@ cek('admin boleh membaca semua tagihan', semuaTagihan.ok, `dapat kode ${semuaTag
 cek('daftar tagihan terurut terbaru dulu',
   String(semuaTagihan.tagihan?.[0]?.createdAt ?? '') >= String(semuaTagihan.tagihan?.[1]?.createdAt ?? ''),
   (semuaTagihan.tagihan ?? []).map(t => t.orderId).join(', '));
-dokumen.set('jatim_tagihan/ORD-BATAL-LEGACY', {
+dokumen.set('madiun_tagihan/ORD-BATAL-LEGACY', {
   orderId: 'ORD-BATAL-LEGACY', username: 'budi', status: 'batal', createdAt: '2026-04-01T00:00:00.000Z',
 });
 cek('riwayat admin tidak menampilkan dokumen tagihan batal lama',
   !(await B.bacaTagihanAkunAdmin(tokenSitiAdmin, 'budi')).tagihan?.some(t => t.orderId === 'ORD-BATAL-LEGACY'));
 cek('daftar seluruh tagihan admin tidak menampilkan tagihan batal',
   !(await B.bacaSemuaTagihan(tokenSitiAdmin)).tagihan?.some(t => t.orderId === 'ORD-BATAL-LEGACY'));
-dokumen.delete('jatim_tagihan/ORD-BATAL-LEGACY');
+dokumen.delete('madiun_tagihan/ORD-BATAL-LEGACY');
 const riwayatBudiAdmin = await B.bacaTagihanAkunAdmin(tokenSitiAdmin, 'budi', 30);
 cek('admin membaca riwayat akun tertentu', riwayatBudiAdmin.ok, `dapat kode ${riwayatBudiAdmin.kode}`);
 cek('riwayat admin dipersempit ke username yang diminta',
@@ -1269,7 +1269,7 @@ const tagihanTanpaToken = await panggil({
 cek('tanpa token, tagihan ditolak 401', tagihanTanpaToken.status === 401,
   `dapat kode ${tagihanTanpaToken.status}`);
 cek('dokumen tagihan tidak dibuat tanpa token',
-  !dokumen.has('jatim_tagihan/PAMUNGKAS-BULANAN-1'));
+  !dokumen.has('madiun_tagihan/PAMUNGKAS-BULANAN-1'));
 
 // ── Empat field dipalsukan ────────────────────────────────────────────
 const tagihanUser = await panggil(
@@ -1291,7 +1291,7 @@ const tagihanUser = await panggil(
 cek('pengguna biasa boleh membuat tagihan', tagihanUser.body?.ok === true,
   `dapat kode ${tagihanUser.status} — ${tagihanUser.body?.pesan ?? ''}`);
 
-const tersimpan = dokumen.get('jatim_tagihan/PAMUNGKAS-BULANAN-1');
+const tersimpan = dokumen.get('madiun_tagihan/PAMUNGKAS-BULANAN-1');
 cek('akun diambil dari token, bukan dari body.username',
   tersimpan?.username === 'budi', `tersimpan sebagai "${tersimpan?.username}"`);
 cek('harga diambil dari konfigurasi server',
@@ -1318,7 +1318,7 @@ const paketSalah = await panggil(
 cek('paketId yang tidak cocok dengan orderId ditolak 409',
   paketSalah.status === 409, `dapat kode ${paketSalah.status}`);
 cek('tagihan dengan paket salah tidak ditulis',
-  !dokumen.has('jatim_tagihan/PAMUNGKAS-TAHUNAN-2'));
+  !dokumen.has('madiun_tagihan/PAMUNGKAS-TAHUNAN-2'));
 
 const paketTidakDIjual = await panggil(
   { aksi: 'tagihan:buat', orderId: 'PAMUNGKAS-MITRA-3', paketId: 'mitra', metode: 'qris' },
@@ -1327,10 +1327,10 @@ const paketTidakDIjual = await panggil(
 cek('paket yang tidak ada di konfigurasi ditolak 422',
   paketTidakDIjual.status === 422, `dapat kode ${paketTidakDIjual.status}`);
 cek('harga tidak jatuh ke default saat paket hilang',
-  !dokumen.has('jatim_tagihan/PAMUNGKAS-MITRA-3'));
+  !dokumen.has('madiun_tagihan/PAMUNGKAS-MITRA-3'));
 
 const orderIdRusak = await panggil(
-  { aksi: 'tagihan:buat', orderId: '../../jatim_pengguna/budi', paketId: 'bulanan', metode: 'qris' },
+  { aksi: 'tagihan:buat', orderId: '../../madiun_pengguna/budi', paketId: 'bulanan', metode: 'qris' },
   { token: tokenBudiBayar }
 );
 cek('orderId berisi "../" ditolak', !orderIdRusak.body?.ok,
@@ -1363,7 +1363,7 @@ cek('pesan penolakan menyebut dua jalan keluar',
   /Lanjutkan pembayaran/.test(tagihanKedua.body?.pesan ?? '') &&
   /batalkan/.test(tagihanKedua.body?.pesan ?? ''),
   tagihanKedua.body?.pesan ?? '(tidak ada pesan)');
-cek('tagihan kedua tidak ditulis', !dokumen.has('jatim_tagihan/PAMUNGKAS-BULANAN-2'));
+cek('tagihan kedua tidak ditulis', !dokumen.has('madiun_tagihan/PAMUNGKAS-BULANAN-2'));
 
 /*
  * ── Jalan keluarnya: lanjutkan atau batalkan ────────────────────────
@@ -1381,7 +1381,7 @@ cek('percobaan ketiga tetap ditolak dengan orderId yang sama',
   lanjutLagi.status === 409 && lanjutLagi.body?.orderId === tagihanKedua.body?.orderId,
   `kode=${lanjutLagi.status} orderId=${lanjutLagi.body?.orderId}`);
 cek('tidak ada dokumen tagihan tambahan yang tertulis',
-  !dokumen.has('jatim_tagihan/PAMUNGKAS-BULANAN-3'));
+  !dokumen.has('madiun_tagihan/PAMUNGKAS-BULANAN-3'));
 
 // Batalkan tagihan sendiri → boleh.
 const batalMilikSendiri = await panggil(
@@ -1391,7 +1391,7 @@ const batalMilikSendiri = await panggil(
 cek('pemilik tagihan boleh membatalkannya sendiri', batalMilikSendiri.body?.ok === true,
   `dapat kode ${batalMilikSendiri.status} — ${batalMilikSendiri.body?.pesan ?? ''}`);
 cek('dokumen tagihan pemilik dihapus saat dibatalkan',
-  !dokumen.has('jatim_tagihan/' + tagihanKedua.body?.orderId));
+  !dokumen.has('madiun_tagihan/' + tagihanKedua.body?.orderId));
 const riwayatSetelahBatal = await B.bacaTagihanAkunAdmin(tokenSitiAdmin, 'budi');
 cek('tagihan yang dibatalkan tidak tampil dalam riwayat admin',
   !riwayatSetelahBatal.tagihan?.some(t => t.orderId === tagihanKedua.body?.orderId));
@@ -1420,7 +1420,7 @@ await panggil(
 );
 const tagihanSitiUntukBudi = 'PAMUNGKAS-TAHUNAN-SITI';
 cek('tagihan siti benar-benar ada dan menunggu',
-  dokumen.get('jatim_tagihan/' + tagihanSitiUntukBudi)?.status === 'menunggu');
+  dokumen.get('madiun_tagihan/' + tagihanSitiUntukBudi)?.status === 'menunggu');
 
 const batalMilikOrang = await panggil(
   { aksi: 'tagihan:status', orderId: tagihanSitiUntukBudi, status: 'batal' },
@@ -1432,8 +1432,8 @@ cek('dijawab 404, bukan 403 (tidak bisa dipetakan)',
   batalMilikOrang.status === 404,
   `dapat kode ${batalMilikOrang.status} — 403 mengonfirmasi orderId itu ada milik orang lain`);
 cek('status tagihan milik orang lain tidak berubah',
-  dokumen.get('jatim_tagihan/' + tagihanSitiUntukBudi)?.status === 'menunggu',
-  `status jadi "${dokumen.get('jatim_tagihan/' + tagihanSitiUntukBudi)?.status}"`);
+  dokumen.get('madiun_tagihan/' + tagihanSitiUntukBudi)?.status === 'menunggu',
+  `status jadi "${dokumen.get('madiun_tagihan/' + tagihanSitiUntukBudi)?.status}"`);
 
 /*
  * Tagihan yang sudah `batal` tidak bisa dibatalkan lagi, dan `orderId` yang
@@ -1456,7 +1456,7 @@ const lunasPengguna = await panggil(
 cek('pengguna biasa tidak boleh menandai tagihannya lunas', lunasPengguna.status === 403,
   `dapat kode ${lunasPengguna.status} — kalau 200, siapa pun bisa mengaktifkan langganan gratis`);
 cek('status tidak berubah jadi lunas',
-  dokumen.get('jatim_tagihan/PAMUNGKAS-BULANAN-7')?.status !== 'lunas');
+  dokumen.get('madiun_tagihan/PAMUNGKAS-BULANAN-7')?.status !== 'lunas');
 
 /*
  * Aturannya **per akun**: tagihan orang lain tidak boleh ikut terhitung.
@@ -1518,7 +1518,7 @@ cek('tanggal tidak valid ditolak', !tanggalRusak.body?.ok, `dapat kode ${tanggal
 
 // `orderId` jadi kunci dokumen — path traversal harus ditolak.
 const traversalTagihan = await panggil(
-  { aksi: 'tagihan:hapus', orderId: '../../jatim_pengguna/budi' },
+  { aksi: 'tagihan:hapus', orderId: '../../madiun_pengguna/budi' },
   { token: tokenAdminBilling }
 );
 cek('orderId berisi "../" ditolak', !traversalTagihan.body?.ok,
@@ -1534,24 +1534,24 @@ const rulesKode = rules.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm
 
 cek('rules pakai versi 2', /rules_version = '2'/.test(rules));
 cek(
-  'jatim_pengguna: TIDAK boleh baca maupun tulis dari klien',
-  /match \/jatim_pengguna\/\{username\}\s*\{\s*allow read, write: if false;/.test(rulesKode),
+  'madiun_pengguna: TIDAK boleh baca maupun tulis dari klien',
+  /match \/madiun_pengguna\/\{username\}\s*\{\s*allow read, write: if false;/.test(rulesKode),
   'allow read/write: if true di sini = eskalasi role lewat DevTools'
 );
 cek(
-  'jatim_pengguna tidak punya allow ... if true',
-  !/match \/jatim_pengguna\/\{username\}[\s\S]{0,120}if true/.test(rulesKode)
+  'madiun_pengguna tidak punya allow ... if true',
+  !/match \/madiun_pengguna\/\{username\}[\s\S]{0,120}if true/.test(rulesKode)
 );
 cek(
-  'jatim_pengaturan (auth + kredensial server): server-only',
-  /match \/jatim_pengaturan\/\{docId\}\s*\{\s*allow read, write: if false;/.test(rulesKode)
+  'madiun_pengaturan (auth + kredensial server): server-only',
+  /match \/madiun_pengaturan\/\{docId\}\s*\{\s*allow read, write: if false;/.test(rulesKode)
 );
 cek(
   'billing tetap boleh dibaca (harga paket harus tampil)',
-  /match \/jatim_pengaturan\/billing\s*\{\s*allow read: if true;/.test(rulesKode)
+  /match \/madiun_pengaturan\/billing\s*\{\s*allow read: if true;/.test(rulesKode)
 );
 cek('billing tetap tidak boleh ditulis dari klien',
-  /match \/jatim_pengaturan\/billing[\s\S]{0,140}allow write: if false;/.test(rulesKode));
+  /match \/madiun_pengaturan\/billing[\s\S]{0,140}allow write: if false;/.test(rulesKode));
 /*
  * ⚠️ Sekarang **server-only sepenuhnya**, bukan hanya untuk tulis.
  *
@@ -1567,10 +1567,10 @@ cek('billing tetap tidak boleh ditulis dari klien',
  * `tagihan:saya` / `langganan:daftar` / `tagihan:daftar`.
  */
 cek('langganan: server-only, baca maupun tulis',
-  /match \/jatim_langganan\/\{username\}\s*\{\s*allow read, write: if false;/.test(rulesKode),
+  /match \/madiun_langganan\/\{username\}\s*\{\s*allow read, write: if false;/.test(rulesKode),
   'allow read: if true = NIP + masa aktif + status gratis terbuka untuk semua');
 cek('tagihan: server-only, baca maupun tulis',
-  /match \/jatim_tagihan\/\{orderId\}\s*\{\s*allow read, write: if false;/.test(rulesKode),
+  /match \/madiun_tagihan\/\{orderId\}\s*\{\s*allow read, write: if false;/.test(rulesKode),
   'allow read: if true = nama + nominal + buktiUrl terbuka untuk semua');
 cek('default menolak semua yang tidak dicakup', /match \/\{document=\*\*\}/.test(rulesKode));
 cek('rules menjelaskan akar bug login-user-refresh-jadi-admin',
@@ -2076,13 +2076,13 @@ console.log('\n=== 1i. Lewat handler HTTP: yang dipakai peramban sungguhan');
    * `_panel.ts` — bukan verifikasi password.
    */
   seed();
-  dokumen.set('jatim_tagihan/ORDER-BUDI-1', {
+  dokumen.set('madiun_tagihan/ORDER-BUDI-1', {
     orderId: 'ORDER-BUDI-1',
     username: 'budi',
     status: 'lunas',
     createdAt: '2026-03-01T00:00:00.000Z',
   });
-  dokumen.set('jatim_tagihan/ORDER-BUDI-2', {
+  dokumen.set('madiun_tagihan/ORDER-BUDI-2', {
     orderId: 'ORDER-BUDI-2',
     username: 'budi',
     status: 'lunas',
@@ -2253,7 +2253,7 @@ console.log('\n=== 13. Peta pembatas dan pindai akun tidak tumbuh tanpa batas');
  *    dibuang paksa. Yang hilang paling banter satu penyerang; yang tidak
  *    dibuang adalah seluruh instance.
  * 2. **Pindai koleksi akun.** `ubahAkun` mencari "admin lain" dengan membaca
- *    seluruh `jatim_pengguna`. Informasi yang dibutuhkan cuma satu, dan
+ *    seluruh `madiun_pengguna`. Informasi yang dibutuhkan cuma satu, dan
  *    Firestore bisa menjawabnya langsung: `where('role','==','admin').limit(2)`.
  */
 {
@@ -2291,18 +2291,18 @@ console.log('\n=== 13. Peta pembatas dan pindai akun tidak tumbuh tanpa batas');
 // ═════════════════════════════════════════════════════════════════════
 console.log('\n=== Rename username memindahkan seluruh data akun');
 {
-  dokumen.set('jatim_langganan/budi', {
+  dokumen.set('madiun_langganan/budi', {
     username: 'budi',
     masaAkhir: '2027-05-01T00:00:00.000Z',
     totalBayar: 100_000,
   });
-  dokumen.set('jatim_tagihan/ORDER-BUDI-1', {
+  dokumen.set('madiun_tagihan/ORDER-BUDI-1', {
     orderId: 'ORDER-BUDI-1',
     username: 'budi',
     usernameLabel: 'budi',
     status: 'lunas',
   });
-  dokumen.set('jatim_tagihan/ORDER-BUDI-2', {
+  dokumen.set('madiun_tagihan/ORDER-BUDI-2', {
     orderId: 'ORDER-BUDI-2',
     username: 'budi',
     usernameLabel: 'Budi Santoso',
@@ -2323,13 +2323,13 @@ console.log('\n=== Rename username memindahkan seluruh data akun');
     dokumen.get(KUNCI.pengaturan('kredensial_server__budi.baru'))?.nip === '200308062025101001' &&
       !dokumen.has(KUNCI.pengaturan('kredensial_server__budi')));
   cek('masa aktif dipindahkan tanpa mengubah nilainya',
-    dokumen.get('jatim_langganan/budi.baru')?.masaAkhir === '2027-05-01T00:00:00.000Z' &&
-      !dokumen.has('jatim_langganan/budi'));
+    dokumen.get('madiun_langganan/budi.baru')?.masaAkhir === '2027-05-01T00:00:00.000Z' &&
+      !dokumen.has('madiun_langganan/budi'));
   cek('semua tagihan ikut ke username baru',
-    dokumen.get('jatim_tagihan/ORDER-BUDI-1')?.username === 'budi.baru' &&
-      dokumen.get('jatim_tagihan/ORDER-BUDI-1')?.usernameLabel === 'budi.baru' &&
-      dokumen.get('jatim_tagihan/ORDER-BUDI-2')?.username === 'budi.baru' &&
-      dokumen.get('jatim_tagihan/ORDER-BUDI-2')?.usernameLabel === 'Budi Santoso');
+    dokumen.get('madiun_tagihan/ORDER-BUDI-1')?.username === 'budi.baru' &&
+      dokumen.get('madiun_tagihan/ORDER-BUDI-1')?.usernameLabel === 'budi.baru' &&
+      dokumen.get('madiun_tagihan/ORDER-BUDI-2')?.username === 'budi.baru' &&
+      dokumen.get('madiun_tagihan/ORDER-BUDI-2')?.usernameLabel === 'Budi Santoso');
   cek('token dengan username lama tidak lagi berlaku',
     !(await P.verifikasiToken(tokenUser)).ok);
   const sesiBaru = await P.verifikasiToken(P.terbitkanToken('budi.baru', 'user', izinUser));

@@ -24,7 +24,7 @@
  *
  * Karena aplikasi tidak memakai Firebase Authentication, semua permintaan
  * Firestore dari klien datang sebagai **anonim**. `firestore.rules` tidak bisa
- * membedakan admin dari user biasa  jadi `jatim_pengguna` hanya boleh dibaca
+ * membedakan admin dari user biasa  jadi `madiun_pengguna` hanya boleh dibaca
  * dan ditulis oleh server (Admin SDK). Tanpa itu, `setDoc({ role: 'admin' })`
  * pada dokumen sendiri adalah eskalasi peran yang lengkap, dan itulah akar
  * laporan "saya login user, reload jadi admin".

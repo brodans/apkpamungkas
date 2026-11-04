@@ -353,7 +353,7 @@ const rulesMentah = baca('firestore.rules');
 const rules = rulesMentah.replace(/^\s*\/\*\*[\s\S]*?\*\/\s*$/gm, '').replace(/^\s*\/\/.*$/gm, '');
 cek('rules pakai versi 2', /rules_version = '2'/.test(rulesMentah));
 /*
- * ⚠️ `jatim_langganan` dan `jatim_tagihan` sekarang **server-only sepenuhnya**,
+ * ⚠️ `madiun_langganan` dan `madiun_tagihan` sekarang **server-only sepenuhnya**,
  * bukan hanya untuk tulis.
  *
  * Semula keduanya `allow read: if true`, dengan alasan "peramban butuh tahu
@@ -365,7 +365,7 @@ cek('rules pakai versi 2', /rules_version = '2'/.test(rulesMentah));
  * mengembalikan seluruh isi koleksi tanpa membuka aplikasi sama sekali.
  *
  * Yang bocor: `nip`, `masaAkhir`, `gratis` (siapa yang tidak membayar), dan di
- * `jatim_tagihan` juga `usernameLabel`, `nominal`, serta `buktiUrl`.
+ * `madiun_tagihan` juga `usernameLabel`, `nominal`, serta `buktiUrl`.
  *
  * Sekarang keduanya lewat `POST /api/panel-auth` (`langganan:saya`,
  * `tagihan:saya`, `langganan:daftar`, `tagihan:daftar`), yang memverifikasi
@@ -373,20 +373,20 @@ cek('rules pakai versi 2', /rules_version = '2'/.test(rulesMentah));
  */
 cek(
   'langganan: server-only, baca maupun tulis',
-  /match \/jatim_langganan\/\{username\}\s*\{\s*allow read, write: if false;/.test(rules),
+  /match \/madiun_langganan\/\{username\}\s*\{\s*allow read, write: if false;/.test(rules),
   'allow read: if true = siapa pun yang punya API key bisa membaca NIP + masa aktif + status gratis'
 );
 cek(
   'tagihan: server-only, baca maupun tulis',
-  /match \/jatim_tagihan\/\{orderId\}\s*\{\s*allow read, write: if false;/.test(rules),
+  /match \/madiun_tagihan\/\{orderId\}\s*\{\s*allow read, write: if false;/.test(rules),
   'allow read: if true = nama orang + nominal + buktiUrl terbuka untuk semua'
 );
 cek(
   'tidak ada koleksi entitlement yang boleh dibaca anonim',
-  !/match \/jatim_(langganan|tagihan)\/[^{]*\{[^}]*allow read: if true;/.test(rules),
+  !/match \/madiun_(langganan|tagihan)\/[^{]*\{[^}]*allow read: if true;/.test(rules),
   'aplikasi tidak memakai Firebase Auth, jadi "read: if true" = terbuka untuk semua'
 );
-cek('billing: hanya server yang boleh tulis', /match \/jatim_pengaturan\/billing[\s\S]{0,140}allow write: if false;/.test(rules));
+cek('billing: hanya server yang boleh tulis', /match \/madiun_pengaturan\/billing[\s\S]{0,140}allow write: if false;/.test(rules));
 cek('default menolak semua yang tidak dicakup', /match \/\{document=\*\*\}/.test(rules));
 
 /*
@@ -398,34 +398,34 @@ cek('default menolak semua yang tidak dicakup', /match \/\{document=\*\*\}/.test
  * biasa. Satu-satunya akses yang sah adalah dari server (Admin SDK), yang
  * melewati rules sepenuhnya.
  *
- * |\n * `jatim_pengguna`      | hash password + `role` setiap orang |
- * | `jatim_pengaturan/*`  | `pinHash` admin, password server pusat |
- * | `jatim_tagihan`       | status & masa aktif hanya dari server |
+ * |\n * `madiun_pengguna`      | hash password + `role` setiap orang |
+ * | `madiun_pengaturan/*`  | `pinHash` admin, password server pusat |
+ * | `madiun_tagihan`       | status & masa aktif hanya dari server |
  *
  * Yang terakhir dipisah supaya `billing` — satu-satunya dokumen yang **harus**
  * dibaca peramban — tetap punya allow-list-nya sendiri.
  */
 cek(
   'akun panel: server-only, tanpa kecuali',
-  /match \/jatim_pengguna\/\{username\}\s*\{\s*allow read, write: if false;/.test(rules),
+  /match \/madiun_pengguna\/\{username\}\s*\{\s*allow read, write: if false;/.test(rules),
   'allow read/write: if true = setDoc({role:"admin"}) + refresh'
 );
 cek(
   'akun panel tidak boleh dibaca klien',
-  !/match \/jatim_pengguna\/\{username\}[\s\S]{0,160}if true/.test(rules),
+  !/match \/madiun_pengguna\/\{username\}[\s\S]{0,160}if true/.test(rules),
   'baca = seluruh hash password panel bisa dicuri dan dipecah offline'
 );
 cek(
   'auth + kredensial server: server-only',
-  /match \/jatim_pengaturan\/\{docId\}\s*\{\s*allow read, write: if false;/.test(rules),
+  /match \/madiun_pengaturan\/\{docId\}\s*\{\s*allow read, write: if false;/.test(rules),
   'pinHash admin & password server pusat tidak boleh terbaca dari klien'
 );
 cek(
   'billing tetap boleh dibaca (harga paket harus tampil)',
-  /match \/jatim_pengaturan\/billing\s*\{\s*allow read: if true;/.test(rules),
+  /match \/madiun_pengaturan\/billing\s*\{\s*allow read: if true;/.test(rules),
   'menutupnya membuat pengguna tidak bisa melihat harga paket'
 );
-cek('billing: hanya server yang boleh tulis', /match \/jatim_pengaturan\/billing[\s\S]{0,140}allow write: if false;/.test(rules));
+cek('billing: hanya server yang boleh tulis', /match \/madiun_pengaturan\/billing[\s\S]{0,140}allow write: if false;/.test(rules));
 cek('default menolak semua yang tidak dicakup', /match \/\{document=\*\*\}/.test(rules));
 cek('batasan tanpa Firebase Auth dijelaskan', /tidak memakai Firebase Authentication/i.test(rulesMentah));
 cek('akar bug refresh-jadi-admin dijelaskan di rules', /reload jadi admin/.test(rulesMentah));
@@ -458,7 +458,7 @@ cek(
 /*
  * ⚠️ Operasi langganan TIDAK BOLEH punya versi peramban.
  *
- * `jatim_langganan`, `jatim_tagihan`, dan `jatim_pengaturan/billing` semuanya
+ * `madiun_langganan`, `madiun_tagihan`, dan `madiun_pengaturan/billing` semuanya
  * `write: if false` untuk klien. Jadi fungsi yang memanggil `setDoc`/`updateDoc`
  * pada salah satunya dari peramban **pasti ditolak rules** — bukan "kurang
  * aman", tapi tidak berfungsi sama sekali.

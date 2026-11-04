@@ -64,7 +64,7 @@ for (const setter of ['setActivePage', 'setDeveloperMode']) {
 // Pengaman: prefs gaya kalender tidak boleh muncul lagi di mana pun.
 cek(
   'prefs gaya kalender klasik sudah dihapus dari AppContext',
-  !/datePickerStyle|jatim_date_picker_style/.test(ctx),
+  !/datePickerStyle|madiun_date_picker_style/.test(ctx),
   'gaya klasik dihapus; prefsnya tidak boleh tersisa'
 );
 

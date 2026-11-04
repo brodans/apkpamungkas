@@ -261,7 +261,7 @@ export default function LoginScreen({ onLogin, onLoginStart, isDarkMode, toggleD
        * Yang dihapus beserta alasannya:
        *
        * 1. Blok "admin bawaan" (`pinEncrypted` / `pinHash` dari
-       *    `jatim_pengaturan/auth`). Semuanya berbunyi
+       *    `madiun_pengaturan/auth`). Semuanya berbunyi
        *    `storedAdmin ? username === storedAdmin : true` — begitu
        *    `adminUsername` belum pernah diisi, **username apa pun** +
        *    password admin menghasilkan admin penuh. Server selalu membandingkan

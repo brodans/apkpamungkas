@@ -416,7 +416,7 @@ cek(
 cek(
   'dialog pengaturan tidak menulis ke Firestore langsung',
   !/from '\.\.\/lib\/firebase'/.test(setSrc),
-  'jatim_pengaturan/auth sekarang server-only'
+  'madiun_pengaturan/auth sekarang server-only'
 );
 
 cek('editor izin ada sebagai komponen sendiri', /export default function IzinAkun/.test(izinSrc));

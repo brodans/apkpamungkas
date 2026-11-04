@@ -339,7 +339,7 @@ console.log('\n=== ep: content-length basi tidak boleh mematikan POST');
       if (redirectLogin) {
         res.writeHead(302, {
           Location: 'https://e-presensi.example/index.php/default/index',
-          'Set-Cookie': 'epresensi-bkdjatim=session-baru; Path=/; HttpOnly',
+          'Set-Cookie': 'epresensi-bkdmadiun=session-baru; Path=/; HttpOnly',
         });
         res.end();
         return;

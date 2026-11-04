@@ -308,20 +308,20 @@ cek('orderId/username divalidasi (anti path traversal)', /\[\\\\\/\]/.test(serve
 const rulesGerbang = kode(baca('../firestore.rules'));
 cek(
   'rules menutup langganan dari klien sepenuhnya (baca + tulis)',
-  /match \/jatim_langganan\/\{username\}\s*\{\s*allow read, write: if false;/.test(rulesGerbang),
+  /match \/madiun_langganan\/\{username\}\s*\{\s*allow read, write: if false;/.test(rulesGerbang),
   'allow read: if true = NIP + masa aktif + status gratis terbuka untuk siapa pun'
 );
 cek(
   'rules menutup tagihan dari klien sepenuhnya (baca + tulis)',
-  /match \/jatim_tagihan\/\{orderId\}\s*\{\s*allow read, write: if false;/.test(rulesGerbang),
+  /match \/madiun_tagihan\/\{orderId\}\s*\{\s*allow read, write: if false;/.test(rulesGerbang),
   'allow read: if true = nama + nominal + buktiUrl terbuka untuk siapa pun'
 );
 // Akun panel juga wajib tertutup penuh — ini yang membuat "role bisa ditulis
 // sendiri" tidak mungkin. Dijaga di `cek-panel-auth.ts` juga; di sini hanya
 // sebagai pengingat bahwa rules punya dua sisi.
 cek(
-  'rules menutup akses klien ke jatim_pengguna',
-  /jatim_pengguna\/\{username\}[\s\S]{0,160}allow read, write: if false;/.test(
+  'rules menutup akses klien ke madiun_pengguna',
+  /madiun_pengguna\/\{username\}[\s\S]{0,160}allow read, write: if false;/.test(
     kode(baca('../firestore.rules'))
   )
 );

@@ -2,17 +2,17 @@
 
 > Identitas aplikasi adalah **PAMUNGKAS — Portal Presensi Kabupaten Madiun**.
 > Gateway yang didokumentasikan di bawah adalah milik aplikasi Android
-> terpisah yang bernama "E-Presensi Jatim" — itu fakta teknis yang tidak
+> terpisah yang bernama "E-Presensi Madiun" — itu fakta teknis yang tidak
 > boleh diubah, bukan nama aplikasi ini. Bandingkan `src/lib/appIdentity.ts`.
 > Domain produksi, package Android, dan sebagian kunci penyimpanan masih
 > memakai identifier historis `pamungkas`; jangan ubah tanpa migrasi.
 
 Dokumen ini adalah **ground truth** hasil probe black-box langsung ke gateway
-produksi `presensi.bkd.jatimprov.go.id`, ditambah pembacaan string-pool APK.
+produksi `presensi.bkd.madiunprov.go.id`, ditambah pembacaan string-pool APK.
 
 | | |
 |---|---|
-| APK yang dianalisis | `Jatim+Presensi_1.11.21_APKPure.xapk` |
+| APK yang dianalisis | `Madiun+Presensi_1.11.21_APKPure.xapk` |
 | Package | `dev.nullpointer.bkdattendance` |
 | versionName / versionCode | `1.11.21` / **89** |
 | Tanggal verifikasi | 2026-09-27 (probe) · 2026-09-28 (decompilasi) |
@@ -46,7 +46,7 @@ string-pool APK v89 (lihat §7).
 
 | | |
 |---|---|
-| URL | `https://presensi.bkd.jatimprov.go.id/service` |
+| URL | `https://presensi.bkd.madiunprov.go.id/service` |
 | Method | `POST` (satu gateway untuk **semua** fungsi) |
 | Content-Type | `application/json; charset=UTF-8` |
 | User-Agent | `okhttp/4.12.0` (dipertahankan agar gateway tidak menolak) |
@@ -193,7 +193,7 @@ belakangnya. Petunjuk pendukung: `UploadPhotoService` memakai
 `@POST("../service")` dengan baseUrl `server + "/"`.
 
 ```
-POST https://presensi.bkd.jatimprov.go.id/service/importfile
+POST https://presensi.bkd.madiunprov.go.id/service/importfile
 Content-Type: multipart/form-data; boundary=…
 
   api_key      = <token sesi>
@@ -312,10 +312,10 @@ field `api_key`):
   "nama": "RAYHAN ALIF DARMAWAN S.Tr.I.P",
   "jabatan": "Analis Sumber Daya Manusia Aparatur Ahli Pertama (III/a)",
   "departemen": "SUB BAGIAN UMUM DAN KEPEGAWAIAN",
-  "logo_departemen": "https://presensi.bkd.jatimprov.go.id/images/jatim.png",
+  "logo_departemen": "https://presensi.bkd.madiunprov.go.id/images/madiun.png",
   "upload_wajah": 1,
   "allow_wfh": 1,
-  "foto_profile": "https://presensi.bkd.jatimprov.go.id/uploads/foto_profil/…",
+  "foto_profile": "https://presensi.bkd.madiunprov.go.id/uploads/foto_profil/…",
   "vektor_profile": "",
   "vektor_approved": 0,
   "home": 1,
@@ -753,7 +753,7 @@ aplikasi resmi memang tidak berfungsi, sehingga tidak ada endpoint yang
 
 ## 11. Endpoint milik PAMUNGKAS sendiri (bukan server pusat)
 
-Bagian 1–10 di atas semuanya tentang `presensi.bkd.jatimprov.go.id` — kontrak
+Bagian 1–10 di atas semuanya tentang `presensi.bkd.madiunprov.go.id` — kontrak
 dari server pusat. Yang di bawah ini endpoint yang kita Exposure sendiri, dan
 semuanya **tidak pernah** menyentuh server pusat secara langsung.
 
@@ -803,7 +803,7 @@ server dan `Referer`).
 #### Operasi langganan
 
 Semuanya **server-only** dan tidak pernah punya versi peramban:
-`jatim_langganan`, `jatim_tagihan`, dan `jatim_pengaturan/billing` semuanya
+`madiun_langganan`, `madiun_tagihan`, dan `madiun_pengaturan/billing` semuanya
 `write: if false` untuk klien. Fungsi yang dulu ada di `langgananFirestore.ts`
 tidak bisa berhasil — hanya terlihat berhasil kalau rules yang aktif di proyek
 ternyata longgar.

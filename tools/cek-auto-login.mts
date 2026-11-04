@@ -120,7 +120,7 @@ localStorage.clear();
 const imei1 = imeiStabil('admin');
 cek('imei tidak kosong', !!imei1, imei1);
 cek('imei kedua pemanggilan sama', imeiStabil('admin') === imei1);
-cek('imei tersimpan di localStorage', localStorage.getItem('epresensi_jatim_imei_admin') === imei1);
+cek('imei tersimpan di localStorage', localStorage.getItem('epresensi_madiun_imei_admin') === imei1);
 cek('imei akun lain berbeda', imeiStabil('operator') !== imei1);
 
 localStorage.clear();
@@ -205,7 +205,7 @@ setServerSessionCache('admin', {
   imei: '',
 });
 // Paksa TTL habis dengan menggeser `cachedAt` ke masa lalu.
-const key = 'epresensi_jatim_srvcache_admin';
+const key = 'epresensi_madiun_srvcache_admin';
 const cache = JSON.parse(sessionStorage.getItem(key) ?? '{}') as Record<string, unknown>;
 cache.cachedAt = Date.now() - 61 * 60 * 1000; // 61 menit lalu, TTL = 60 menit
 sessionStorage.setItem(key, JSON.stringify(cache));
@@ -225,7 +225,7 @@ sessionStorage.clear();
 const asliGetItem = sessionStorage.getItem.bind(sessionStorage);
 let bacaCache = 0;
 sessionStorage.getItem = (k: string) => {
-  if (typeof k === 'string' && k.startsWith('epresensi_jatim_srvcache_')) bacaCache++;
+  if (typeof k === 'string' && k.startsWith('epresensi_madiun_srvcache_')) bacaCache++;
   return asliGetItem(k);
 };
 

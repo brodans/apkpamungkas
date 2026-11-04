@@ -24,7 +24,7 @@
  * Akses Firestore dari peramban **dihapus seluruhnya**, bukan diperbaiki.
  * Alasannya bukan hanya bug di atas:
  *
- * - `firestore.rules` membiarkan `jatim_langganan` dan `jatim_tagihan` dengan
+ * - `firestore.rules` membiarkan `madiun_langganan` dan `madiun_tagihan` dengan
  *   `allow read: if true`, dan aplikasi ini tidak memakai Firebase Auth — jadi
  *   `request.auth` selalu `null` dan `if true` berarti seluruh koleksi terbuka
  *   untuk siapa pun yang punya API key. API key-nya ada di bundle peramban.
@@ -162,19 +162,19 @@ const rules = baca('firestore.rules')
   .replace(/^\s*\/\*\*[\s\S]*?\*\/\s*$/gm, '')
   .replace(/^\s*\/\/.*$/gm, '');
 cek(
-  'jatim_langganan: server-only sepenuhnya',
-  /match \/jatim_langganan\/\{username\}\s*\{\s*allow read, write: if false;/.test(rules),
+  'madiun_langganan: server-only sepenuhnya',
+  /match \/madiun_langganan\/\{username\}\s*\{\s*allow read, write: if false;/.test(rules),
   'allow read: if true = NIP + masa aktif + status gratis terbuka untuk semua'
 );
 cek(
-  'jatim_tagihan: server-only sepenuhnya',
-  /match \/jatim_tagihan\/\{orderId\}\s*\{\s*allow read, write: if false;/.test(rules),
+  'madiun_tagihan: server-only sepenuhnya',
+  /match \/madiun_tagihan\/\{orderId\}\s*\{\s*allow read, write: if false;/.test(rules),
   'allow read: if true = nama + nominal + buktiUrl terbuka untuk semua'
 );
 cek(
   'hanya billing yang boleh dibaca peramban',
-  /match \/jatim_pengaturan\/billing[\s\S]{0,120}allow read: if true;/.test(rules) &&
-    !/match \/jatim_(langganan|tagihan)\/[^{]*\{[^}]*allow read: if true;/.test(rules)
+  /match \/madiun_pengaturan\/billing[\s\S]{0,120}allow read: if true;/.test(rules) &&
+    !/match \/madiun_(langganan|tagihan)\/[^{]*\{[^}]*allow read: if true;/.test(rules)
 );
 
 console.log(fail === 0 ? '\nSEMUA LULUS' : `\n${fail} KEGAGALAN`);

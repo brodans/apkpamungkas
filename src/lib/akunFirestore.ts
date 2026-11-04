@@ -11,14 +11,14 @@
  *
  * Versi lama menjalankan seluruh autentikasi **di peramban**: `getDoc` +
  * `bcrypt.compare`. Itu berarti `firestore.rules` harus membuka
- * `jatim_pengguna` untuk baca **dan** tulis  jadi:
+ * `madiun_pengguna` untuk baca **dan** tulis  jadi:
  *
  * - hash password semua orang bisa dibaca siapa pun yang punya API key;
  * - `role: 'admin'` bisa ditulis sendiri lalu di-refresh  **eskalasi peran**.
  * - batas brute force hanya ada di `localStorage`, dihapus dengan satu baris.
  *
  * Dengan semua operasi pindah ke server, rules bisa ditutup total untuk
- * `jatim_pengguna` dan `jatim_pengaturan/auth`, dan peran tidak pernah lagi
+ * `madiun_pengguna` dan `madiun_pengaturan/auth`, dan peran tidak pernah lagi
  * datang dari dokumen yang bisa ditulis klien. Bentuk ekspor di bawah
  * **sengaja tidak berubah**, jadi `ManajemenAkun.tsx`, `SettingAkunModal.tsx`,
  * dan `serverAutoLogin.ts` tidak ikut berubah.
@@ -245,7 +245,7 @@ export async function panelBatal<T = HasilPanel>(
  * Verifikasi kredensial panel lewat server.
  *
  * Berbeda dengan versi lama, **tidak ada lagi** pembacaan `pinEncrypted`
- * langsung dari `jatim_pengaturan/auth`. Dua alasan:
+ * langsung dari `madiun_pengaturan/auth`. Dua alasan:
  *
  * 1. `adminUsername` yang kosong dulu membuat `storedAdmin ?  : true`
  *    menerima **username apa pun** + password admin  admin penuh. Server
@@ -506,8 +506,8 @@ export async function hapusServerCredential(username: string): Promise<void> {
 //  Langganan, tagihan, dan billing
 //
 //  Semuanya lewat server. Versi perambannya tidak pernah bisa berhasil:
-//  `firestore.rules` menutup `jatim_langganan`, `jatim_tagihan`, dan
-//  `jatim_pengaturan/billing` untuk tulis klien  lihat catatan panjang di
+//  `firestore.rules` menutup `madiun_langganan`, `madiun_tagihan`, dan
+//  `madiun_pengaturan/billing` untuk tulis klien  lihat catatan panjang di
 //  `lib/langgananFirestore.ts`.
 //
 //  Yang membedakan dari operasi akun di atas: ini **hanya admin**, dan token

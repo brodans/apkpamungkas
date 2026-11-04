@@ -402,7 +402,7 @@ function buangKomentar(src: string): string {
 /**
  * Apakah "E-Presensi" muncul di KODE (bukan komentar, bukan kunci storage)?
  *
- * ⚠️ `epresensi_jatim_*` adalah kunci localStorage/sessionStorage, dan
+ * ⚠️ `epresensi_madiun_*` adalah kunci localStorage/sessionStorage, dan
  * sengaja tidak diubah: key itu yang menyimpan sesi, kredensial terenkripsi
  * (sumber auto-login), dan titik absen. Mengubahnya akan mengeluarkan
  * semua orang dan menghapus data mereka tanpa sisa. Nama itu hanya terlihat
@@ -413,13 +413,13 @@ function adaEpresensiDiKode(src: string): boolean {
   // Buang kunci storage (identifier snake_case di dalam string).
   const tanpaKunci = kode.replace(/['"][a-z0-9_]*epresensi[a-z0-9_]*['"]/gi, '""');
   /*
-   * `epresensi-bkdjatim` bukan nama lama kita — itu nama cookie sesi yang
+   * `epresensi-bkdmadiun` bukan nama lama kita — itu nama cookie sesi yang
    * benar-benar diterbitkan server e-Presensi, dan itu diputuskan di sana.
    *
   * Identifier cookie dibiarkan apa adanya; merek yang dilihat pengguna yang
   * wajib hilang.
    */
-  const tanpaProtokol = tanpaKunci.replace(/epresensi-bkdjatim/gi, 'cookie-sesi-hulu');
+  const tanpaProtokol = tanpaKunci.replace(/epresensi-bkdmadiun/gi, 'cookie-sesi-hulu');
   return /e-?presensi/i.test(tanpaProtokol);
 }
 
