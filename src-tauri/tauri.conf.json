@@ -1,8 +1,8 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "PAMUNGKAS",
+  "productName": "PAMONGKAS",
   "version": "1.0.0",
-  "identifier": "id.go.madiunkab.pamungkas",
+  "identifier": "id.go.madiunkab.pamongkas",
   "build": {
     "beforeDevCommand": "npm run dev",
     "beforeBuildCommand": "npm run build",
@@ -11,7 +11,7 @@
   },
   "app": {
     "windows": [{
-      "title": "PAMUNGKAS — Portal Presensi Kabupaten Madiun",
+      "title": "PAMONGKAS — Portal Presensi Kabupaten Madiun",
       "width": 1280,
       "height": 800,
       "minWidth": 900,

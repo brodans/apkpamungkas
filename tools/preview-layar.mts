@@ -76,7 +76,7 @@ const tunggu = renderToStaticMarkup(
   React.createElement(LayarTungguVerifikasi, {
     info: {
       username: 'budi.santoso',
-      orderId: 'PAMUNGKAS-BULANAN-1759000000000',
+      orderId: 'PAMONGKAS-BULANAN-1759000000000',
       paket: '1 Bulan',
       nominal: 25000,
       berakhirAt: Date.now() + 240000,
@@ -96,7 +96,7 @@ const tombol = renderToStaticMarkup(
 const template = (isi: string): string => `<!doctype html>
 <html lang="id"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Pratinjau PAMUNGKAS</title>
+<title>Pratinjau PAMONGKAS</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
   :root { color-scheme: light; }

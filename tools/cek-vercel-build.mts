@@ -110,7 +110,7 @@ console.log('\n=== 2. Setiap function bisa dibundel jadi berkas mandiri');
  * folder proyek. Menaruh berkasnya di `node_modules/.…` membuat resolusi
  * berjalan persis seperti di sana, tanpa mengotori repo.
  */
-const kerja = mkdtempSync(join(root, 'node_modules', '.pamungkas-vercelbuild-'));
+const kerja = mkdtempSync(join(root, 'node_modules', '.pamongkas-vercelbuild-'));
 const FUNGSI = ['rpc', 'upload', 'health', 'billing-aktivasi', 'midtrans-charge'];
 const hasilBundel = new Map<string, string>();
 

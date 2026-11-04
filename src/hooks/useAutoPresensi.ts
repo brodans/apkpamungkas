@@ -276,7 +276,7 @@ export function useAutoPresensi({
 
     // Aktifkan Android Foreground Service agar proses tidak dibunuh oleh OS di latar belakang
     startAndroidForegroundService(
-      'PAMUNGKAS Presensi Otomatis',
+      'PAMONGKAS Presensi Otomatis',
       'Penjadwal presensi aktif memantau jadwal harian'
     );
 
@@ -309,12 +309,12 @@ export function useAutoPresensi({
     };
     const handleBackgroundTick = () => { void eksekusi(); };
     document.addEventListener('visibilitychange', handleVisibility);
-    window.addEventListener('pamungkas-background-tick', handleBackgroundTick);
+    window.addEventListener('pamongkas-background-tick', handleBackgroundTick);
 
     return () => {
       window.clearInterval(intervalId);
       document.removeEventListener('visibilitychange', handleVisibility);
-      window.removeEventListener('pamungkas-background-tick', handleBackgroundTick);
+      window.removeEventListener('pamongkas-background-tick', handleBackgroundTick);
       stopAndroidForegroundService();
     };
   }, [aktif, username, ready]);

@@ -167,7 +167,7 @@ export function isiPesanWa(
    * tampil persis apa yang diketahui.
    */
   const nilai: Record<string, string> = {
-    '{APP}': data.app ?? 'PAMUNGKAS',
+    '{APP}': data.app ?? 'PAMONGKAS',
     '{nama}': data.nama || '',
     '{username}': data.username || '',
     '{orderId}': data.orderId || '',
@@ -519,7 +519,7 @@ export { PREFIX_ORDER_ID } from './durasi';
 /**
  * Id tagihan unik.
  *
- * Format `PAMUNGKAS-<paket>-<14 digit waktu>`.
+ * Format `PAMONGKAS-<paket>-<14 digit waktu>`.
  *
  * Awalan dan pemisahannya harus identik dengan yang dicari
  * `serverBilling.ts.paketDariOrderId()`  keduanya membaca konstanta yang

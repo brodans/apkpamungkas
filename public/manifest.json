@@ -1,6 +1,6 @@
 {
-  "name": "PAMUNGKAS — Portal Presensi Kabupaten Madiun",
-  "short_name": "PAMUNGKAS",
+  "name": "PAMONGKAS — Portal Presensi Kabupaten Madiun",
+  "short_name": "PAMONGKAS",
   "description": "Portal Presensi Kabupaten Madiun — panel web untuk absensi, perizinan, dan laporan.",
   "version": "1.0.0",
   "start_url": "/",

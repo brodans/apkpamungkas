@@ -203,7 +203,7 @@ cek('adminTersedia() = true', SB.adminTersedia() === true,
 console.log('\n=== 1b. Tanpa token: ditolak 401, sebelum menyentuh Firestore');
 {
   const tanpaToken = await kirim({
-    orderId: 'PAMUNGKAS-__tidak_ada_12345',
+    orderId: 'PAMONGKAS-__tidak_ada_12345',
     username: '__uji__',
     metode: 'transfer',
     nominal: 25000,
@@ -214,7 +214,7 @@ console.log('\n=== 1b. Tanpa token: ditolak 401, sebelum menyentuh Firestore');
     String(tanpaToken.body?.pesan ?? '(tanpa pesan)').slice(0, 90));
 
   const tokenPalsu = await kirim(
-    { orderId: 'PAMUNGKAS-x', username: '__uji__', metode: 'transfer' },
+    { orderId: 'PAMONGKAS-x', username: '__uji__', metode: 'transfer' },
     'token.palsu'
   );
   cek('token bertanda tangan salah → 401', tokenPalsu.statusCode === 401, `status ${tokenPalsu.statusCode}`);
@@ -225,8 +225,8 @@ console.log('\n=== 1b. Tanpa token: ditolak 401, sebelum menyentuh Firestore');
    * jawaban yang sama persis, karena keduanya membaca nama akun dari token.
    */
   const duaNama = await Promise.all([
-    kirim({ orderId: 'PAMUNGKAS-x', username: 'siti', metode: 'transfer' }, tokenUji),
-    kirim({ orderId: 'PAMUNGKAS-x', username: 'budi', metode: 'transfer' }, tokenUji),
+    kirim({ orderId: 'PAMONGKAS-x', username: 'siti', metode: 'transfer' }, tokenUji),
+    kirim({ orderId: 'PAMONGKAS-x', username: 'budi', metode: 'transfer' }, tokenUji),
   ]);
   cek('username di body tidak mengubah hasil',
     duaNama[0].statusCode === duaNama[1].statusCode &&
@@ -246,7 +246,7 @@ try {
   // `bacaPaket` tidak diekspor; memanggil endpoint dengan orderId yang paketnya
   // tidak ada memaksa Admin SDK membaca koleksi pengaturan.
   const res = await kirim(
-    { orderId: 'PAMUNGKAS-__tidak_ada_12345', username: '__uji__', metode: 'transfer', nominal: 25000 },
+    { orderId: 'PAMONGKAS-__tidak_ada_12345', username: '__uji__', metode: 'transfer', nominal: 25000 },
     tokenUji
   );
   paketTerbaca = res;
@@ -268,7 +268,7 @@ let res = await kirim({ orderId: '', username: 'x', metode: 'transfer' }, tokenU
 cek('orderId kosong → 400', res.statusCode === 400, `status ${res.statusCode}`);
 res = await kirim({ orderId: '../jahat', username: 'x', metode: 'transfer' }, tokenUji);
 cek('orderId berisi "../" → 400', res.statusCode === 400, `status ${res.statusCode}`);
-res = await kirim({ orderId: 'PAMUNGKAS-x/nested', username: 'u', metode: 'transfer' }, tokenUji);
+res = await kirim({ orderId: 'PAMONGKAS-x/nested', username: 'u', metode: 'transfer' }, tokenUji);
 cek('orderId berisi "/" → 400', res.statusCode === 400, `status ${res.statusCode}`);
 /*
  * `username` berisi "/" **tidak** lagi diuji, karena tidak ada lagi yang
@@ -283,7 +283,7 @@ cek('orderId berisi "/" → 400', res.statusCode === 400, `status ${res.statusCo
 cek('username di body tidak membentuk nama dokumen',
   res.statusCode === 400 || res.statusCode === 422,
   `status ${res.statusCode} — kalau 400 lagi berarti username kembali dipakai`);
-res = await kirim({ orderId: 'PAMUNGKAS-x', username: 'u', metode: 'transfer' }, tokenUji);
+res = await kirim({ orderId: 'PAMONGKAS-x', username: 'u', metode: 'transfer' }, tokenUji);
 cek('paket tak dikenal → 422', res.statusCode === 422, `status ${res.statusCode}: ${String(res.body?.pesan).slice(0, 70)}`);
 
 console.log('\n=== 4. Transaksi Firestore (runTransaction) tidak error');

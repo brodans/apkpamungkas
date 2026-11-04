@@ -43,7 +43,7 @@ import bcrypt from 'bcryptjs';
  * panel tanpa cara masuk. Sama seperti kunci enkripsi, ini nilai yang harus
  * tetap selamanya.
  */
-export const PIN_SALT = 'pamungkas-madiun-pin-salt-v1';
+export const PIN_SALT = 'pamongkas-madiun-pin-salt-v1';
 
 /** SHA-256 deterministik + salt. Satu-satunya tempat bentuk ini ditulis. */
 function lapisSatu(plain: string): string {

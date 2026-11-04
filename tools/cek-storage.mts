@@ -147,7 +147,7 @@ if (!storageAsli) {
   console.log('  (Node tidak menyediakan localStorage — dipakai storage in-memory)');
 }
 {
-  const probe = '__pamungkas_probe__';
+  const probe = '__pamongkas_probe__';
   cek('tulisStorage melaporkan sukses', S.tulisStorage(probe, 'tulisan') === true);
   cek('bacaStorage membaca yang ditulis', S.bacaStorage(probe) === 'tulisan');
   cek('tulisan kedua menimpa, bukan menambah', (() => {

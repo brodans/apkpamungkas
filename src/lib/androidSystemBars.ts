@@ -2,7 +2,7 @@ let darkOverlayCount = 0;
 
 function setAndroidOverlayMode(enabled: boolean) {
   try {
-    const bridge = (window as unknown as Record<string, unknown>).AndroidPamungkas as
+    const bridge = (window as unknown as Record<string, unknown>).AndroidPamongkas as
       | { setOverlayMode?: (active: boolean) => void }
       | undefined;
     bridge?.setOverlayMode?.(enabled);

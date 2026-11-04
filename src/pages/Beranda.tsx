@@ -354,7 +354,7 @@ export default function Beranda() {
             <Card>
               <CardTitle>Tentang Aplikasi</CardTitle>
               <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-                <span className="font-semibold">{APP_FULL_NAME}</span> (PAMUNGKAS) versi {APP_VERSION}.
+                <span className="font-semibold">{APP_FULL_NAME}</span> (PAMONGKAS) versi {APP_VERSION}.
                 Panel web pengganti aplikasi Android resmi — seluruh permintaan diteruskan ke
                 gateway JSON-RPC yang sama, hanya lewat proxy server-side supaya CORS dan identitas
                 perangkat tidak terekspos ke browser.

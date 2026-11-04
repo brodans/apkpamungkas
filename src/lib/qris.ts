@@ -376,7 +376,7 @@ export function ringkasQRIS(qris: string): RingkasanQRIS {
    * `find(c => c.tag === '02' || c.tag === '01')`, dan `find` mengembalikan
    * yang cocok PERTAMA  sedangkan UMI selalu punya `00` lalu `01` (keduanya
    * GUID) sebelum `02`. Akibatnya panel verifikasi admin menampilkan
-   * `ID.CO.PAMUNGKAS.WWW` di kolom "Nama Penerbit": GUID, bukan nama. Nama
+   * `ID.CO.PAMONGKAS.WWW` di kolom "Nama Penerbit": GUID, bukan nama. Nama
    * penerbit yang sebenarnya tidak pernah terlihat sama sekali.
    *
    * `01` tetap jadi cadangan untuk varian QRIS yang menaruh nama di sana.

@@ -60,7 +60,7 @@ function isBrowser(): boolean {
  * mulai lagi dari nol — atau lebih buruk, aplikasi langsung balik ke
  * pembayaran padahal uangnya sudah dikirim.
  */
-const KUNCI_TUNGGU = 'pamungkas_tunggu_verifikasi';
+const KUNCI_TUNGGU = 'pamongkas_tunggu_verifikasi';
 
 interface InfoTungguVerifikasi {
   username: string;
@@ -1055,7 +1055,7 @@ function PanelTagihanMenunggu({
  * ## Tata letak
  *
  * Satu kolom, lebar maksimum `sm`, semua teks `break-words`. Di HP 360 px,
- * nomor tagihan `PAMUNGKAS-BULANAN-1759...` tidak boleh menggeserkan isi kartu.
+ * nomor tagihan `PAMONGKAS-BULANAN-1759...` tidak boleh menggeserkan isi kartu.
  */
 export function LayarTungguVerifikasi({
   info,

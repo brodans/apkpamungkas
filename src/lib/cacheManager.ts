@@ -10,7 +10,7 @@
  */
 
 const CACHE_VERSION = 1;
-const CACHE_KEY_PREFIX = 'pamungkas_srvcache_';
+const CACHE_KEY_PREFIX = 'pamongkas_srvcache_';
 const CACHE_TTL_MS = 60 * 60 * 1000; // 1 jam
 
 export interface ServerSessionCache {

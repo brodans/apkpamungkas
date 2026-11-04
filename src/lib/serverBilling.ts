@@ -133,7 +133,7 @@ async function bacaPaket(): Promise<PaketLangganan[]> {
 /**
  * Ambil `orderId`  paket.
  *
- * `idTagihan()` membentuk `PAMUNGKAS-<PAKET>-<WAKTU>`, jadi paket bisa dibaca
+ * `idTagihan()` membentuk `PAMONGKAS-<PAKET>-<WAKTU>`, jadi paket bisa dibaca
  * dari nama order. Awalan itu dicocokkan **sama persis**, dan id paketnya
  * dicocokkan dengan konfigurasi.
  *

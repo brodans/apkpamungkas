@@ -1,11 +1,11 @@
 /**
  * 
- *  KONTRAK API SERVER PUSAT PAMUNGKAS
+ *  KONTRAK API SERVER PUSAT PAMONGKAS
  *  (hasil reverse engineering APK + verifikasi langsung ke gateway live)
  * 
  *
  *   Nama "E-Presensi" yang muncul di berkas ini BUKAN nama aplikasi ini.
- *  Aplikasi ini adalah **PAMUNGKAS** / *Portal Presensi Kabupaten Madiun*
+ *  Aplikasi ini adalah **PAMONGKAS** / *Portal Presensi Kabupaten Madiun*
  *  lihat `appIdentity.ts`. "E-Presensi Madiun" di sini adalah nama *aplikasi
  *  Android yang terpisah* dan nama gateway-nya, yang memang menjadi
  * ultimate sumber kontrak ini. Nama perlu dibedakan supaya tidak mengira

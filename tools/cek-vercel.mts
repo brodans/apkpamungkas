@@ -141,7 +141,7 @@ const stubUrl = `http://127.0.0.1:${stubAddr.port}/service`;
  * Vercel, tanpa meninggalkan berkas di dalam repo. `rmSync` di akhir skrip
  * membersihkannya.
  */
-const kerja = mkdtempSync(join(root, 'node_modules', '.pamungkas-vercel-'));
+const kerja = mkdtempSync(join(root, 'node_modules', '.pamongkas-vercel-'));
 process.env.PRESENSI_BASE_URL = stubUrl;
 process.env.ALLOWED_ORIGINS = 'https://presensi.bkd.madiunprov.go.id';
 process.env.NODE_ENV = 'test';
@@ -839,8 +839,8 @@ cek('pesan menyebut kebutuhan Node >= 22', /Node >= 22/.test(faSrc),
 console.log('\n=== 9. ALLOWED_ORIGINS tanpa skema (bug yang sudah nyata terjadi)');
 // ═════════════════════════════════════════════════════════════════════
 /*
- * `.env` pernah berisi `ALLOWED_ORIGINS=pamungkas.vercel.app` sementara browser
- * mengirim `Origin: https://pamungkas.vercel.app`. Perbandingan string tidak
+ * `.env` pernah berisi `ALLOWED_ORIGINS=pamongkas.vercel.app` sementara browser
+ * mengirim `Origin: https://pamongkas.vercel.app`. Perbandingan string tidak
  * akan pernah cocok, dan SETIUP request peramban ditolak 403.
  *
  * Gejalanya sangat menyesatkan karena tidak ada yang salah di layar mana pun:
@@ -862,16 +862,16 @@ function bolehDengan(envValue: string | undefined, origin?: string): boolean {
 
 const KASUS_ORIGIN = [
   // [allow-list, Origin dari browser, boleh?, catatan]
-  ['pamungkas.vercel.app', 'https://pamungkas.vercel.app', true, 'tanpa skema -> dilengkapi https'],
-  ['https://pamungkas.vercel.app', 'https://pamungkas.vercel.app', true, 'sudah ada skema'],
+  ['pamongkas.vercel.app', 'https://pamongkas.vercel.app', true, 'tanpa skema -> dilengkapi https'],
+  ['https://pamongkas.vercel.app', 'https://pamongkas.vercel.app', true, 'sudah ada skema'],
   ['https://a.go.id,https://b.go.id', 'https://b.go.id', true, 'kedua domain, yang kedua cocok'],
   ['https://a.go.id,https://b.go.id', 'https://c.go.id', false, 'domain ketiga DITOLAK'],
-  ['pamungkas.vercel.app', 'https://evil.example', false, 'tetap menolak domain lain'],
+  ['pamongkas.vercel.app', 'https://evil.example', false, 'tetap menolak domain lain'],
   ['https://a.go.id', 'https://A.GO.ID', true, 'huruf besar tidak berpengaruh'],
   ['localhost:3000', 'http://localhost:3000', true, 'localhost tanpa skema -> http'],
   ['localhost:3000', 'https://localhost:3000', false, 'skema localhost TIDAK ditebak lenient'],
-  ['pamungkas.vercel.app', undefined, true, 'tanpa Origin (curl/health) tetap boleh'],
-  ['', 'https://pamungkas.vercel.app', false, 'allow-list kosong menolak semua peramban'],
+  ['pamongkas.vercel.app', undefined, true, 'tanpa Origin (curl/health) tetap boleh'],
+  ['', 'https://pamongkas.vercel.app', false, 'allow-list kosong menolak semua peramban'],
   ['*', 'https://apa.saja.go.id', true, 'wildcard masih bisa dipakai saat pengembangan'],
 ];
 for (const [allow, origin, harus, catatan] of KASUS_ORIGIN as Array<
@@ -887,10 +887,10 @@ for (const [allow, origin, harus, catatan] of KASUS_ORIGIN as Array<
 
 // Allow-list yang dilaporkan harus sudah ternormalisasi, supaya operator
 // bisa melihat PERSIS apa yang dibandingkan.
-process.env.ALLOWED_ORIGINS = 'pamungkas.vercel.app,localhost:3000';
+process.env.ALLOWED_ORIGINS = 'pamongkas.vercel.app,localhost:3000';
 cek(
   'daftarOrigin() melaporkan bentuk yang sudah ternormalisasi',
-  JSON.stringify(daftarOriginFn()) === JSON.stringify(['https://pamungkas.vercel.app', 'http://localhost:3000']),
+  JSON.stringify(daftarOriginFn()) === JSON.stringify(['https://pamongkas.vercel.app', 'http://localhost:3000']),
   JSON.stringify(daftarOriginFn())
 );
 if (ASAL_LAMA === undefined) delete process.env.ALLOWED_ORIGINS;

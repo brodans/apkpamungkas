@@ -25,11 +25,11 @@
  *
  * `.env` pernah berisi:
  *
- *     ALLOWED_ORIGINS=pamungkas.vercel.app
+ *     ALLOWED_ORIGINS=pamongkas.vercel.app
  *
  * sementara browser mengirim:
  *
- *     Origin: https://pamungkas.vercel.app
+ *     Origin: https://pamongkas.vercel.app
  *
  * Perbandingan string tidak akan pernah cocok, dan **setiap** request dari
  * peramban ditolak 403. Gejalanya sangat menyesatkan: server "sehat",
@@ -37,7 +37,7 @@
  * dan penyebabnya tidak pernah muncul di mana pun.
  *
  * Skema yang hilang karena itu dilengkapi di sini. Pelengkapannya aman:
- * `pamungkas.vercel.app` menjadi `https://pamungkas.vercel.app`  tidak ada origin
+ * `pamongkas.vercel.app` menjadi `https://pamongkas.vercel.app`  tidak ada origin
  * lain yang ikut diterima. Yang tetap ditolak tetap ditolak.
  *
  * Karena itu bentuk yang sudah dinormalisasi juga dilaporkan di
@@ -81,7 +81,7 @@ export function daftarOrigin(): string[] {
  * Origin milik deployment ini sendiri.
  *
  *  Ditambahkan supaya preview deployment tidak selalu 403. Setiap build
- * Vercel punya domain yang **berbeda** dari produksi  `pamungkas-<hash>.vercel.app`
+ * Vercel punya domain yang **berbeda** dari produksi  `pamongkas-<hash>.vercel.app`
  *  dan nama itu baru diketahui setelah deploy selesai. Kalau allow-list hanya
  * berisi domain produksi, setiap preview deployment langsung tidak bisa
  * dipakai: halamannya termuat, tapi tiap panggilan API mendapat 403, dan
@@ -110,8 +110,8 @@ function originMilikSendiri(): string[] {
  * `ALLOWED_ORIGINS=*` melonggarkan seluruhnya  hanya untuk pengembangan.
  *
  * Perbandingan dilakukan setelah kedua sisi dilewatkan `lengkapiSkema()`,
- * jadi `pamungkas.vercel.app` di env tetap cocok dengan
- * `https://pamungkas.vercel.app` dari browser. Host di browser selalu huruf
+ * jadi `pamongkas.vercel.app` di env tetap cocok dengan
+ * `https://pamongkas.vercel.app` dari browser. Host di browser selalu huruf
  * kecil, jadi sisi allow-list ikut diturunkan hurufnya.
  */
 function asalDiizinkan(origin: string | undefined): boolean {

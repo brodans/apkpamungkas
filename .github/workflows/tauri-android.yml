@@ -13,7 +13,7 @@ jobs:
   build:
     runs-on: ubuntu-24.04
     env:
-      ANDROID_KEYSTORE_PATH: /tmp/pamungkas-release.jks
+      ANDROID_KEYSTORE_PATH: /tmp/pamongkas-release.jks
       ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
       ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
       ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
@@ -78,8 +78,8 @@ jobs:
             echo "ERROR: ANDROID_KEYSTORE_BASE64 secret is missing."
             exit 1
           fi
-          node -e "const fs = require('fs'); fs.writeFileSync('/tmp/pamungkas-release.jks', Buffer.from(process.env.ANDROID_KEYSTORE_BASE64, 'base64'));"
-          ls -l /tmp/pamungkas-release.jks
+          node -e "const fs = require('fs'); fs.writeFileSync('/tmp/pamongkas-release.jks', Buffer.from(process.env.ANDROID_KEYSTORE_BASE64, 'base64'));"
+          ls -l /tmp/pamongkas-release.jks
       - name: Generate .env for Vite build
         run: |
           cat << EOF > .env
@@ -101,6 +101,6 @@ jobs:
       - name: Upload Android APK
         uses: actions/upload-artifact@v4
         with:
-          name: pamungkas-android-apk
+          name: pamongkas-android-apk
           path: src-tauri/gen/android/app/build/outputs/apk/**/*.apk
           if-no-files-found: error

@@ -172,7 +172,7 @@ cek('formatRuang aman untuk NaN', formatRuang(NaN) === '0', formatRuang(NaN));
 cek('formatRuang aman untuk undefined', formatRuang(undefined as unknown as number) === '0');
 
 const id = idTagihan('bulanan', new Date('2026-09-28T12:34:56+07:00'));
-cek('id tagihan diawali PAMUNGKAS-', id.startsWith('PAMUNGKAS-BULANAN-'), id);
+cek('id tagihan diawali PAMONGKAS-', id.startsWith('PAMONGKAS-BULANAN-'), id);
 cek('id tagihan ≤ 50 karakter (aturan Midtrans)', id.length <= 50, `${id.length} karakter`);
 cek('id tagihan tanpa tanda baca', /^[A-Z0-9-]+$/.test(id), id);
 
@@ -322,7 +322,7 @@ const tlv = (tag: string, nilai: string): string =>
 /** Susun QRIS statis yang sah, lengkap dengan CRC-nya. */
 function qrisStatisSah(): string {
   const merchant =
-    tlv('00', 'ID.CO.QRIS.WWW0212') + tlv('01', 'UMI') + tlv('02', 'PAMUNGKAS_EXTEND_INDONESIA');
+    tlv('00', 'ID.CO.QRIS.WWW0212') + tlv('01', 'UMI') + tlv('02', 'PAMONGKAS_EXTEND_INDONESIA');
   const body =
     tlv('00', '01') + // Payload Format Indicator
     tlv('01', '11') + // Point of Initiation Method = statis
@@ -330,7 +330,7 @@ function qrisStatisSah(): string {
     tlv('52', '5999') + // Merchant Category Code
     tlv('53', '360') + // Currency = IDR
     tlv('58', 'ID') + // Country
-    tlv('59', 'PAMUNGKAS EXTEND INDONESIA') + // Merchant Name
+    tlv('59', 'PAMONGKAS EXTEND INDONESIA') + // Merchant Name
     tlv('60', 'SURABAYA'); // Merchant City
   const isi = body + '6304';
   return isi + calculateCRC16(isi);
@@ -360,7 +360,7 @@ cek('tag 54 ada sebelum tag 58', i54 >= 0 && i54 < i58, `54 di ${i54}, 58 di ${i
 
 cek('hanya ada satu tag 54', elemen.filter(e => e.tag === '54').length === 1);
 cek('hanya ada satu tag 63 (CRC)', elemen.filter(e => e.tag === '63').length === 1);
-cek('merchant tetap terbaca', ringkasQRIS(dinamis).namaMerchant.includes('PAMUNGKAS'), ringkasQRIS(dinamis).namaMerchant);
+cek('merchant tetap terbaca', ringkasQRIS(dinamis).namaMerchant.includes('PAMONGKAS'), ringkasQRIS(dinamis).namaMerchant);
 cek('metode terbaca sebagai dinamis', ringkasQRIS(dinamis).metode === 'dinamis');
 
 // Mengubah nominal menghasilkan QR yang berbeda.
@@ -388,7 +388,7 @@ cek('tanpa merchant ditolak', !validateQRIS(qrisTanpaMerchant()).valid);
 function qrisTanpaMerchant() {
   const body =
     tlv('00', '01') + tlv('01', '11') + tlv('52', '5999') + tlv('53', '360') + tlv('58', 'ID') +
-    tlv('59', 'PAMUNGKAS') + tlv('60', 'SURABAYA');
+    tlv('59', 'PAMONGKAS') + tlv('60', 'SURABAYA');
   const isi = body + '6304';
   return isi + calculateCRC16(isi);
 }
@@ -593,9 +593,9 @@ cek('idempoten', normalisasiNomorWa(sekali).nomor === sekali, sekali);
 
 // ── Tautan wa.me ──────────────────────────────────────────────────────
 const pesanUji = isiPesanWa(TEMPLATE_WA_DEFAULT, {
-  app: 'PAMUNGKAS',
+  app: 'PAMONGKAS',
   username: 'budi',
-  orderId: 'PAMUNGKAS-BULANAN-20260928',
+  orderId: 'PAMONGKAS-BULANAN-20260928',
   nominal: 25000,
   paket: '1 Bulan',
   tanggal: '28 Sep 2026',
@@ -603,7 +603,7 @@ const pesanUji = isiPesanWa(TEMPLATE_WA_DEFAULT, {
 const url = tautanWa('081234567890', pesanUji);
 cek('tautan wa.me terbentuk', typeof url === 'string' && url.startsWith('https://wa.me/6281234567890?text='), String(url).slice(0, 60));
 cek('pesan ter-encode (tidak ada spasi mentah)', !String(url).includes(' '), 'spasi mentah');
-cek('isi pesan ada di tautan', decodeURIComponent(String(url)).includes('PAMUNGKAS-BULANAN-20260928'));
+cek('isi pesan ada di tautan', decodeURIComponent(String(url)).includes('PAMONGKAS-BULANAN-20260928'));
 cek('nominal terformat rupiah', pesanUji.includes('25.000'), 'ada Rp 25.000');
 cek('nama akun ikut terkirim', pesanUji.includes('budi'));
 cek('paket ikut terkirim', pesanUji.includes('1 Bulan'));
@@ -689,7 +689,7 @@ console.log('\n=== 16. Tagihan menunggu punya jalan keluar (lanjut / batal)');
   } as never;
 
   const tagihanMenunggu = [{
-    orderId: 'PAMUNGKAS-BULANAN-1759000000000-1',
+    orderId: 'PAMONGKAS-BULANAN-1759000000000-1',
     username: '198501012015011001',
     usernameLabel: 'Budi Santoso',
     paketId: 'bulanan',
@@ -732,7 +732,7 @@ console.log('\n=== 16. Tagihan menunggu punya jalan keluar (lanjut / batal)');
 
   cek('tagihan menunggu ditampilkan lengkap', html.includes('Ada tagihan yang belum dibayar'));
   cek('nominal tagihan terlihat', html.includes('25.000'));
-  cek('nomor tagihan terlihat', html.includes('PAMUNGKAS-BULANAN-1759000000000-1'));
+  cek('nomor tagihan terlihat', html.includes('PAMONGKAS-BULANAN-1759000000000-1'));
   cek('ada tombol lanjutkan pembayaran', /Lanjutkan Pembayaran/.test(html),
     'tanpa ini pengguna tidak bisa menyelesaikan tagihan yang sudah ada');
   cek('ada tombol batalkan tagihan', /Batalkan Tagihan/.test(html),

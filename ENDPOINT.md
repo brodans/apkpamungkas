@@ -1,11 +1,11 @@
-# PAMUNGKAS — Peta Endpoint Server Pusat
+# PAMONGKAS — Peta Endpoint Server Pusat
 
-> Identitas aplikasi adalah **PAMUNGKAS — Portal Presensi Kabupaten Madiun**.
+> Identitas aplikasi adalah **PAMONGKAS — Portal Presensi Kabupaten Madiun**.
 > Gateway yang didokumentasikan di bawah adalah milik aplikasi Android
 > terpisah yang bernama "E-Presensi Madiun" — itu fakta teknis yang tidak
 > boleh diubah, bukan nama aplikasi ini. Bandingkan `src/lib/appIdentity.ts`.
 > Domain produksi, package Android, dan sebagian kunci penyimpanan masih
-> memakai identifier historis `pamungkas`; jangan ubah tanpa migrasi.
+> memakai identifier historis `pamongkas`; jangan ubah tanpa migrasi.
 
 Dokumen ini adalah **ground truth** hasil probe black-box langsung ke gateway
 produksi `presensi.bkd.madiunprov.go.id`, ditambah pembacaan string-pool APK.
@@ -751,7 +751,7 @@ aplikasi resmi memang tidak berfungsi, sehingga tidak ada endpoint yang
 
 ---
 
-## 11. Endpoint milik PAMUNGKAS sendiri (bukan server pusat)
+## 11. Endpoint milik PAMONGKAS sendiri (bukan server pusat)
 
 Bagian 1–10 di atas semuanya tentang `presensi.bkd.madiunprov.go.id` — kontrak
 dari server pusat. Yang di bawah ini endpoint yang kita Exposure sendiri, dan

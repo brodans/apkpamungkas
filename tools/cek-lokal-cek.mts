@@ -29,7 +29,7 @@ const cek = (nama: string, ok: unknown, detail = ''): void => {
 };
 
 /** Domain yang diizinkan — meniru allow-list produksi. */
-const ASAL = 'https://pamungkas.vercel.app';
+const ASAL = 'https://pamongkas.vercel.app';
 process.env.ALLOWED_ORIGINS = ASAL;
 
 // Impor setelah env di-set: `_cors.ts` membacanya saat modul dimuat.

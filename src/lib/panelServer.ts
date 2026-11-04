@@ -141,7 +141,7 @@ function rahasia(): string {
 
 /** Kunci turunan untuk enkripsi kredensial server pusat. */
 function kunciKredensial(): NodeBuffer {
-  return createHmac('sha256', 'pamungkas-kredensial').update(rahasia()).digest();
+  return createHmac('sha256', 'pamongkas-kredensial').update(rahasia()).digest();
 }
 
 /** Ringkasan untuk `/api/health`  hanya keberadaan, tidak pernah nilainya. */

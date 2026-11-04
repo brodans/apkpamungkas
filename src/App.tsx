@@ -1598,7 +1598,7 @@ export default function App() {
       const checkIsApk = () => {
         const win = window as unknown as Record<string, unknown>;
         const isApk = Boolean(
-          win.AndroidPamungkas ||
+          win.AndroidPamongkas ||
           win.__TAURI__ ||
           win.__TAURI_INTERNALS__ ||
           win.__TAURI_METADATA__

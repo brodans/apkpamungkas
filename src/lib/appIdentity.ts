@@ -1,15 +1,15 @@
 /**
  * Identitas aplikasi — sumber tunggal untuk nama, versi, dan logo.
  *
- * ## Nama: `PAMUNGKAS` / *Portal Presensi Kabupaten Madiun*
+ * ## Nama: `PAMONGKAS` / *Portal Presensi Kabupaten Madiun*
  *
  * Yang **tidak** boleh diubah tanpa migrasi:
  *
- * - `createHmac('sha256', 'pamungkas-kredensial')` di `panelServer.ts` —
+ * - `createHmac('sha256', 'pamongkas-kredensial')` di `panelServer.ts` —
  *   turunan kunci enkripsi kredensial server. Mengubahnya membuat setiap
  *   password server pusat yang tersimpan tidak bisa didekripsi lagi, dan
  *   auto-login semua orang langsung mati.
- * - `PREFIX_ORDER_ID = 'PAMUNGKAS'` — awalan `order_id`. Mengubahnya membuat
+ * - `PREFIX_ORDER_ID = 'PAMONGKAS'` — awalan `order_id`. Mengubahnya membuat
  *   tagihan yang sudah tersimpan tidak dikenali lagi.
  *
  * Aplikasi tidak memakai nama "E-Presensi" di mana pun yang dilihat
@@ -19,7 +19,7 @@
  */
 
 /** Nama singkat — judul, nama PWA, logo sidebar, dan nama merchant QRIS. */
-export const APP_NAME = 'PAMUNGKAS';
+export const APP_NAME = 'PAMONGKAS';
 
 /** Nama panjang yang tampil di layar. */
 export const APP_FULL_NAME = 'Portal Presensi Kabupaten Madiun';

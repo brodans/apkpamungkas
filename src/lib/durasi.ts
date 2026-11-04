@@ -208,7 +208,7 @@ export function paketById(paket: PaketLangganan[], id: string): PaketLangganan |
 }
 
 /**
- * Awalan `order_id` untuk tagihan: `PAMUNGKAS-<paket>-<waktu>`.
+ * Awalan `order_id` untuk tagihan: `PAMONGKAS-<paket>-<waktu>`.
  *
  * ## Kenapa tinggal di sini
  *
@@ -233,4 +233,4 @@ export function paketById(paket: PaketLangganan[], id: string): PaketLangganan |
  * sisi lain tidak, tagihan berhenti bisa diaktivasi tanpa pesan error yang
  * menyebut penyebabnya.
  */
-export const PREFIX_ORDER_ID = 'PAMUNGKAS';
+export const PREFIX_ORDER_ID = 'PAMONGKAS';

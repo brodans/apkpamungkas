@@ -29,7 +29,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tagName: app-v__VERSION__
-          releaseName: PAMUNGKAS v__VERSION__
+          releaseName: PAMONGKAS v__VERSION__
           releaseBody: Built automatically by GitHub Actions.
           releaseDraft: true
           prerelease: false
@@ -47,13 +47,13 @@ jobs:
           fi
 
           app_version="$(node -e "console.log(JSON.parse(require('fs').readFileSync('src-tauri/tauri.conf.json', 'utf8')).version)")"
-          package_file="${RUNNER_TEMP}/pamungkas-${app_version}-1-x86_64.pkg.tar.zst"
+          package_file="${RUNNER_TEMP}/pamongkas-${app_version}-1-x86_64.pkg.tar.zst"
           fpm -s deb -t pacman \
-            --name pamungkas \
+            --name pamongkas \
             --version "${app_version}" \
             --iteration 1 \
             --architecture x86_64 \
-            --description "PAMUNGKAS Portal Presensi Kabupaten Madiun" \
+            --description "PAMONGKAS Portal Presensi Kabupaten Madiun" \
             --url ${{ vars.VITE_API_BASE_URL || 'https://app.example.go.id' }} \
             --license custom \
             --no-auto-depends \

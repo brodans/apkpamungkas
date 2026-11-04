@@ -20,7 +20,7 @@ import {
 } from '../lib/presetOtomatisasi';
 import { bacaStorage, tulisStorage } from '../lib/storageAman';
 
-const KUNCI_STORAGE_PENJADWAL = 'pamungkas_penjadwal_otomatis_aktif';
+const KUNCI_STORAGE_PENJADWAL = 'pamongkas_penjadwal_otomatis_aktif';
 
 /** Helper untuk membaca status aktif penjadwal dari storage (default: true). */
 export function getPenjadwalAktifStorage(): boolean {
@@ -31,14 +31,14 @@ export function getPenjadwalAktifStorage(): boolean {
 export function setPenjadwalAktifStorage(aktif: boolean): void {
   tulisStorage(KUNCI_STORAGE_PENJADWAL, aktif ? 'true' : 'false');
   if (typeof window !== 'undefined') {
-    window.dispatchEvent(new CustomEvent('pamungkas-scheduler-toggle', { detail: aktif }));
+    window.dispatchEvent(new CustomEvent('pamongkas-scheduler-toggle', { detail: aktif }));
   }
 }
 
 /** Helper untuk memberitahu scheduler bahwa data preset telah diperbarui. */
 export function notifyPresetUpdated(): void {
   if (typeof window !== 'undefined') {
-    window.dispatchEvent(new CustomEvent('pamungkas-preset-updated'));
+    window.dispatchEvent(new CustomEvent('pamongkas-preset-updated'));
   }
 }
 
@@ -80,12 +80,12 @@ export default function GlobalPresetScheduler() {
       void muatPreset();
     };
 
-    window.addEventListener('pamungkas-scheduler-toggle', handleToggle);
-    window.addEventListener('pamungkas-preset-updated', handleUpdated);
+    window.addEventListener('pamongkas-scheduler-toggle', handleToggle);
+    window.addEventListener('pamongkas-preset-updated', handleUpdated);
 
     return () => {
-      window.removeEventListener('pamungkas-scheduler-toggle', handleToggle);
-      window.removeEventListener('pamungkas-preset-updated', handleUpdated);
+      window.removeEventListener('pamongkas-scheduler-toggle', handleToggle);
+      window.removeEventListener('pamongkas-preset-updated', handleUpdated);
     };
   }, [muatPreset]);
 

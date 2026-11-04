@@ -424,7 +424,7 @@ export default function Perizinan() {
              *
              * Tombol utama (mengirim) berdiri di ujung kanan — tempat yang
              * dibaca terakhir dan karena itu disengaja: pengguna mengisi
-             * form dari atas, jadi aksi pamungkasnya ada di ujung alur.
+             * form dari atas, jadi aksi pamongkasnya ada di ujung alur.
              * Reset Form yang sekunder cukup menempel di kiri.
              *
              * Di mobile `grow` membuat Kirim memenuhi sisa lebar (jadi

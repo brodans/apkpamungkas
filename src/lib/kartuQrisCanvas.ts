@@ -247,7 +247,7 @@ export function gambarKartuQris(
   ctx.fillStyle = '#0f172a';
   let ukuran = 22;
   ctx.font = font(800, ukuran);
-  let nama = meta.namaMerchant || 'PAMUNGKAS';
+  let nama = meta.namaMerchant || 'PAMONGKAS';
   while (ctx.measureText(nama).width > 340 && ukuran > 14) {
     ukuran -= 1;
     ctx.font = font(800, ukuran);

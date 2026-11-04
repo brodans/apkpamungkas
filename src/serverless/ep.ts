@@ -21,7 +21,7 @@
  * Cookie SameSite:
  * - Browser biasa: SameSite=Lax (aman)
  * - Tauri APK (tauri.localhost): SameSite=None karena request bersifat
- *   cross-site ke pamungkas.vercel.app; tanpanya cookie sesi captcha tidak
+ *   cross-site ke pamongkas.vercel.app; tanpanya cookie sesi captcha tidak
  *   ikut pada POST login sehingga login selalu gagal di APK.
  */
 
@@ -117,7 +117,7 @@ function rewriteSetCookie(cookies: string | string[], origin: string): string[] 
       // Hapus SameSite yang sudah ada agar bisa diganti dengan tepat.
       c = c.replace(/;\s*samesite=[^;]*/gi, '');
       if (isTauri) {
-        // Tauri APK: cross-site request dari tauri.localhost ke pamungkas.vercel.app.
+        // Tauri APK: cross-site request dari tauri.localhost ke pamongkas.vercel.app.
         // SameSite=None diperlukan agar cookie sesi captcha ikut serta pada POST login.
         c += '; SameSite=None';
       } else {

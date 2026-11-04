@@ -12,7 +12,7 @@ export interface TitikAbsen {
 
 /** Batas jumlah titik per akun. */
 const MAX_TITIK = 40;
-const DB_NAME = 'pamungkas-lokasi';
+const DB_NAME = 'pamongkas-lokasi';
 const DB_VERSION = 1;
 const STORE_NAME = 'akun';
 
@@ -45,12 +45,12 @@ function kunciAkun(username: string): string {
 
 /** Kunci localStorage lama, hanya dipakai untuk migrasi satu kali. */
 export function kunciTitik(username: string): string {
-  return `pamungkas_lokasi__${kunciAkun(username)}`;
+  return `pamongkas_lokasi__${kunciAkun(username)}`;
 }
 
 /** Kunci localStorage lama, hanya dipakai untuk migrasi satu kali. */
 function kunciTitikAktif(username: string): string {
-  return `pamungkas_lokasi_aktif__${kunciAkun(username)}`;
+  return `pamongkas_lokasi_aktif__${kunciAkun(username)}`;
 }
 
 function bukaDatabase(): Promise<IDBDatabase> {
@@ -358,7 +358,7 @@ export async function jadikanAktif(username: string, titik: Omit<TitikAbsen, 'id
  * akun yang sedang login justru meneruskan kebocoran yang sama: data yang
  * tidak diketahui asalnya dipindahkan ke orang yang kebetulan masuk terakhir.
  */
-const KUNCI_LEGACY = ['pamungkas_lokasi_saya', 'pamungkas_lokasi_aktif'] as const;
+const KUNCI_LEGACY = ['pamongkas_lokasi_saya', 'pamongkas_lokasi_aktif'] as const;
 
 /** Buang kunci lama yang menyimpan titik bersama antar akun. */
 export function buangTitikLegacy(): void {

@@ -78,15 +78,15 @@ import {
  */
 export const SESSION_TIMEOUT_MS = 365 * 24 * 60 * 60 * 1000;
 
-const SESSION_KEY_PREFIX = 'pamungkas_session_';
+const SESSION_KEY_PREFIX = 'pamongkas_session_';
 /**
  * Penunjuk akun yang sedang dipakai.
  *
- *  Sengaja TIDAK memakai awalan `pamungkas_session_`, supaya
+ *  Sengaja TIDAK memakai awalan `pamongkas_session_`, supaya
  * `clearAllSessions()` dan `loadSession()` tidak ikut memprosesnya sebagai
  * sesi biasa.
  */
-const ACTIVE_KEY = 'pamungkas_sesi_aktif';
+const ACTIVE_KEY = 'pamongkas_sesi_aktif';
 
 /**
  *  Dinaikkan dari 1 ke 2 **sengaja**.

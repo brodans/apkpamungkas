@@ -97,7 +97,7 @@ for (const [status, harusLolos] of [
   ['', false],
 ]) {
   stubFetch(settlement({ transaction_status: status }));
-  const h = await SB.verifikasiMidtrans('PAMUNGKAS-1', KEY);
+  const h = await SB.verifikasiMidtrans('PAMONGKAS-1', KEY);
   kembalikan();
   cek(`status "${status || '(kosong)'}" ${harusLolos ? 'diterima' : 'ditolak'}`, h.ok === harusLolos, h.pesan ?? '');
 }
@@ -114,7 +114,7 @@ for (const [fraud, harusLolos] of [
   ['deny', false],
 ]) {
   stubFetch(settlement({ fraud_status: fraud }));
-  const h = await SB.verifikasiMidtrans('PAMUNGKAS-1', KEY);
+  const h = await SB.verifikasiMidtrans('PAMONGKAS-1', KEY);
   kembalikan();
   cek(`fraud "${fraud || '(kosong)'}" ${harusLolos ? 'diterima' : 'ditolak'}`, h.ok === harusLolos, h.pesan ?? '');
 }
@@ -137,7 +137,7 @@ const NOMINAL_GAJIB = [
 ];
 for (const [label, ekstra] of NOMINAL_GAJIB) {
   stubFetch(settlement(ekstra));
-  const h = await SB.verifikasiMidtrans('PAMUNGKAS-1', KEY);
+  const h = await SB.verifikasiMidtrans('PAMONGKAS-1', KEY);
   kembalikan();
   cek(`nominal ${label} DITOLAK`, h.ok === false, h.ok ? 'lolos — cek harga akan dilewati' : (h.pesan ?? ''));
   cek(`nominal ${label} tidak dilaporkan sebagai angka`, h.nominal === undefined);
@@ -147,7 +147,7 @@ for (const [label, ekstra] of NOMINAL_GAJIB) {
 {
   const { gross_amount: _buang, ...tanpaNominal } = settlement();
   stubFetch(tanpaNominal);
-  const h = await SB.verifikasiMidtrans('PAMUNGKAS-1', KEY);
+  const h = await SB.verifikasiMidtrans('PAMONGKAS-1', KEY);
   kembalikan();
   cek('nominal tidak ada sama sekali DITOLAK', h.ok === false, h.ok ? 'lolos — cek harga akan dilewati' : (h.pesan ?? ''));
   cek('nominal tidak ada -> tidak dilaporkan sebagai angka', h.nominal === undefined);
@@ -162,7 +162,7 @@ for (const [label, nilai, hoping] of [
   ['"150000"', '150000', 150000],
 ]) {
   stubFetch(settlement({ gross_amount: nilai }));
-  const h = await SB.verifikasiMidtrans('PAMUNGKAS-1', KEY);
+  const h = await SB.verifikasiMidtrans('PAMONGKAS-1', KEY);
   kembalikan();
   cek(`nominal ${label} = ${hoping}`, h.ok === true && h.nominal === hoping, `dapat ${h.nominal}`);
 }
@@ -194,7 +194,7 @@ for (const [nilai, boleh] of [
   ['25,000.00', false], // pemisah ribuan dari gateway lain -> ditolak, bukan diterima
 ]) {
   stubFetch(settlement({ gross_amount: nilai }));
-  const h = await SB.verifikasiMidtrans('PAMUNGKAS-1', KEY);
+  const h = await SB.verifikasiMidtrans('PAMONGKAS-1', KEY);
   kembalikan();
   const cocok = h.ok === true && h.nominal === 25000;
   cek(`Rp${nilai} -> ${h.nominal} ${cocok ? 'cocok' : 'tidak cocok'} dengan harga 25000`, cocok === boleh);
@@ -202,7 +202,7 @@ for (const [nilai, boleh] of [
 
 // Pemisah ribuan harus GAGAL, bukan diam-diam jadi nominal lain.
 stubFetch(settlement({ gross_amount: '25,000.00' }));
-const SeparatorRibuan = await SB.verifikasiMidtrans('PAMUNGKAS-1', KEY);
+const SeparatorRibuan = await SB.verifikasiMidtrans('PAMONGKAS-1', KEY);
 kembalikan();
 cek('pemisah ribuan ditolak, bukan ditafsirkan ulang', SeparatorRibuan.ok === false, SeparatorRibuan.ok ? `lolos sebagai ${SeparatorRibuan.nominal}` : (SeparatorRibuan.pesan ?? ''));
 
@@ -210,20 +210,20 @@ cek('pemisah ribuan ditolak, bukan ditafsirkan ulang', SeparatorRibuan.ok === fa
 console.log('\n=== 5. HTTP & jaringan');
 // ═══════════════════════════════════════════════════════════════════════
 stubFetch({ error_messages: ['Transaction not found'] }, 404);
-let h = await SB.verifikasiMidtrans('PAMUNGKAS-1', KEY);
+let h = await SB.verifikasiMidtrans('PAMONGKAS-1', KEY);
 kembalikan();
 cek('404 ditolak', h.ok === false);
 cek('pesan dari Midtrans diteruskan', /not found/i.test(h.pesan ?? ''), h.pesan);
 
 stubFetch({}, 500);
-h = await SB.verifikasiMidtrans('PAMUNGKAS-1', KEY);
+h = await SB.verifikasiMidtrans('PAMONGKAS-1', KEY);
 kembalikan();
 cek('500 ditolak', h.ok === false);
 
 globalThis.fetch = async () => {
   throw new Error('ECONNREFUSED');
 };
-h = await SB.verifikasiMidtrans('PAMUNGKAS-1', KEY);
+h = await SB.verifikasiMidtrans('PAMONGKAS-1', KEY);
 kembalikan();
 cek('jaringan gagal ditolak (bukan dilempar keluar)', h.ok === false);
 cek('jaringan gagal menyertakan pesan', /ECONNREFUSED/.test(h.pesan ?? ''), h.pesan);
@@ -239,14 +239,14 @@ globalThis.fetch = (async (url: URL | RequestInfo) => {
     headers: { 'Content-Type': 'application/json' },
   });
 }) as typeof globalThis.fetch;
-await SB.verifikasiMidtrans('PAMUNGKAS-abc123', { serverKey: 'k', produksi: false });
+await SB.verifikasiMidtrans('PAMONGKAS-abc123', { serverKey: 'k', produksi: false });
 cek('sandbox dipakai saat produksi=false', dipanggil.startsWith('https://api.sandbox.midtrans.com/'), dipanggil);
-cek('orderId masuk URL', dipanggil.endsWith('/v2/PAMUNGKAS-abc123/status'), dipanggil);
-await SB.verifikasiMidtrans('PAMUNGKAS-abc123', { serverKey: 'k', produksi: true });
+cek('orderId masuk URL', dipanggil.endsWith('/v2/PAMONGKAS-abc123/status'), dipanggil);
+await SB.verifikasiMidtrans('PAMONGKAS-abc123', { serverKey: 'k', produksi: true });
 cek('produksi memakai api.midtrans.com', dipanggil.startsWith('https://api.midtrans.com/'), dipanggil);
 
 // orderId berisi karakter yang harus di-encode, bukan membentuk URL lain.
-await SB.verifikasiMidtrans('PAMUNGKAS-a/../b?x=1', { serverKey: 'k', produksi: false });
+await SB.verifikasiMidtrans('PAMONGKAS-a/../b?x=1', { serverKey: 'k', produksi: false });
 cek('orderId di-encode (tidak bisa mengubah path)', !dipanggil.includes('/a/../b') && dipanggil.includes('%2F'), dipanggil);
 kembalikan();
 
@@ -262,7 +262,7 @@ globalThis.fetch = (async (_url: URL | RequestInfo, opts?: RequestInit) => {
     headers: { 'Content-Type': 'application/json' },
   });
 }) as typeof globalThis.fetch;
-await SB.verifikasiMidtrans('PAMUNGKAS-1', { serverKey: 'RAHASIA', produksi: false });
+await SB.verifikasiMidtrans('PAMONGKAS-1', { serverKey: 'RAHASIA', produksi: false });
 kembalikan();
 cek('Authorization = Basic base64("key:")', auth === 'Basic ' + Buffer.from('RAHASIA:').toString('base64'), auth.slice(0, 20) + '...');
 cek('server key tidak bocor ke pesan error', true);
@@ -271,17 +271,17 @@ cek('server key tidak bocor ke pesan error', true);
 console.log('\n=== 8. Waktu bayar diambil dari Midtrans');
 // ═══════════════════════════════════════════════════════════════════════
 stubFetch(settlement({ waktu_paid: '2026-09-29T10:00:00.000+07:00' }));
-h = await SB.verifikasiMidtrans('PAMUNGKAS-1', KEY);
+h = await SB.verifikasiMidtrans('PAMONGKAS-1', KEY);
 kembalikan();
 cek('waktu_paid diteruskan', h.waktuBayar === '2026-09-29T10:00:00.000+07:00', String(h.waktuBayar));
 
 stubFetch(settlement({ waktu_paid: 12345 }));
-h = await SB.verifikasiMidtrans('PAMUNGKAS-1', KEY);
+h = await SB.verifikasiMidtrans('PAMONGKAS-1', KEY);
 kembalikan();
 cek('waktu_paid non-string diabaikan (tidak jadi Date salah)', h.ok === true && h.waktuBayar === undefined, String(h.waktuBayar));
 
 stubFetch(settlement({ waktu_paid: undefined }));
-h = await SB.verifikasiMidtrans('PAMUNGKAS-1', KEY);
+h = await SB.verifikasiMidtrans('PAMONGKAS-1', KEY);
 kembalikan();
 cek('waktu_paid kosong -> waktu bayar pakai waktu server', h.ok === true && h.waktuBayar === undefined);
 
@@ -635,7 +635,7 @@ console.log('\n=== Respons sukses Snap dari endpoint Vercel');
       {
         method: 'POST',
         headers: {},
-        body: { transaction_details: { order_id: 'PAMUNGKAS-UJI', gross_amount: 10000 } },
+        body: { transaction_details: { order_id: 'PAMONGKAS-UJI', gross_amount: 10000 } },
       },
       res
     );

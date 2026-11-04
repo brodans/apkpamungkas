@@ -651,12 +651,12 @@ export function AppProvider({ children }: { children: ReactNode }) {
    * yang mengembalikan perilaku bawaan.
    */
   const [developerMode, setDeveloperModeState] = useState<boolean>(
-    () => bacaStorage('pamungkas_developer_mode') === 'true'
+    () => bacaStorage('pamongkas_developer_mode') === 'true'
   );
 
   const setDeveloperMode = useCallback((value: boolean) => {
     setDeveloperModeState(value);
-    tulisStorage('pamungkas_developer_mode', value ? 'true' : 'false');
+    tulisStorage('pamongkas_developer_mode', value ? 'true' : 'false');
   }, []);
 
   // ── State halaman yang bertahan ───────────────────────────────────

@@ -159,7 +159,7 @@ var PIN_SALT;
 var init_pin = __esm({
   "src/lib/pin.ts"() {
     "use strict";
-    PIN_SALT = "pamungkas-madiun-pin-salt-v1";
+    PIN_SALT = "pamongkas-madiun-pin-salt-v1";
   }
 });
 
@@ -385,7 +385,7 @@ function rahasia() {
   return nilai;
 }
 function kunciKredensial() {
-  return createHmac("sha256", "pamungkas-kredensial").update(rahasia()).digest();
+  return createHmac("sha256", "pamongkas-kredensial").update(rahasia()).digest();
 }
 function ringkasanPanelAuth() {
   const nilai = process.env.PANEL_SESSION_SECRET?.trim() ?? "";
@@ -1256,7 +1256,7 @@ function normalisasiDaftarPaket(mentah) {
   if (!Array.isArray(mentah)) return [];
   return mentah.map(normalisasiPaket).filter((item) => item !== null);
 }
-var PREFIX_ORDER_ID = "PAMUNGKAS";
+var PREFIX_ORDER_ID = "PAMONGKAS";
 
 // src/lib/serverBilling.ts
 init_firestoreAman();

@@ -62,7 +62,7 @@ export interface LogEksekusi {
 //  Konstanta IndexedDB
 // ═══════════════════════════════════════════════════════════════════════
 
-const DB_NAME = 'pamungkas-preset';
+const DB_NAME = 'pamongkas-preset';
 const DB_VERSION = 1;
 const STORE_AKUN = 'preset-akun';
 const STORE_LOG = 'preset-log';

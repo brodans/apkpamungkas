@@ -36,7 +36,7 @@
 import { bacaStorage, tulisStorage } from './storageAman';
 
 /** Awalan kunci. `sessionManager` punya yang serupa untuk sesi. */
-const KUNCI = 'pamungkas_idperangkat__';
+const KUNCI = 'pamongkas_idperangkat__';
 
 /** Bentuk UUID v4, dibuat tanpa dependensi. */
 function uuid(): string {

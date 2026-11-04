@@ -20,7 +20,7 @@ import {
 } from '../lib/androidPresetSync';
 
 function isAndroid(): boolean {
-  return typeof window !== 'undefined' && Boolean((window as any).AndroidPamungkas);
+  return typeof window !== 'undefined' && Boolean((window as any).AndroidPamongkas);
 }
 
 export function useAndroidPresetSync(): void {
@@ -92,12 +92,12 @@ export function useAndroidPresetSync(): void {
 
     // Sync ulang saat preset diupdate dari UI
     const onPresetUpdated = () => { void doSync(); };
-    window.addEventListener('pamungkas-preset-updated', onPresetUpdated);
+    window.addEventListener('pamongkas-preset-updated', onPresetUpdated);
 
     return () => {
       cancelled = true;
       clearInterval(interval);
-      window.removeEventListener('pamungkas-preset-updated', onPresetUpdated);
+      window.removeEventListener('pamongkas-preset-updated', onPresetUpdated);
     };
   }, [username, pegawai?.apiKey, config.imei, context.lastLatLong]);
 }

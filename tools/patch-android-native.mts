@@ -4,16 +4,16 @@ import { execFileSync } from 'node:child_process';
 import { tmpdir } from 'node:os';
 import { randomBytes } from 'node:crypto';
 
-// ── Regenerate Android mipmap icons dari icon PAMUNGKAS ────────────────────
+// ── Regenerate Android mipmap icons dari icon PAMONGKAS ────────────────────
 // `tauri android init` selalu membuat icon Tauri default. Kita generate ulang
-// dari src-tauri/icons/icon.png (icon resmi PAMUNGKAS) dan salin ke gen/android.
+// dari src-tauri/icons/icon.png (icon resmi PAMONGKAS) dan salin ke gen/android.
 // Gunakan tmpdir agar tidak ada masalah write permission pada src-tauri/icons/.
 
 const iconSrc = join(process.cwd(), 'src-tauri', 'icons', 'icon.png');
 const iconOut = join(tmpdir(), 'tauri-icons-' + randomBytes(4).toString('hex'));
 const resDir = join(process.cwd(), 'src-tauri', 'gen', 'android', 'app', 'src', 'main', 'res');
 
-console.log('🎨 Generating Android icons dari icon PAMUNGKAS...');
+console.log('🎨 Generating Android icons dari icon PAMONGKAS...');
 mkdirSync(iconOut, { recursive: true });
 execFileSync('npx', ['@tauri-apps/cli', 'icon', iconSrc, '-o', iconOut], {
   stdio: 'inherit',
@@ -53,7 +53,7 @@ try {
 } catch {
   console.warn('  ⚠️  ic_launcher_background.xml tidak ditemukan, skip');
 }
-console.log('🎨 Icon PAMUNGKAS berhasil diterapkan ke Android!\n');
+console.log('🎨 Icon PAMONGKAS berhasil diterapkan ke Android!\n');
 
 const root = join(process.cwd(), 'src-tauri', 'gen', 'android', 'app', 'src', 'main');
 const androidIdentifier = JSON.parse(readFileSync(join(process.cwd(), 'src-tauri', 'tauri.conf.json'), 'utf8')).identifier;
@@ -90,10 +90,10 @@ if (existsSync(manifestPath)) {
   }
 
   // Daftarkan Foreground Service di dalam <application> jika belum ada
-  if (!manifest.includes('PamungkasForegroundService')) {
+  if (!manifest.includes('PamongkasForegroundService')) {
     const serviceTag = `
         <service
-            android:name="id.go.madiun.pamungkas.PamungkasForegroundService"
+            android:name="id.go.madiun.pamongkas.PamongkasForegroundService"
             android:enabled="true"
             android:exported="false"
             android:foregroundServiceType="specialUse">
@@ -103,7 +103,7 @@ if (existsSync(manifestPath)) {
         </service>
 
         <receiver
-            android:name="id.go.madiun.pamungkas.PamungkasBootReceiver"
+            android:name="id.go.madiun.pamongkas.PamongkasBootReceiver"
             android:exported="true"
             android:directBootAware="true">
             <intent-filter android:priority="999">
@@ -119,8 +119,8 @@ if (existsSync(manifestPath)) {
   writeFileSync(manifestPath, manifest);
 }
 
-const activity = join(root, 'java/id/go/madiun/pamungkas/MainActivity.kt');
-put(activity, `package id.go.madiun.pamungkas
+const activity = join(root, 'java/id/go/madiun/pamongkas/MainActivity.kt');
+put(activity, `package id.go.madiun.pamongkas
 
 import android.content.res.Configuration
 import android.graphics.Color
@@ -149,7 +149,7 @@ internal object AutomationWebView {
     instance?.get()?.post {
       try {
         instance?.get()?.evaluateJavascript(
-          "window.dispatchEvent(new Event('pamungkas-background-tick'))",
+          "window.dispatchEvent(new Event('pamongkas-background-tick'))",
           null
         )
       } catch (_: Exception) {}
@@ -159,8 +159,8 @@ internal object AutomationWebView {
 
 class MainActivity : TauriActivity() {
 
-  /** Dipanggil dari JS saat Pamungkas mengganti tema (dark/light) dan kontrol background presensi. */
-  inner class PamungkasBridge {
+  /** Dipanggil dari JS saat Pamongkas mengganti tema (dark/light) dan kontrol background presensi. */
+  inner class PamongkasBridge {
     @JavascriptInterface
     fun setTheme(dark: Boolean) {
       mainHandler.post {
@@ -184,19 +184,19 @@ class MainActivity : TauriActivity() {
     fun startForegroundService(title: String?, content: String?) {
       mainHandler.post {
         try {
-          val intent = android.content.Intent(this@MainActivity, PamungkasForegroundService::class.java).apply {
-            action = PamungkasForegroundService.ACTION_START
-            putExtra(PamungkasForegroundService.EXTRA_TITLE, title ?: "PAMUNGKAS Presensi")
-            putExtra(PamungkasForegroundService.EXTRA_CONTENT, content ?: "Penjadwal otomatisasi presensi aktif di latar belakang")
+          val intent = android.content.Intent(this@MainActivity, PamongkasForegroundService::class.java).apply {
+            action = PamongkasForegroundService.ACTION_START
+            putExtra(PamongkasForegroundService.EXTRA_TITLE, title ?: "PAMONGKAS Presensi")
+            putExtra(PamongkasForegroundService.EXTRA_CONTENT, content ?: "Penjadwal otomatisasi presensi aktif di latar belakang")
           }
           if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             startForegroundService(intent)
           } else {
             startService(intent)
           }
-          getSharedPreferences("pamungkas_automasi", android.content.Context.MODE_PRIVATE)
+          getSharedPreferences("pamongkas_automasi", android.content.Context.MODE_PRIVATE)
             .edit().putBoolean("penjadwal_aktif", true).apply()
-          PamungkasKeepaliveWorker.enqueue(this@MainActivity)
+          PamongkasKeepaliveWorker.enqueue(this@MainActivity)
         } catch (e: Exception) {
           e.printStackTrace()
         }
@@ -217,13 +217,13 @@ class MainActivity : TauriActivity() {
     fun stopForegroundService() {
       mainHandler.post {
         try {
-          val intent = android.content.Intent(this@MainActivity, PamungkasForegroundService::class.java).apply {
-            action = PamungkasForegroundService.ACTION_STOP
+          val intent = android.content.Intent(this@MainActivity, PamongkasForegroundService::class.java).apply {
+            action = PamongkasForegroundService.ACTION_STOP
           }
           stopService(intent)
-          getSharedPreferences("pamungkas_automasi", android.content.Context.MODE_PRIVATE)
+          getSharedPreferences("pamongkas_automasi", android.content.Context.MODE_PRIVATE)
             .edit().putBoolean("penjadwal_aktif", false).apply()
-          PamungkasKeepaliveWorker.cancel(this@MainActivity)
+          PamongkasKeepaliveWorker.cancel(this@MainActivity)
         } catch (e: Exception) {
           e.printStackTrace()
         }
@@ -234,7 +234,7 @@ class MainActivity : TauriActivity() {
     fun showNotification(title: String, message: String): Boolean {
       mainHandler.post {
         try {
-          PamungkasNotificationHelper.showNotification(this@MainActivity, title, message)
+          PamongkasNotificationHelper.showNotification(this@MainActivity, title, message)
         } catch (e: Exception) {
           e.printStackTrace()
         }
@@ -271,7 +271,7 @@ class MainActivity : TauriActivity() {
     @JavascriptInterface
     fun syncSession(json: String) {
       try {
-        getSharedPreferences("pamungkas_session", android.content.Context.MODE_PRIVATE)
+        getSharedPreferences("pamongkas_session", android.content.Context.MODE_PRIVATE)
           .edit().putString("session_json", json).apply()
       } catch (_: Exception) {}
     }
@@ -279,7 +279,7 @@ class MainActivity : TauriActivity() {
     @JavascriptInterface
     fun syncPresets(json: String) {
       try {
-        getSharedPreferences("pamungkas_presets", android.content.Context.MODE_PRIVATE)
+        getSharedPreferences("pamongkas_presets", android.content.Context.MODE_PRIVATE)
           .edit().putString("presets_json", json).apply()
       } catch (_: Exception) {}
     }
@@ -287,7 +287,7 @@ class MainActivity : TauriActivity() {
     @JavascriptInterface
     fun readWorkerLog(): String {
       return try {
-        getSharedPreferences("pamungkas_worker_log", android.content.Context.MODE_PRIVATE)
+        getSharedPreferences("pamongkas_worker_log", android.content.Context.MODE_PRIVATE)
           .getString("log_json", "[]") ?: "[]"
       } catch (_: Exception) { "[]" }
     }
@@ -295,7 +295,7 @@ class MainActivity : TauriActivity() {
     @JavascriptInterface
     fun clearWorkerLog() {
       try {
-        getSharedPreferences("pamungkas_worker_log", android.content.Context.MODE_PRIVATE)
+        getSharedPreferences("pamongkas_worker_log", android.content.Context.MODE_PRIVATE)
           .edit().putString("log_json", "[]").apply()
       } catch (_: Exception) {}
     }
@@ -392,7 +392,7 @@ class MainActivity : TauriActivity() {
     bridgeInjected = true
 
     AutomationWebView.instance = WeakReference(wv)
-    wv.addJavascriptInterface(PamungkasBridge(), "AndroidPamungkas")
+    wv.addJavascriptInterface(PamongkasBridge(), "AndroidPamongkas")
 
     // Pengaturan penting untuk Midtrans Snap di WebView Android:
     // 1. domStorageEnabled & databaseEnabled agar iframe Snap dapat menyimpan token & state
@@ -545,8 +545,8 @@ class MainActivity : TauriActivity() {
 }
 `);
 
-const fgService = join(root, 'java/id/go/madiun/pamungkas/PamungkasForegroundService.kt');
-put(fgService, `package id.go.madiun.pamungkas
+const fgService = join(root, 'java/id/go/madiun/pamongkas/PamongkasForegroundService.kt');
+put(fgService, `package id.go.madiun.pamongkas
 
 import ${androidIdentifier}.R
 import android.app.NotificationChannel
@@ -562,19 +562,19 @@ import android.os.Looper
 import android.os.PowerManager
 import androidx.core.app.NotificationCompat
 
-class PamungkasForegroundService : Service() {
+class PamongkasForegroundService : Service() {
 
   companion object {
-    const val CHANNEL_ID = "pamungkas_automation_channel"
+    const val CHANNEL_ID = "pamongkas_automation_channel"
     const val NOTIFICATION_ID = 9912
-    const val ACTION_START = "id.go.madiun.pamungkas.START_FOREGROUND"
-    const val ACTION_STOP = "id.go.madiun.pamungkas.STOP_FOREGROUND"
+    const val ACTION_START = "id.go.madiun.pamongkas.START_FOREGROUND"
+    const val ACTION_STOP = "id.go.madiun.pamongkas.STOP_FOREGROUND"
     const val EXTRA_TITLE = "extra_title"
     const val EXTRA_CONTENT = "extra_content"
   }
 
   private var wakeLock: PowerManager.WakeLock? = null
-  private var notificationTitle = "PAMUNGKAS Presensi"
+  private var notificationTitle = "PAMONGKAS Presensi"
   private var notificationContent = "Penjadwal presensi otomatis aktif di latar belakang"
   private val handler = Handler(Looper.getMainLooper())
   private val automationTick = object : Runnable {
@@ -593,7 +593,7 @@ class PamungkasForegroundService : Service() {
     handler.postDelayed(automationTick, 30_000L)
     try {
       val pm = getSystemService(Context.POWER_SERVICE) as? PowerManager
-      wakeLock = pm?.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Pamungkas:AutomationWakeLock")
+      wakeLock = pm?.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Pamongkas:AutomationWakeLock")
       wakeLock?.acquire()
     } catch (_: Exception) {}
   }
@@ -673,8 +673,8 @@ class PamungkasForegroundService : Service() {
 }
 `);
 
-const notifHelper = join(root, 'java/id/go/madiun/pamungkas/PamungkasNotificationHelper.kt');
-put(notifHelper, `package id.go.madiun.pamungkas
+const notifHelper = join(root, 'java/id/go/madiun/pamongkas/PamongkasNotificationHelper.kt');
+put(notifHelper, `package id.go.madiun.pamongkas
 
 import ${androidIdentifier}.R
 import android.app.NotificationChannel
@@ -684,8 +684,8 @@ import android.content.Context
 import android.os.Build
 import androidx.core.app.NotificationCompat
 
-object PamungkasNotificationHelper {
-  const val CHANNEL_ID = "pamungkas_attendance_alerts"
+object PamongkasNotificationHelper {
+  const val CHANNEL_ID = "pamongkas_attendance_alerts"
 
   fun showNotification(context: Context, title: String, message: String) {
     val nm = context.getSystemService(Context.NOTIFICATION_SERVICE) as? NotificationManager ?: return
@@ -693,7 +693,7 @@ object PamungkasNotificationHelper {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
       val channel = NotificationChannel(
         CHANNEL_ID,
-        "Notifikasi Presensi PAMUNGKAS",
+        "Notifikasi Presensi PAMONGKAS",
         NotificationManager.IMPORTANCE_HIGH
       ).apply {
         description = "Status eksekusi presensi otomatis terjadwal"
@@ -754,7 +754,7 @@ const themeXmlDay = `<resources xmlns:tools="http://schemas.android.com/tools">
     <item name="android:windowSplashScreenAnimatedIcon">@drawable/splash_icon</item>
     <item name="android:windowSplashScreenIconBackgroundColor">@color/splash_icon_background</item>
   </style>
-  <style name="Theme.pamungkas" parent="Theme.app" />
+  <style name="Theme.pamongkas" parent="Theme.app" />
 </resources>\n`;
 
 // Dark theme — sama, hanya splash & status bar, sisanya default Material3.
@@ -772,7 +772,7 @@ const themeXmlNight = `<resources xmlns:tools="http://schemas.android.com/tools"
     <item name="android:windowSplashScreenAnimatedIcon">@drawable/splash_icon</item>
     <item name="android:windowSplashScreenIconBackgroundColor">@color/splash_icon_background</item>
   </style>
-  <style name="Theme.pamungkas" parent="Theme.app" />
+  <style name="Theme.pamongkas" parent="Theme.app" />
 </resources>\n`;
 
 put(join(root, 'res/values/themes.xml'), themeXmlDay);
@@ -801,7 +801,7 @@ const isiGradle = [
   `    namespace = "${androidIdentifier}"`,
   '    defaultConfig {',
   '        manifestPlaceholders["usesCleartextTraffic"] = "false"',
-  '        applicationId = "id.go.madiun.pamungkas"',
+  '        applicationId = "id.go.madiun.pamongkas"',
   '        minSdk = 24',
   '        targetSdk = 37',
   '        versionCode = tauriProperties.getProperty("tauri.android.versionCode", "1").toInt()',
@@ -809,7 +809,7 @@ const isiGradle = [
   '    }',
   '    signingConfigs {',
   '        create("release") {',
-  '            storeFile = File(System.getenv("ANDROID_KEYSTORE_PATH") ?: "/tmp/pamungkas-release.jks")',
+  '            storeFile = File(System.getenv("ANDROID_KEYSTORE_PATH") ?: "/tmp/pamongkas-release.jks")',
   '            storePassword = System.getenv("ANDROID_KEYSTORE_PASSWORD") ?: ""',
   '            keyAlias = System.getenv("ANDROID_KEY_ALIAS") ?: ""',
   '            keyPassword = System.getenv("ANDROID_KEY_PASSWORD") ?: ""',
@@ -878,8 +878,8 @@ const isiGradle = [
 ].join('\n');
 writeFileSync(gradle, isiGradle);
 
-const bootReceiver = join(root, 'java/id/go/madiun/pamungkas/PamungkasBootReceiver.kt');
-put(bootReceiver, `package id.go.madiun.pamungkas
+const bootReceiver = join(root, 'java/id/go/madiun/pamongkas/PamongkasBootReceiver.kt');
+put(bootReceiver, `package id.go.madiun.pamongkas
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -891,41 +891,41 @@ import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import java.util.concurrent.TimeUnit
 
-class PamungkasBootReceiver : BroadcastReceiver() {
+class PamongkasBootReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         val act = intent.action ?: return
         if (act != Intent.ACTION_BOOT_COMPLETED
             && act != Intent.ACTION_MY_PACKAGE_REPLACED
             && act != "android.intent.action.ACTION_LOCKED_BOOT_COMPLETED") return
 
-        val prefs = context.getSharedPreferences("pamungkas_automasi", Context.MODE_PRIVATE)
+        val prefs = context.getSharedPreferences("pamongkas_automasi", Context.MODE_PRIVATE)
         if (!prefs.getBoolean("penjadwal_aktif", false)) return
 
         try {
-            val serviceIntent = android.content.Intent(context, PamungkasForegroundService::class.java).apply {
-                action = PamungkasForegroundService.ACTION_START
-                putExtra(PamungkasForegroundService.EXTRA_TITLE, "PAMUNGKAS Presensi Otomatis")
-                putExtra(PamungkasForegroundService.EXTRA_CONTENT, "Penjadwal presensi aktif memantau jadwal harian")
+            val serviceIntent = android.content.Intent(context, PamongkasForegroundService::class.java).apply {
+                action = PamongkasForegroundService.ACTION_START
+                putExtra(PamongkasForegroundService.EXTRA_TITLE, "PAMONGKAS Presensi Otomatis")
+                putExtra(PamongkasForegroundService.EXTRA_CONTENT, "Penjadwal presensi aktif memantau jadwal harian")
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 context.startForegroundService(serviceIntent)
             } else {
                 context.startService(serviceIntent)
             }
-            Log.d("PamungkasBoot", "ForegroundService started after: \$act")
+            Log.d("PamongkasBoot", "ForegroundService started after: \$act")
         } catch (e: Exception) {
-            Log.e("PamungkasBoot", "Gagal: \${e.message}")
+            Log.e("PamongkasBoot", "Gagal: \${e.message}")
         }
 
         try {
-            val req = PeriodicWorkRequestBuilder<PamungkasKeepaliveWorker>(15, TimeUnit.MINUTES).build()
+            val req = PeriodicWorkRequestBuilder<PamongkasKeepaliveWorker>(15, TimeUnit.MINUTES).build()
             WorkManager.getInstance(context).enqueueUniquePeriodicWork(
-                PamungkasKeepaliveWorker.WORK_NAME,
+                PamongkasKeepaliveWorker.WORK_NAME,
                 ExistingPeriodicWorkPolicy.UPDATE,
                 req
             )
         } catch (e: Exception) {
-            Log.e("PamungkasBoot", "WorkManager gagal: \${e.message}")
+            Log.e("PamongkasBoot", "WorkManager gagal: \${e.message}")
         }
     }
 }
@@ -960,9 +960,9 @@ if (existsSync(proguardPath)) {
   console.log('✅ proguard-rules.pro dibuat dengan WorkManager rules');
 }
 
-// PamungkasKeepaliveWorker.kt — Worker biasa (bukan CoroutineWorker)
-const keepaliveWorker = join(root, 'java/id/go/madiun/pamungkas/PamungkasKeepaliveWorker.kt');
-put(keepaliveWorker, `package id.go.madiun.pamungkas
+// PamongkasKeepaliveWorker.kt — Worker biasa (bukan CoroutineWorker)
+const keepaliveWorker = join(root, 'java/id/go/madiun/pamongkas/PamongkasKeepaliveWorker.kt');
+put(keepaliveWorker, `package id.go.madiun.pamongkas
 
 import android.content.Context
 import android.os.Build
@@ -983,40 +983,40 @@ import java.util.Locale
 import java.util.TimeZone
 import java.util.concurrent.TimeUnit
 
-class PamungkasKeepaliveWorker(
+class PamongkasKeepaliveWorker(
     private val ctx: Context,
     params: WorkerParameters,
 ) : Worker(ctx, params) {
 
     companion object {
-        const val WORK_NAME = "pamungkas_keepalive"
+        const val WORK_NAME = "pamongkas_keepalive"
 
         fun enqueue(context: Context) {
             try {
-                val req = PeriodicWorkRequestBuilder<PamungkasKeepaliveWorker>(
+                val req = PeriodicWorkRequestBuilder<PamongkasKeepaliveWorker>(
                     15, TimeUnit.MINUTES
                 ).build()
                 WorkManager.getInstance(context).enqueueUniquePeriodicWork(
                     WORK_NAME, ExistingPeriodicWorkPolicy.UPDATE, req
                 )
-                Log.d("PamungkasWorker", "Keepalive enqueued")
+                Log.d("PamongkasWorker", "Keepalive enqueued")
             } catch (e: Exception) {
-                Log.e("PamungkasWorker", "enqueue gagal: \${e.message}")
+                Log.e("PamongkasWorker", "enqueue gagal: \${e.message}")
             }
         }
 
         fun cancel(context: Context) {
             try {
                 WorkManager.getInstance(context).cancelUniqueWork(WORK_NAME)
-                Log.d("PamungkasWorker", "Keepalive cancelled")
+                Log.d("PamongkasWorker", "Keepalive cancelled")
             } catch (e: Exception) {
-                Log.e("PamungkasWorker", "cancel gagal: \${e.message}")
+                Log.e("PamongkasWorker", "cancel gagal: \${e.message}")
             }
         }
     }
 
     override fun doWork(): Result {
-        val automasi = ctx.getSharedPreferences("pamungkas_automasi", Context.MODE_PRIVATE)
+        val automasi = ctx.getSharedPreferences("pamongkas_automasi", Context.MODE_PRIVATE)
         if (!automasi.getBoolean("penjadwal_aktif", false)) return Result.success()
 
         // Pastikan ForegroundService tetap hidup
@@ -1026,7 +1026,7 @@ class PamungkasKeepaliveWorker(
         try {
             eksekusiPreset()
         } catch (e: Exception) {
-            Log.e("PamungkasWorker", "eksekusi error: \${e.message}")
+            Log.e("PamongkasWorker", "eksekusi error: \${e.message}")
         }
 
         return Result.success()
@@ -1034,30 +1034,30 @@ class PamungkasKeepaliveWorker(
 
     private fun restartForegroundService() {
         try {
-            val intent = android.content.Intent(ctx, PamungkasForegroundService::class.java).apply {
-                action = PamungkasForegroundService.ACTION_START
-                putExtra(PamungkasForegroundService.EXTRA_TITLE, "PAMUNGKAS Presensi Otomatis")
-                putExtra(PamungkasForegroundService.EXTRA_CONTENT, "Penjadwal presensi aktif memantau jadwal harian")
+            val intent = android.content.Intent(ctx, PamongkasForegroundService::class.java).apply {
+                action = PamongkasForegroundService.ACTION_START
+                putExtra(PamongkasForegroundService.EXTRA_TITLE, "PAMONGKAS Presensi Otomatis")
+                putExtra(PamongkasForegroundService.EXTRA_CONTENT, "Penjadwal presensi aktif memantau jadwal harian")
             }
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) ctx.startForegroundService(intent)
             else ctx.startService(intent)
         } catch (e: Exception) {
-            Log.e("PamungkasWorker", "restart service gagal: \${e.message}")
+            Log.e("PamongkasWorker", "restart service gagal: \${e.message}")
         }
     }
 
     private fun eksekusiPreset() {
         // Baca session
-        val sessionPrefs = ctx.getSharedPreferences("pamungkas_session", Context.MODE_PRIVATE)
+        val sessionPrefs = ctx.getSharedPreferences("pamongkas_session", Context.MODE_PRIVATE)
         val sessionJson = sessionPrefs.getString("session_json", null) ?: return
         val session = JSONObject(sessionJson)
         val apiKey = session.optString("apiKey").ifBlank { return }
         val imei = session.optString("imei")
         val baseLatLong = session.optString("lastLatLong")
-        val baseUrl = session.optString("baseUrl").ifBlank { "https://pamungkas.vercel.app/api/rpc" }
+        val baseUrl = session.optString("baseUrl").ifBlank { "https://pamongkas.vercel.app/api/rpc" }
 
         // Baca presets
-        val presetsPrefs = ctx.getSharedPreferences("pamungkas_presets", Context.MODE_PRIVATE)
+        val presetsPrefs = ctx.getSharedPreferences("pamongkas_presets", Context.MODE_PRIVATE)
         val presetsJson = presetsPrefs.getString("presets_json", null) ?: return
         val presets = JSONArray(presetsJson)
 
@@ -1118,9 +1118,9 @@ class PamungkasKeepaliveWorker(
 
             // Kirim notifikasi
             val notifTitle = if (berhasil) "✅ Presensi Berhasil" else "⚠️ Presensi Gagal"
-            PamungkasNotificationHelper.showNotification(ctx, notifTitle, "\${preset.optString("nama")} — \$pesan")
+            PamongkasNotificationHelper.showNotification(ctx, notifTitle, "\${preset.optString("nama")} — \$pesan")
 
-            Log.d("PamungkasWorker", "Preset '\${preset.optString("nama")}': berhasil=\$berhasil, pesan=\$pesan")
+            Log.d("PamongkasWorker", "Preset '\${preset.optString("nama")}': berhasil=\$berhasil, pesan=\$pesan")
         }
     }
 
@@ -1204,7 +1204,7 @@ class PamungkasKeepaliveWorker(
     }
 
     private fun sudahEksekusiHariIni(presetId: String, tanggal: String): Boolean {
-        val logPrefs = ctx.getSharedPreferences("pamungkas_worker_log", Context.MODE_PRIVATE)
+        val logPrefs = ctx.getSharedPreferences("pamongkas_worker_log", Context.MODE_PRIVATE)
         val raw = logPrefs.getString("log_json", "[]") ?: "[]"
         return try {
             val arr = JSONArray(raw)
@@ -1219,7 +1219,7 @@ class PamungkasKeepaliveWorker(
     }
 
     private fun tulisLog(presetId: String, presetNama: String, tanggal: String, berhasil: Boolean, pesan: String) {
-        val logPrefs = ctx.getSharedPreferences("pamungkas_worker_log", Context.MODE_PRIVATE)
+        val logPrefs = ctx.getSharedPreferences("pamongkas_worker_log", Context.MODE_PRIVATE)
         val raw = logPrefs.getString("log_json", "[]") ?: "[]"
         val arr = try { JSONArray(raw) } catch (_: Exception) { JSONArray() }
         // Hapus log lama untuk preset+tanggal yang sama
@@ -1241,4 +1241,4 @@ class PamungkasKeepaliveWorker(
     }
 }
 `);
-console.log('✅ PamungkasKeepaliveWorker.kt ditulis');
+console.log('✅ PamongkasKeepaliveWorker.kt ditulis');

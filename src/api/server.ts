@@ -36,8 +36,8 @@ import { pesanGalatSnap, responsSnapBerhasil } from '../lib/midtransSnapContract
  * terpisah — jadi satu-satunya tempat yang boleh dipakai berdua adalah
  * implementasi small-nya di sini.
  *
- * Aturannya: skema yang hilang dilengkapi (`pamungkas.vercel.app` ->
- * `https://pamungkas.vercel.app`, `localhost:3000` -> `http://localhost:3000`).
+ * Aturannya: skema yang hilang dilengkapi (`pamongkas.vercel.app` ->
+ * `https://pamongkas.vercel.app`, `localhost:3000` -> `http://localhost:3000`).
  * Melengkapi skema hanya mempersempit apa yang diterima, tidak pernah
  * memperlebar, jadi tidak meng-longgarkan proteksi.
  */
@@ -113,8 +113,8 @@ const MAX_RETRIES = 2;
  * `api/_cors.ts` (Vercel).
  *
  * Semula server dev membandingkan string apa adanya, jadi
- * `ALLOWED_ORIGINS=pamungkas.vercel.app` — tanpa `https://` — tidak pernah
- * cocok dengan `Origin: https://pamungkas.vercel.app` yang dikirim browser.
+ * `ALLOWED_ORIGINS=pamongkas.vercel.app` — tanpa `https://` — tidak pernah
+ * cocok dengan `Origin: https://pamongkas.vercel.app` yang dikirim browser.
  * Gejalanya: development jalan saat allow-list masih localhost, lalu begitu
  * domain produksi diisi, **semua** request ditolak dan tidak ada yang
  * menyuruh mencari tahu kenapa.
@@ -924,7 +924,7 @@ export async function startServer() {
   if (process.env.NODE_ENV === 'test') return app;
 
   app.listen(PORT, '0.0.0.0', () => {
-    console.log(`\n  ${APP_FULL_NAME} (PAMUNGKAS) — server berjalan di http://localhost:${PORT}`);
+    console.log(`\n  ${APP_FULL_NAME} (PAMONGKAS) — server berjalan di http://localhost:${PORT}`);
     console.log(`  Mode            : ${isProd ? 'production' : 'development'}`);
     console.log(`  Gateway pusat   : ${PRESENSI_SERVICE_URL} (v${PRESENSI_VERSION})`);
     console.log(`  Origin diizinkan: ${ALLOWED_ORIGINS.join(', ')}\n`);

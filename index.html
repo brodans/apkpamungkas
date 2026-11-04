@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-    <title>PAMUNGKAS - Portal Presensi Kabupaten Madiun</title>
+    <title>PAMONGKAS - Portal Presensi Kabupaten Madiun</title>
 
     <!-- ─── Favicon ──────────────────────────────────────────────
          Hanya file yang benar-benar ada di public/assets/. Sebelumnya
@@ -26,11 +26,11 @@
     <!-- ─── iOS / Apple PWA ─────────────────────────────────── -->
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-    <meta name="apple-mobile-web-app-title" content="PAMUNGKAS" />
+    <meta name="apple-mobile-web-app-title" content="PAMONGKAS" />
 
     <!-- ─── Android / General PWA ───────────────────────────── -->
     <meta name="mobile-web-app-capable" content="yes" />
-    <meta name="application-name" content="PAMUNGKAS" />
+    <meta name="application-name" content="PAMONGKAS" />
     <meta name="application-version" content="1.0.0" />
 
     <!-- ─── SEO / Social ────────────────────────────────────── -->
@@ -264,8 +264,8 @@
           var metaTheme = document.getElementById('theme-color-meta');
           if (metaTheme) metaTheme.setAttribute('content', dark ? '#0B1120' : '#ffffff');
           // Sinkronkan ke bridge native Android jika sudah terpasang
-          if (window.AndroidPamungkas && typeof window.AndroidPamungkas.setTheme === 'function') {
-            window.AndroidPamungkas.setTheme(dark);
+          if (window.AndroidPamongkas && typeof window.AndroidPamongkas.setTheme === 'function') {
+            window.AndroidPamongkas.setTheme(dark);
           }
           document.body.classList.add('is-native');
           document.documentElement.classList.add('is-native');
@@ -323,10 +323,10 @@
         } catch (e) {}
       })();
     </script>
-    <div id="boot-splash" class="boot-splash" role="status" aria-label="Memuat PAMUNGKAS">
+    <div id="boot-splash" class="boot-splash" role="status" aria-label="Memuat PAMONGKAS">
       <div class="boot-splash-body">
         <div class="boot-splash-logo"><img src="/assets/icon-192.png" alt="" /></div>
-        <div class="boot-splash-name">PAMUNGKAS</div>
+        <div class="boot-splash-name">PAMONGKAS</div>
         <div class="boot-splash-subtitle">Portal Presensi Kabupaten Madiun</div>
         <div class="boot-splash-track" aria-hidden="true"></div>
       </div>

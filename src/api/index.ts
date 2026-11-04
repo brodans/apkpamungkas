@@ -1,5 +1,5 @@
 /**
- * Client API untuk PAMUNGKAS (Portal Presensi Kabupaten Madiun).
+ * Client API untuk PAMONGKAS (Portal Presensi Kabupaten Madiun).
  *
  * Semua panggilan frontend TIDAK pernah menyentuh host pusat secara
  * langsung — semuanya lewat /api/rpc (Vercel serverless) atau

@@ -1187,8 +1187,8 @@ const langgananOperasi = [
   ['langganan:perpanjang', { username: 'budi', durasi: 1, satuan: 'bulan' }],
   ['langganan:set-masa-akhir', { username: 'budi', iso: '2099-01-01T00:00:00.000Z' }],
   ['langganan:set-gratis', { username: 'budi', gratis: true }],
-  ['tagihan:status', { orderId: 'PAMUNGKAS-BULANAN-1', status: 'lunas' }],
-  ['tagihan:hapus', { orderId: 'PAMUNGKAS-BULANAN-1' }],
+  ['tagihan:status', { orderId: 'PAMONGKAS-BULANAN-1', status: 'lunas' }],
+  ['tagihan:hapus', { orderId: 'PAMONGKAS-BULANAN-1' }],
   ['tagihan:hapus-semua', {}],
   [
     'billing:simpan',
@@ -1262,20 +1262,20 @@ const tokenBudiBayar = P.terbitkanToken('budi', 'user', partial({ tabBeranda: tr
 // ── Tanpa sesi sama sekali ───────────────────────────────────────────
 const tagihanTanpaToken = await panggil({
   aksi: 'tagihan:buat',
-  orderId: 'PAMUNGKAS-BULANAN-1',
+  orderId: 'PAMONGKAS-BULANAN-1',
   paketId: 'bulanan',
   metode: 'qris',
 });
 cek('tanpa token, tagihan ditolak 401', tagihanTanpaToken.status === 401,
   `dapat kode ${tagihanTanpaToken.status}`);
 cek('dokumen tagihan tidak dibuat tanpa token',
-  !dokumen.has('madiun_tagihan/PAMUNGKAS-BULANAN-1'));
+  !dokumen.has('madiun_tagihan/PAMONGKAS-BULANAN-1'));
 
 // ── Empat field dipalsukan ────────────────────────────────────────────
 const tagihanUser = await panggil(
   {
     aksi: 'tagihan:buat',
-    orderId: 'PAMUNGKAS-BULANAN-1',
+    orderId: 'PAMONGKAS-BULANAN-1',
     // Semuanya di bawah HARUS diabaikan server:
     username: 'siti',
     usernameLabel: 'Siti Aminah',
@@ -1291,7 +1291,7 @@ const tagihanUser = await panggil(
 cek('pengguna biasa boleh membuat tagihan', tagihanUser.body?.ok === true,
   `dapat kode ${tagihanUser.status} — ${tagihanUser.body?.pesan ?? ''}`);
 
-const tersimpan = dokumen.get('madiun_tagihan/PAMUNGKAS-BULANAN-1');
+const tersimpan = dokumen.get('madiun_tagihan/PAMONGKAS-BULANAN-1');
 cek('akun diambil dari token, bukan dari body.username',
   tersimpan?.username === 'budi', `tersimpan sebagai "${tersimpan?.username}"`);
 cek('harga diambil dari konfigurasi server',
@@ -1312,22 +1312,22 @@ cek('usernameLabel tetap boleh diisi pemanggil',
 
 // ── Nominal/reactif: paket yang diklaim tidak boleh diam-diam diabaikan ──
 const paketSalah = await panggil(
-  { aksi: 'tagihan:buat', orderId: 'PAMUNGKAS-TAHUNAN-2', paketId: 'bulanan', metode: 'qris' },
+  { aksi: 'tagihan:buat', orderId: 'PAMONGKAS-TAHUNAN-2', paketId: 'bulanan', metode: 'qris' },
   { token: tokenBudiBayar }
 );
 cek('paketId yang tidak cocok dengan orderId ditolak 409',
   paketSalah.status === 409, `dapat kode ${paketSalah.status}`);
 cek('tagihan dengan paket salah tidak ditulis',
-  !dokumen.has('madiun_tagihan/PAMUNGKAS-TAHUNAN-2'));
+  !dokumen.has('madiun_tagihan/PAMONGKAS-TAHUNAN-2'));
 
 const paketTidakDIjual = await panggil(
-  { aksi: 'tagihan:buat', orderId: 'PAMUNGKAS-MITRA-3', paketId: 'mitra', metode: 'qris' },
+  { aksi: 'tagihan:buat', orderId: 'PAMONGKAS-MITRA-3', paketId: 'mitra', metode: 'qris' },
   { token: tokenBudiBayar }
 );
 cek('paket yang tidak ada di konfigurasi ditolak 422',
   paketTidakDIjual.status === 422, `dapat kode ${paketTidakDIjual.status}`);
 cek('harga tidak jatuh ke default saat paket hilang',
-  !dokumen.has('madiun_tagihan/PAMUNGKAS-MITRA-3'));
+  !dokumen.has('madiun_tagihan/PAMONGKAS-MITRA-3'));
 
 const orderIdRusak = await panggil(
   { aksi: 'tagihan:buat', orderId: '../../madiun_pengguna/budi', paketId: 'bulanan', metode: 'qris' },
@@ -1351,19 +1351,19 @@ cek('orderId berisi "../" ditolak', !orderIdRusak.body?.ok,
  * `orderId` tagihan yang ada, supaya peramban bisa melanjutkan pembayarannya.
  */
 const tagihanKedua = await panggil(
-  { aksi: 'tagihan:buat', orderId: 'PAMUNGKAS-BULANAN-2', paketId: 'bulanan', metode: 'qris' },
+  { aksi: 'tagihan:buat', orderId: 'PAMONGKAS-BULANAN-2', paketId: 'bulanan', metode: 'qris' },
   { token: tokenBudiBayar }
 );
 cek('tagihan kedua ditolak', tagihanKedua.status === 409,
   `dapat kode ${tagihanKedua.status} — 429 akan membuat pengguna mengulang tanpa hasil`);
 cek('penolakan menyertakan orderId tagihan yang sudah ada',
-  typeof tagihanKedua.body?.orderId === 'string' && tagihanKedua.body.orderId.startsWith('PAMUNGKAS-BULANAN-'),
+  typeof tagihanKedua.body?.orderId === 'string' && tagihanKedua.body.orderId.startsWith('PAMONGKAS-BULANAN-'),
   `orderId=${tagihanKedua.body?.orderId ?? '(tidak ada)'}`);
 cek('pesan penolakan menyebut dua jalan keluar',
   /Lanjutkan pembayaran/.test(tagihanKedua.body?.pesan ?? '') &&
   /batalkan/.test(tagihanKedua.body?.pesan ?? ''),
   tagihanKedua.body?.pesan ?? '(tidak ada pesan)');
-cek('tagihan kedua tidak ditulis', !dokumen.has('madiun_tagihan/PAMUNGKAS-BULANAN-2'));
+cek('tagihan kedua tidak ditulis', !dokumen.has('madiun_tagihan/PAMONGKAS-BULANAN-2'));
 
 /*
  * ── Jalan keluarnya: lanjutkan atau batalkan ────────────────────────
@@ -1374,14 +1374,14 @@ cek('tagihan kedua tidak ditulis', !dokumen.has('madiun_tagihan/PAMUNGKAS-BULANA
 
 // Lanjutkan: tagihan yang sudah ada tetap `menunggu`, tidak ada dokumen baru.
 const lanjutLagi = await panggil(
-  { aksi: 'tagihan:buat', orderId: 'PAMUNGKAS-BULANAN-3', paketId: 'bulanan', metode: 'qris' },
+  { aksi: 'tagihan:buat', orderId: 'PAMONGKAS-BULANAN-3', paketId: 'bulanan', metode: 'qris' },
   { token: tokenBudiBayar }
 );
 cek('percobaan ketiga tetap ditolak dengan orderId yang sama',
   lanjutLagi.status === 409 && lanjutLagi.body?.orderId === tagihanKedua.body?.orderId,
   `kode=${lanjutLagi.status} orderId=${lanjutLagi.body?.orderId}`);
 cek('tidak ada dokumen tagihan tambahan yang tertulis',
-  !dokumen.has('madiun_tagihan/PAMUNGKAS-BULANAN-3'));
+  !dokumen.has('madiun_tagihan/PAMONGKAS-BULANAN-3'));
 
 // Batalkan tagihan sendiri → boleh.
 const batalMilikSendiri = await panggil(
@@ -1398,7 +1398,7 @@ cek('tagihan yang dibatalkan tidak tampil dalam riwayat admin',
 
 // Setelah dibatalkan, boleh membuat tagihan baru.
 const setelahBatal = await panggil(
-  { aksi: 'tagihan:buat', orderId: 'PAMUNGKAS-BULANAN-7', paketId: 'bulanan', metode: 'qris' },
+  { aksi: 'tagihan:buat', orderId: 'PAMONGKAS-BULANAN-7', paketId: 'bulanan', metode: 'qris' },
   { token: tokenBudiBayar }
 );
 cek('setelah dibatalkan, tagihan baru boleh dibuat', setelahBatal.body?.ok === true,
@@ -1407,7 +1407,7 @@ cek('setelah dibatalkan, tagihan baru boleh dibuat', setelahBatal.body?.ok === t
 /*
  * Tagihan milik **orang lain** tidak boleh dibatalkan, dan jawabannya 404.
  *
- * `PAMUNGKAS-BULANAN-1` milik **budi** sendiri (dibuat di bagian "Empat field
+ * `PAMONGKAS-BULANAN-1` milik **budi** sendiri (dibuat di bagian "Empat field
  * dipalsukan"), jadi tagihan milik `siti` perlu dibuat dulu untuk kasus ini.
  *
  * 404, bukan 403: kalau tagihannya milik orang lain dan jawabannya 403, maka
@@ -1415,10 +1415,10 @@ cek('setelah dibatalkan, tagihan baru boleh dibuat', setelahBatal.body?.ok === t
  * setiap tebakan benar membocorkan "tagihan ini ada".
  */
 await panggil(
-  { aksi: 'tagihan:buat', orderId: 'PAMUNGKAS-TAHUNAN-SITI', paketId: 'tahunan', metode: 'qris' },
+  { aksi: 'tagihan:buat', orderId: 'PAMONGKAS-TAHUNAN-SITI', paketId: 'tahunan', metode: 'qris' },
   { token: P.terbitkanToken('siti', 'user', partial({})) }
 );
-const tagihanSitiUntukBudi = 'PAMUNGKAS-TAHUNAN-SITI';
+const tagihanSitiUntukBudi = 'PAMONGKAS-TAHUNAN-SITI';
 cek('tagihan siti benar-benar ada dan menunggu',
   dokumen.get('madiun_tagihan/' + tagihanSitiUntukBudi)?.status === 'menunggu');
 
@@ -1441,7 +1441,7 @@ cek('status tagihan milik orang lain tidak berubah',
  * dibedakan.
  */
 const batalYangTidakAda = await panggil(
-  { aksi: 'tagihan:status', orderId: 'PAMUNGKAS-TIDAK-ADA-999', status: 'batal' },
+  { aksi: 'tagihan:status', orderId: 'PAMONGKAS-TIDAK-ADA-999', status: 'batal' },
   { token: tokenBudiBayar }
 );
 cek('orderId yang tidak ada juga 404',
@@ -1456,7 +1456,7 @@ const lunasPengguna = await panggil(
 cek('pengguna biasa tidak boleh menandai tagihannya lunas', lunasPengguna.status === 403,
   `dapat kode ${lunasPengguna.status} — kalau 200, siapa pun bisa mengaktifkan langganan gratis`);
 cek('status tidak berubah jadi lunas',
-  dokumen.get('madiun_tagihan/PAMUNGKAS-BULANAN-7')?.status !== 'lunas');
+  dokumen.get('madiun_tagihan/PAMONGKAS-BULANAN-7')?.status !== 'lunas');
 
 /*
  * Aturannya **per akun**: tagihan orang lain tidak boleh ikut terhitung.
@@ -1471,7 +1471,7 @@ cek('status tidak berubah jadi lunas',
  * menguji aturan yang salah.
  */
 const batalTagihanSiti = await panggil(
-  { aksi: 'tagihan:status', orderId: 'PAMUNGKAS-TAHUNAN-SITI', status: 'batal' },
+  { aksi: 'tagihan:status', orderId: 'PAMONGKAS-TAHUNAN-SITI', status: 'batal' },
   { token: P.terbitkanToken('siti', 'user', partial({})) }
 );
 cek('tagihan siti yang tadi bisa dibatalkan oleh pemiliknya',
@@ -1480,7 +1480,7 @@ cek('tagihan siti yang tadi bisa dibatalkan oleh pemiliknya',
 
 const tokenSitiTagih = P.terbitkanToken('siti', 'user', partial({}));
 const tagihanSiti = await panggil(
-  { aksi: 'tagihan:buat', orderId: 'PAMUNGKAS-TAHUNAN-9', paketId: 'tahunan', metode: 'qris' },
+  { aksi: 'tagihan:buat', orderId: 'PAMONGKAS-TAHUNAN-9', paketId: 'tahunan', metode: 'qris' },
   { token: tokenSitiTagih }
 );
 cek('aturan satu-tagihan dihitung per akun, bukan global',

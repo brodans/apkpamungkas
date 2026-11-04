@@ -1,7 +1,7 @@
 rules_version = '2';
 
 /**
- * Firestore Security Rules — PAMUNGKAS
+ * Firestore Security Rules — PAMONGKAS
  *
  * Deploy:  firebase deploy --only firestore:rules
  *          (atau paste manual di Firebase Console → Firestore → Rules)

@@ -192,7 +192,7 @@ cek('shell modal tanpa motion.div', !/<motion\.div[^>]*className="modal-layer/.t
 cek('shell modal tanpa backdrop-blur', !/modal-layer[^"]*backdrop-blur/.test(akunKode));
 cek('pakai keyframe CSS yang sama', akunSrc.includes('modal-panel-enter'));
 cek('punya role=dialog', akunSrc.includes('role="dialog"'));
-cek('tinggi minimum Pengaturan PAMUNGKAS proporsional',
+cek('tinggi minimum Pengaturan PAMONGKAS proporsional',
   akunSrc.includes('min-h-[min(32rem,calc(100dvh-2rem))]'));
 
 // ── 2. CSS build ─────────────────────────────────────────────────────

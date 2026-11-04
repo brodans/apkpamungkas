@@ -82,8 +82,8 @@ export default async function handler(req: any, res: any) {
      * Allow-list **setelah** dilengkapi skema  persis yang dibandingkan
      * terhadap `Origin` dari browser.
      *
-     * Ini yang membuat kesalahan ketik bisa dilihat. allow-list `pamungkas.vercel.app`
-     * dan `Origin: https://pamungkas.vercel.app` terlihat berbeda di teks, tapi
+     * Ini yang membuat kesalahan ketik bisa dilihat. allow-list `pamongkas.vercel.app`
+     * dan `Origin: https://pamongkas.vercel.app` terlihat berbeda di teks, tapi
      * setelah normalisasi keduanya jelas sama, dan operator tahu apa yang
      * sebenarnya dibandingkan.
      */

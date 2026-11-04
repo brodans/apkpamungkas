@@ -6,7 +6,7 @@ function syncThemeToAndroid(isDark: boolean) {
   const trySync = () => {
     try {
       // Bridge native diinjeksi oleh MainActivity.kt via addJavascriptInterface.
-      const bridge = (window as unknown as Record<string, unknown>).AndroidPamungkas as
+      const bridge = (window as unknown as Record<string, unknown>).AndroidPamongkas as
         | { setTheme?: (dark: boolean) => void }
         | undefined;
       if (typeof bridge?.setTheme === 'function') {

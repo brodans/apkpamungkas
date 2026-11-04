@@ -42,8 +42,8 @@ const COOLDOWN_MS = 5 * 60 * 1000;
 const MAX_USERNAME_LEN = 32;
 const MAX_PASSWORD_LEN = 128;
 const MIN_AUTH_DELAY_MS = 300; // waktu respons minimum (timing-safe)
-const LS_ATTEMPTS = 'pamungkas_login_attempts';
-const LS_COOLDOWN = 'pamungkas_cooldown_until';
+const LS_ATTEMPTS = 'pamongkas_login_attempts';
+const LS_COOLDOWN = 'pamongkas_cooldown_until';
 
 // ─── Auth reducer ────────────────────────────────────────────────
 type AuthStatus = 'IDLE' | 'AUTHENTICATING' | 'LOCKED' | 'SUCCESS';

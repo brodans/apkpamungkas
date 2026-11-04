@@ -7,7 +7,7 @@
  * 3. Permintaan pengecualian optimasi baterai (Battery Optimization Exemption).
  */
 
-interface AndroidPamungkasInterface {
+interface AndroidPamongkasInterface {
   setTheme?: (dark: boolean) => void;
   setOverlayMode?: (active: boolean) => void;
   startForegroundService?: (title?: string, content?: string) => void;
@@ -18,10 +18,10 @@ interface AndroidPamungkasInterface {
   requestBatteryOptimizationExemption?: () => void;
 }
 
-function getAndroidBridge(): AndroidPamungkasInterface | undefined {
+function getAndroidBridge(): AndroidPamongkasInterface | undefined {
   if (typeof window === 'undefined') return undefined;
-  return (window as unknown as Record<string, unknown>).AndroidPamungkas as
-    | AndroidPamungkasInterface
+  return (window as unknown as Record<string, unknown>).AndroidPamongkas as
+    | AndroidPamongkasInterface
     | undefined;
 }
 
@@ -36,7 +36,7 @@ export function isAndroidNative(): boolean {
  * membunuh proses aplikasi saat berada di latar belakang atau layar mati.
  */
 export function startAndroidForegroundService(
-  title: string = 'PAMUNGKAS Presensi',
+  title: string = 'PAMONGKAS Presensi',
   content: string = 'Penjadwal presensi otomatis aktif di latar belakang'
 ): void {
   try {

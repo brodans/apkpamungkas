@@ -54,7 +54,7 @@ import FotoAtauInisial from '../components/ui/FotoAtauInisial';
 //  Konstanta
 // ═══════════════════════════════════════════════════════════════════════
 
-const KUNCI_SESI_WEB = 'pamungkas:web-presensi-session';
+const KUNCI_SESI_WEB = 'pamongkas:web-presensi-session';
 
 interface SesiWebTersimpan {
   versi: 1;

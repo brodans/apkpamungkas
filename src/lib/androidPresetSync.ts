@@ -4,21 +4,21 @@
  * tanpa WebView — untuk kasus app di-swipe dari Recent Apps.
  *
  * SharedPreferences yang dipakai:
- *   - "pamungkas_session"  → api_key, imei, last_latlong, base_url
- *   - "pamungkas_presets"  → JSON array preset aktif + lokasi
- *   - "pamungkas_worker_log" → hasil eksekusi dari Kotlin (dibaca JS)
+ *   - "pamongkas_session"  → api_key, imei, last_latlong, base_url
+ *   - "pamongkas_presets"  → JSON array preset aktif + lokasi
+ *   - "pamongkas_worker_log" → hasil eksekusi dari Kotlin (dibaca JS)
  */
 
-interface AndroidPamungkasInterface {
+interface AndroidPamongkasInterface {
   syncSession?: (json: string) => void;
   syncPresets?: (json: string) => void;
   readWorkerLog?: () => string;
   clearWorkerLog?: () => void;
 }
 
-function getBridge(): AndroidPamungkasInterface | undefined {
+function getBridge(): AndroidPamongkasInterface | undefined {
   if (typeof window === 'undefined') return undefined;
-  return (window as any).AndroidPamungkas as AndroidPamungkasInterface | undefined;
+  return (window as any).AndroidPamongkas as AndroidPamongkasInterface | undefined;
 }
 
 export interface SessionData {

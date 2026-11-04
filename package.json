@@ -1,8 +1,8 @@
 {
-  "name": "pamungkas",
+  "name": "pamongkas",
   "private": true,
   "version": "1.0.0",
-  "description": "PAMUNGKAS — Portal Presensi Kabupaten Madiun",
+  "description": "PAMONGKAS — Portal Presensi Kabupaten Madiun",
   "type": "module",
   "scripts": {
     "dev": "tsx --env-file=.env src/api/server.ts",

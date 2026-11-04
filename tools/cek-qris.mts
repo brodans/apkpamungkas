@@ -38,11 +38,11 @@ const cek = (n: string, ok: unknown, d = ''): void => { if (!ok) { fail++; conso
 function build(pakaiTag54 = ''): string {
   const tlv = (tag: string, value: string): string =>
     `${tag}${String(value.length).padStart(2, '0')}${value}`;
-  const guid = 'ID.CO.PAMUNGKAS.WWW';
-  const umi = tlv('26', tlv('00', guid) + tlv('01', guid) + tlv('02', 'PAMUNGKAS JAWATIMURAH'));
+  const guid = 'ID.CO.PAMONGKAS.WWW';
+  const umi = tlv('26', tlv('00', guid) + tlv('01', guid) + tlv('02', 'PAMONGKAS JAWATIMURAH'));
   let isi = tlv('00', '01') + tlv('01', '11') + umi + tlv('52', '5411') + tlv('53', '360');
   if (pakaiTag54) isi += tlv('54', pakaiTag54);
-  isi += tlv('58', 'ID') + tlv('59', 'PAMUNGKAS') + tlv('60', 'SURABAYA');
+  isi += tlv('58', 'ID') + tlv('59', 'PAMONGKAS') + tlv('60', 'SURABAYA');
   const dengan6304 = isi + '6304';
   return dengan6304 + Q.calculateCRC16(dengan6304);
 }
@@ -61,10 +61,10 @@ console.log('\n=== 2. Round-trip QRIS statis yang sah');
 const statis = build();
 cek('validateQRIS statis valid', Q.validateQRIS(statis).valid, Q.validateQRIS(statis).errors.join('; '));
 const ringkas = Q.ringkasQRIS(statis);
-cek('merchant terbaca', ringkas.namaMerchant === 'PAMUNGKAS', ringkas.namaMerchant);
+cek('merchant terbaca', ringkas.namaMerchant === 'PAMONGKAS', ringkas.namaMerchant);
 cek('kota terbaca', ringkas.kotaMerchant === 'SURABAYA', ringkas.kotaMerchant);
 cek('ditandai statis', ringkas.metode === 'statis');
-cek('nama penerbit terbaca dari UMI', ringkas.namaPenerbit.includes('PAMUNGKAS'), ringkas.namaPenerbit);
+cek('nama penerbit terbaca dari UMI', ringkas.namaPenerbit.includes('PAMONGKAS'), ringkas.namaPenerbit);
 cek('tanpa tag 54 pada QR statis', ringkas.nominal === '');
 
 console.log('\n=== 3. QRIS dinamis — nominal mengikat tag 54');
@@ -150,7 +150,7 @@ for (const n of [1, 9, 10, 99, 100, 1000, 9999, 10000, 25000, 99999, 100000, 250
   cek(`nominal ${n}: panjang genap (${d.length})`, d.length % 2 === 0);
   cek(`nominal ${n}: tetap valid setelah dipad`, Q.validateQRIS(d).valid, Q.validateQRIS(d).errors.join('; '));
   cek(`nominal ${n}: tag 54 utuh`, Q.ringkasQRIS(d).nominal === String(n), Q.ringkasQRIS(d).nominal);
-  cek(`nominal ${n}: merchant name tanpa spasi tambahan di UI`, Q.ringkasQRIS(d).namaMerchant.trim() === 'PAMUNGKAS', Q.ringkasQRIS(d).namaMerchant);
+  cek(`nominal ${n}: merchant name tanpa spasi tambahan di UI`, Q.ringkasQRIS(d).namaMerchant.trim() === 'PAMONGKAS', Q.ringkasQRIS(d).namaMerchant);
   cek(`nominal ${n}: kota utuh`, Q.ringkasQRIS(d).kotaMerchant.trim() === 'SURABAYA');
   cek(`nominal ${n}: UMI/nama penerbit utuh`, Q.ringkasQRIS(d).namaPenerbit.includes('JAWATIMURAH'), Q.ringkasQRIS(d).namaPenerbit);
   cek(`nominal ${n}: tag 54 tepat satu`, Q.parseTLV(d).filter(e => e.tag === '54').length === 1);

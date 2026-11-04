@@ -24,7 +24,7 @@ const { APP_NAME, APP_FULL_NAME, APP_VERSION, APP_LOGO } = await import(
 
 // ═════════════════════════════════════════════════════════════════════
 console.log('=== Nama & versi');
-cek('nama aplikasi = PAMUNGKAS', APP_NAME === 'PAMUNGKAS', APP_NAME);
+cek('nama aplikasi = PAMONGKAS', APP_NAME === 'PAMONGKAS', APP_NAME);
 cek(
   'nama lengkap benar',
   APP_FULL_NAME === 'Portal Presensi Kabupaten Madiun',
@@ -48,7 +48,7 @@ console.log('\n=== Tidak ada jejak nama lama');
  * disimpan supaya tagihan yang sudah dibayar masih bisa diaktivasi. Aplikasi
  * masih baru dan belum ada transaksi, jadi daftar itu tidak pernah berguna —
  * hanya menambah satu nama lama yang harus dijaga selamanya. `order_id`
- * sekarang hanya memakai awalan PAMUNGKAS, dan `serverBilling.ts` mencocokkannya
+ * sekarang hanya memakai awalan PAMONGKAS, dan `serverBilling.ts` mencocokkannya
  * sama persis.
  *
  * Cakupannya lebih luas dari `src/`: nama lama juga pernah muncul di
@@ -186,7 +186,7 @@ cek(
   'package.json description menyebut nama baru',
   readFileSync(join(root, 'package.json'), 'utf8').includes(NamaBaru)
 );
-cek('ENDPOINT.md menyebut identitas aplikasi yang benar', /PAMUNGKAS — Portal Presensi Kabupaten Madiun/.test(
+cek('ENDPOINT.md menyebut identitas aplikasi yang benar', /PAMONGKAS — Portal Presensi Kabupaten Madiun/.test(
   readFileSync(join(root, 'ENDPOINT.md'), 'utf8')
 ));
 
@@ -195,35 +195,35 @@ cek('ENDPOINT.md menyebut identitas aplikasi yang benar', /PAMUNGKAS — Portal 
  *
  * Ketiganya rusak secara irreversible kalau disentuh:
  *
- * - `pamungkas-kredensial` = turunan kunci enkripsi. Berubah = setiap password
+ * - `pamongkas-kredensial` = turunan kunci enkripsi. Berubah = setiap password
  *   server pusat yang tersimpan tidak bisa didekripsi lagi.
  * - `PREFIX_ORDER_ID` = awalan `order_id`. Berubah = tagihan yang sudah
  *   tersimpan di produksi tidak dikenali lagi.
- * - `pamungkas.vercel.app` = domain produksi, ada di `ALLOWED_ORIGINS`.
+ * - `pamongkas.vercel.app` = domain produksi, ada di `ALLOWED_ORIGINS`.
  */
 const panelSrc = readFileSync(join(root, 'src/lib/panelServer.ts'), 'utf8');
 cek(
   'salt enkripsi kredensial tidak ikut diganti',
-  /createHmac\('sha256', 'pamungkas-kredensial'\)/.test(panelSrc),
+  /createHmac\('sha256', 'pamongkas-kredensial'\)/.test(panelSrc),
   'berubah = seluruh password server pusat yang tersimpan tidak bisa dibaca lagi'
 );
 cek(
   'fallback API Android tetap memakai host produksi',
-  /https:\/\/pamungkas\.vercel\.app\/api\/rpc/.test(
+  /https:\/\/pamongkas\.vercel\.app\/api\/rpc/.test(
     readFileSync(join(root, 'tools/patch-android-native.mts'), 'utf8')
   ),
   'host ini masih dipakai oleh APK tanpa konfigurasi API khusus'
 );
 cek(
-  'APP_NAME adalah PAMUNGKAS',
-  APP_NAME === 'PAMUNGKAS',
-  'APP_NAME sekarang adalah PAMUNGKAS untuk Kabupaten Madiun'
+  'APP_NAME adalah PAMONGKAS',
+  APP_NAME === 'PAMONGKAS',
+  'APP_NAME sekarang adalah PAMONGKAS untuk Kabupaten Madiun'
 );
 
 // `order_id` dan pemecahnya harus membaca konstanta yang sama, kalau tidak
 // tagihan berhenti bisa diaktivasi tanpa pesan yang menyebut penyebabnya.
 const durasiSrc = readFileSync(join(root, 'src/lib/durasi.ts'), 'utf8');
-cek('PREFIX_ORDER_ID = PAMUNGKAS', /PREFIX_ORDER_ID = 'PAMUNGKAS'/.test(durasiSrc));
+cek('PREFIX_ORDER_ID = PAMONGKAS', /PREFIX_ORDER_ID = 'PAMONGKAS'/.test(durasiSrc));
 cek(
   'tidak ada konstanta awalan lama yang tersisa',
   !/PREFIX_ORDER_ID_LAMA|POLA_ORDER_ID/.test(durasiSrc + readFileSync(join(root, 'src/lib/serverBilling.ts'), 'utf8')),
@@ -234,7 +234,7 @@ cek(
   /PREFIX_ORDER_ID\}-\$\{item\.id\.toUpperCase\(\)\}\-/.test(
     readFileSync(join(root, 'src/lib/serverBilling.ts'), 'utf8')
   ),
-  'tagihan hanya dikenali kalau awalannya PAMUNGKAS'
+  'tagihan hanya dikenali kalau awalannya PAMONGKAS'
 );
 
 // ═════════════════════════════════════════════════════════════════════
@@ -242,10 +242,10 @@ console.log('\n=== package.json & manifest.json');
 const html = readFileSync(join(root, 'index.html'), 'utf8');
 const pkg = JSON.parse(readFileSync(join(root, 'package.json'), 'utf8'));
 const manifest = JSON.parse(readFileSync(join(root, 'public/manifest.json'), 'utf8'));
-cek('package.json name = pamungkas', pkg.name === 'pamungkas', pkg.name);
+cek('package.json name = pamongkas', pkg.name === 'pamongkas', pkg.name);
 cek('package.json version = 1.0.0', pkg.version === '1.0.0', pkg.version);
 cek('manifest version = 1.0.0', manifest.version === '1.0.0', manifest.version);
-cek('manifest short_name = PAMUNGKAS', manifest.short_name === 'PAMUNGKAS', manifest.short_name);
+cek('manifest short_name = PAMONGKAS', manifest.short_name === 'PAMONGKAS', manifest.short_name);
 cek('manifest name memuat nama lengkap', manifest.name.includes(APP_FULL_NAME), manifest.name);
 
 // ═════════════════════════════════════════════════════════════════════
@@ -283,12 +283,12 @@ cek('aktivitas Android memakai TauriActivity dan namespace mengikuti identifier 
     nativePatch.includes("const androidIdentifier = JSON.parse(readFileSync(join(process.cwd(), 'src-tauri', 'tauri.conf.json'), 'utf8')).identifier;"));
 cek('kode native memakai R dari namespace aplikasi',
   (nativePatch.match(/import \$\{androidIdentifier\}\.R/g) ?? []).length === 2);
-cek('notifikasi native memakai merek PAMUNGKAS',
-  nativePatch.includes('PAMUNGKAS Presensi') && !nativePatch.includes('PAMUNGKAS Presensi'));
-cek('bridge Android memakai nama PAMUNGKAS di Kotlin dan frontend',
-  nativePatch.includes('addJavascriptInterface(PamungkasBridge(), "AndroidPamungkas")') &&
-    readFileSync(join(root, 'index.html'), 'utf8').includes('window.AndroidPamungkas') &&
-    readFileSync(join(root, 'src/lib/androidBackgroundBridge.ts'), 'utf8').includes('AndroidPamungkas'));
+cek('notifikasi native memakai merek PAMONGKAS',
+  nativePatch.includes('PAMONGKAS Presensi') && !nativePatch.includes('PAMONGKAS Presensi'));
+cek('bridge Android memakai nama PAMONGKAS di Kotlin dan frontend',
+  nativePatch.includes('addJavascriptInterface(PamongkasBridge(), "AndroidPamongkas")') &&
+    readFileSync(join(root, 'index.html'), 'utf8').includes('window.AndroidPamongkas') &&
+    readFileSync(join(root, 'src/lib/androidBackgroundBridge.ts'), 'utf8').includes('AndroidPamongkas'));
 cek('tema navbar Android diserialkan di UI thread',
   /fun setTheme\(dark: Boolean\)\s*\{\s*mainHandler\.post \{/.test(nativePatch) &&
     /window\.navigationBarColor = Color\.TRANSPARENT/.test(nativePatch) &&
@@ -300,7 +300,7 @@ cek('warna navigation bar tidak dipaksa oleh status workspace',
 cek('template Android memakai Theme.app yang dipasang pada manifest',
   nativePatch.includes('android:theme="@style/Theme.app"') &&
     nativePatch.includes('style name="Theme.app"'));
-cek('splash native memakai logo PAMUNGKAS dan drawable untuk Android lama',
+cek('splash native memakai logo PAMONGKAS dan drawable untuk Android lama',
   nativePatch.includes('android:windowSplashScreenAnimatedIcon">@drawable/splash_icon') &&
     nativePatch.includes('android:windowBackground">@drawable/splash_screen') &&
     nativePatch.includes('res/drawable-nodpi/splash_icon.png') &&

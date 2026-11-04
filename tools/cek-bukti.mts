@@ -343,7 +343,7 @@ const tungguHtml = renderToStaticMarkup(
   React.createElement(LayarTungguVerifikasi, {
     info: {
       username: 'budi',
-      orderId: 'PAMUNGKAS-BULANAN-1759000000000',
+      orderId: 'PAMONGKAS-BULANAN-1759000000000',
       paket: '1 Bulan',
       nominal: 25000,
       berakhirAt: Date.now() + 240_000,
@@ -357,7 +357,7 @@ cek('hitung mundur tampil', tungguHtml.includes('04:37'), '277 detik → 04:37')
 cek('hitung mundur punya role timer', tungguHtml.includes('role="timer"'));
 cek('angka pakai tabular-nums (tidak bergeser)', tungguHtml.includes('tabular-nums'));
 cek('progress bar punya nilai', /aria-valuenow="277"/.test(tungguHtml));
-cek('nomor tagihan tampil', tungguHtml.includes('PAMUNGKAS-BULANAN-1759000000000'));
+cek('nomor tagihan tampil', tungguHtml.includes('PAMONGKAS-BULANAN-1759000000000'));
 cek('akun tampil', tungguHtml.includes('budi'));
 cek('paket tampil', tungguHtml.includes('1 Bulan'));
 cek('nominal tampil', tungguHtml.includes('25.000'));
@@ -585,10 +585,10 @@ function buatPerekam(): {
 // QRIS statis yang sah.
 const tlv = (tag: string, nilai: string): string =>
   `${tag}${String(nilai.length).padStart(2, '0')}${nilai}`;
-const merchant = tlv('00', 'ID.CO.QRIS.WWW0212') + tlv('01', 'UMI') + tlv('02', 'PAMUNGKAS_EXTEND_INDONESIA');
+const merchant = tlv('00', 'ID.CO.QRIS.WWW0212') + tlv('01', 'UMI') + tlv('02', 'PAMONGKAS_EXTEND_INDONESIA');
 const bodyStatis =
   tlv('00', '01') + tlv('01', '11') + tlv('26', merchant) + tlv('52', '5999') + tlv('53', '360') +
-  tlv('58', 'ID') + tlv('59', 'PAMUNGKAS EXTEND INDONESIA') + tlv('60', 'SURABAYA');
+  tlv('58', 'ID') + tlv('59', 'PAMONGKAS EXTEND INDONESIA') + tlv('60', 'SURABAYA');
 const isiStatis = bodyStatis + '6304';
 const qrisStatis = isiStatis + calculateCRC16(isiStatis);
 const qrisDinamis25k = qrisDinamis(qrisStatis, { nominal: 25000 });
@@ -639,7 +639,7 @@ const teks = perekam.rekaman.fillText.map(t => t.text);
 for (const diharapkan of [
   'QR Code Standar',
   'Pembayaran Nasional',
-  'PAMUNGKAS EXTEND INDONESIA',
+  'PAMONGKAS EXTEND INDONESIA',
   'Scan dengan aplikasi apa pun',
   'QRIS Dinamis · nominal terkunci di dalam QR',
 ]) {

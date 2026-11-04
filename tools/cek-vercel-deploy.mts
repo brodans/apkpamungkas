@@ -86,7 +86,7 @@ const files = readdirSync(join(root, 'api')).filter(f => f.endsWith('.ts'));
 for (const f of files) cpSync(join(root, 'api', f), join(task, 'api', f));
 cpSync(join(root, 'api/tsconfig.json'), join(task, 'api/tsconfig.json'));
 symlinkSync(join(root, 'node_modules'), join(task, 'node_modules'), 'dir');
-writeFileSync(join(task, 'package.json'), JSON.stringify({ name: 'pamungkas-func', type: 'module' }, null, 2));
+writeFileSync(join(task, 'package.json'), JSON.stringify({ name: 'pamongkas-func', type: 'module' }, null, 2));
 
 console.log('=== 1. Layout /var/task dibangun');
 cek('hanya api/*.ts yang disalin', files.length > 0, `${files.length} berkas`);

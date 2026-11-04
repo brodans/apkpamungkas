@@ -64,9 +64,9 @@ import { absenTimeoutMs } from './presensiContract';
 import { fotoProfileValid } from './viewModels';
 
 /** Penanda "pengguna keluar dari server" per akun panel, di localStorage. */
-const KELUAR_KEY_PREFIX = 'pamungkas_server_keluar_';
+const KELUAR_KEY_PREFIX = 'pamongkas_server_keluar_';
 /** TechMark stabil per akun panel — nilai `imei` yang konsisten. */
-const IMEI_KEY_PREFIX = 'pamungkas_imei_';
+const IMEI_KEY_PREFIX = 'pamongkas_imei_';
 
 function isBrowser(): boolean {
   return typeof window !== 'undefined';

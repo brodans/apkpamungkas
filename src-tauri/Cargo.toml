@@ -1,12 +1,12 @@
 [package]
-name = "pamungkas"
+name = "pamongkas"
 version = "1.0.0"
-description = "PAMUNGKAS — Portal Presensi Kabupaten Madiun"
-authors = ["PAMUNGKAS"]
+description = "PAMONGKAS — Portal Presensi Kabupaten Madiun"
+authors = ["PAMONGKAS"]
 edition = "2021"
 
 [lib]
-name = "pamungkas_lib"
+name = "pamongkas_lib"
 crate-type = ["staticlib", "cdylib", "rlib"]
 
 [build-dependencies]
