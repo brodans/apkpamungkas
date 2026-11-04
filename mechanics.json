@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "values": [
+    {
+      "name": "service url",
+      "group": "network",
+      "value": "https://absen.madiunkab.go.id/service",
+      "source": "https://absen.madiunkab.go.id"
+    },
+    {
+      "name": "web checkinout url",
+      "group": "network",
+      "value": "https://absen.madiunkab.go.id/checkinout",
+      "source": "https://absen.madiunkab.go.id"
+    },
+    {
+      "name": "web captcha url",
+      "group": "network",
+      "value": "https://absen.madiunkab.go.id/captcha",
+      "source": "https://absen.madiunkab.go.id"
+    },
+    {
+      "name": "package id",
+      "group": "identity",
+      "value": "pti.presensi.madiun",
+      "source": "https://absen.madiunkab.go.id"
+    },
+    {
+      "name": "captcha length",
+      "group": "auth",
+      "value": 4,
+      "source": "ocr_service.py"
+    }
+  ]
+}

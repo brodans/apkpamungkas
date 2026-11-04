@@ -1,0 +1,547 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-slate-850: #162032;
+  --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+@layer base {
+  /* ─── Responsive Viewport ───────────────────────────────────────── */
+  html {
+    /* Prevent font size inflation di iOS Safari saat orientasi berubah */
+    -webkit-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    /* Fill-available height agar iOS Safari tidak ada gap */
+    height: -webkit-fill-available;
+  }
+
+  body {
+    background: #ffffff;
+    color: #0f172a;
+    font-family: var(--font-sans);
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* Prevent overscroll bounce / rubber-band di iOS */
+    overscroll-behavior: none;
+    /* Stable min-height di iOS Safari */
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+    /* Hilangkan highlight biru saat tap di mobile */
+    -webkit-tap-highlight-color: transparent;
+    overflow-x: hidden;
+    /* Safe area TIDAK dipasang di sini.
+     *
+     * Penanganan aman-area memang harus ada (status bar / navigation bar di
+     * Android edge-to-edge), tapi itu sudah ditangani oleh `.poni-header`
+     * (padding-top via `--sat`), area scroll `.poni-konten` (padding-bottom via
+     * `--sab`), sidebar, dan elemen fixed (`--sab`) — semuanya lewat variabel
+     * `--sat` / `--sab` yang di-set MainActivity via bridge Android.
+     *
+     * Kalau padding aman-area juga ditulis di `body`, aman-area akan
+     * **dobel** dan konten akan terus miring ke bawah (gap di atas + turun di
+     * bawah). Sekarang aman-area hanya boleh diberi di satu tempat saja:
+     * elemen yang benar-benar perlu area (header, konten, sidebar, fixed).
+     */
+  }
+
+  html.dark body {
+    background: #0f172a;
+    color: #e2e8f0;
+  }
+
+  @media (pointer: coarse) {
+    body {
+      touch-action: pan-x pan-y;
+    }
+  }
+
+  /* Box-sizing global */
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  /* Ring Aksesibilitas Terpusat */
+  :focus-visible {
+    outline: 2px solid #2563eb;
+    outline-offset: 2px;
+  }
+
+  /* Android WebView draws a bright focus rectangle around text fields when
+     the IME opens. Keep the accessible focus treatment without the box
+     outline that appears as a white line above the keyboard. */
+  input:focus, textarea:focus, select:focus {
+    outline: none;
+  }
+  input:focus-visible, textarea:focus-visible, select:focus-visible {
+    outline: 2px solid #2563eb;
+    outline-offset: 0;
+  }
+
+  /* Blue selection highlight.
+   *
+   * Android WebView tanpa aturan ini memakai warna selection default sistem
+   * (hitam pekat) yang tidak terlihat di atas background gelap. Aturan ini
+   * memaksa highlight biru transparan yang jelas di light maupun dark mode.
+   */
+  ::selection {
+    background: rgb(37 99 235 / 45%);
+  }
+  ::-moz-selection {
+    background: rgb(37 99 235 / 45%);
+  }
+
+  html.dark ::selection,
+  html.dark ::-moz-selection {
+    background: rgb(59 130 246 / 55%);
+  }
+
+  /* Root container full viewport */
+  #root {
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  html.app-shell-active,
+  html.app-shell-active body,
+  html.app-shell-active #root {
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  @supports (min-height: 100svh) {
+    body,
+    #root {
+      min-height: 100svh;
+    }
+  }
+
+  /**
+   * ─── Safe area (notch, tepi melengkung, bilah gestur) ────────────
+   *
+   * `index.html` mendeklarasikan `viewport-fit=cover`, jadi iOS **menggambar
+   * aplikasi sampai ke tepi layar** — termasuk ke area notch dan ke tepi yang
+   * melengkung. Navigator tidak mengetuk area itu: tombol paling kanan bisa
+   * terpotong, dan baris paling bawah tertutup bilah gestur.
+   *
+   * Semula `viewport-fit=cover` ada tapi `env(safe-area-inset-*)` **tidak pernah
+   * dipakai di mana pun** — deklarasi itu tanpa pasangan. Akibatnya konten
+   * berakhir tepat di tepi yang tidak bisa disentuh; itu yang dilaporkan
+   * sebagai "mepet di kanan".
+   *
+   * Nilainya selalu `0px` di perangkat tanpa notch (seluruh desktop, dan
+   * Android tanpa cutout), jadi tidak ada yang berubah di sana.
+   */
+  :root {
+    --sat: env(safe-area-inset-top, 24px);
+    --sab: env(safe-area-inset-bottom, 24px);
+    --poni-kiri: env(safe-area-inset-left, 0px);
+    --poni-kanan: env(safe-area-inset-right, 0px);
+    --poni-atas: var(--sat);
+    --poni-bawah: var(--sab);
+    --bottom-sheet-safe-area: 0px;
+  }
+
+  body.is-native {
+    --bottom-sheet-safe-area: var(--sab);
+  }
+}
+
+/* Gutter untuk isi halaman; scroll container sendiri tetap selebar viewport
+   agar scrollbar berada di tepi kanan, bukan di dalam gutter konten. */
+@layer components {
+  /* Main konten: selalu berada di atas batas navigation bar */
+  .poni-konten,
+  body.is-native .poni-konten {
+    padding-top: 1.25rem;
+    padding-left: max(1rem, var(--poni-kiri));
+    padding-right: max(1rem, var(--poni-kanan));
+    padding-bottom: calc(var(--poni-bawah, var(--sab)) + 1.25rem) !important;
+    box-sizing: border-box !important;
+  }
+  @media (min-width: 640px) {
+    .poni-konten,
+    body.is-native .poni-konten {
+      padding-top: 1.5rem;
+      padding-left: max(1.5rem, var(--poni-kiri));
+      padding-right: max(1.5rem, var(--poni-kanan));
+      padding-bottom: calc(var(--poni-bawah, var(--sab)) + 1.5rem) !important;
+    }
+  }
+  @media (min-width: 1024px) {
+    .poni-konten,
+    body.is-native .poni-konten {
+      padding-top: 1.75rem;
+      padding-left: max(2rem, var(--poni-kiri));
+      padding-right: max(2rem, var(--poni-kanan));
+      padding-bottom: calc(var(--poni-bawah, var(--sab)) + 1.75rem) !important;
+    }
+  }
+
+  /* Workspace Android tetap full-screen sampai ke belakang navbar,
+     sementara isi/sidebar tetap dibatasi safe-area. */
+  body.is-native .poni-workspace,
+  body.is-native .poni-startup-shell {
+    height: 100dvh !important;
+    min-height: 0 !important;
+  }
+
+  /* Paint an opaque theme-matched strip behind Android's transparent nav bar. */
+  body.is-native .poni-workspace::after,
+  body.is-native .poni-startup-shell::after {
+    content: "";
+    position: absolute;
+    z-index: 39;
+    inset-inline: 0;
+    bottom: 0;
+    height: max(1.5rem, var(--poni-bawah, var(--sab, 24px)));
+    background-color: inherit;
+    pointer-events: none;
+  }
+
+  /* The shared page scrollport must reserve the Android navigation-bar inset. */
+  body.is-native .konten-gulir {
+    padding-bottom: max(1.75rem, var(--poni-bawah, var(--sab, 0px))) !important;
+    box-sizing: border-box;
+  }
+  body.is-native .konten-gulir > .poni-konten {
+    padding-bottom: 1.25rem !important;
+  }
+  @media (min-width: 640px) {
+    body.is-native .konten-gulir > .poni-konten {
+      padding-bottom: 1.5rem !important;
+    }
+  }
+  @media (min-width: 1024px) {
+    body.is-native .konten-gulir > .poni-konten {
+      padding-bottom: 1.75rem !important;
+    }
+  }
+
+  /* Beri ruang nyaman pada header/topbar: background mengalir ke bawah status bar tanpa memotong konten */
+  .poni-header,
+  body.is-native .poni-header,
+  body.is-native header.poni-header {
+    padding-top: var(--poni-atas, var(--sat)) !important;
+    min-height: calc(56px + var(--poni-atas, var(--sat))) !important;
+    height: calc(56px + var(--poni-atas, var(--sat))) !important;
+    padding-left: max(1rem, var(--poni-kiri)) !important;
+    padding-right: max(1rem, var(--poni-kanan)) !important;
+    box-sizing: border-box !important;
+  }
+  @media (min-width: 640px) {
+    .poni-header,
+    body.is-native .poni-header,
+    body.is-native header.poni-header {
+      padding-left: max(1.5rem, var(--poni-kiri)) !important;
+      padding-right: max(1.5rem, var(--poni-kanan)) !important;
+    }
+  }
+  /* ─── SIDEBAR NORMAL (WEB) ─── */
+  .poni-sidebar {
+    padding-left: var(--poni-kiri);
+    padding-bottom: var(--poni-bawah);
+  }
+
+  /* ─── SIDEBAR FLOAT & CURVE (HANYA DI ANDROID APK - Persis Mesen.Ae-Capacitor) ─── */
+  body.is-native .poni-sidebar,
+  body.is-native aside.poni-sidebar {
+    /* `top` + `height` sudah cukup: karena `inset-y-0` (top:0;bottom:0) juga
+     * dipakai, deklarasi `bottom` akan diabaikan saat `top`+`height` keduanya
+     * non-auto (aturan CSS over-constrained). Jadi JANGAN sekali pun pakai
+     * `margin-top`/`margin-bottom` di samping `top`/`height` — itu bikin offset
+     * aman-area **dobel** dan sidebar ikut terlalu ke bawah.
+     */
+    top: calc(var(--sat) + 0.5rem) !important;
+    height: calc(100dvh - var(--sat) - var(--sab) - 0.5rem) !important;
+    max-height: calc(100dvh - var(--sat) - var(--sab) - 0.5rem) !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    margin-left: 0 !important;
+    border-radius: 0 1.25rem 1.25rem 0 !important;
+    border-left: none !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
+    overflow: visible !important;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.35), 0 10px 10px -5px rgba(0, 0, 0, 0.2) !important;
+  }
+
+  @media (min-width: 1024px) {
+    body.is-native .poni-sidebar,
+    body.is-native aside.poni-sidebar {
+      top: auto !important;
+    }
+  }
+
+  /* Sudut kanan atas header sidebar melengkung rapi mengikuti kontainer */
+  body.is-native .poni-sidebar > div:first-child {
+    border-top-right-radius: 1.25rem !important;
+  }
+
+  /* Sudut kanan bawah footer sidebar melengkung rapi mengikuti kontainer */
+  body.is-native .poni-sidebar > div:last-child {
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 1.25rem !important;
+    padding-bottom: 1rem !important;
+  }
+
+  /* Geser tombol toggle sidebar desktop jika di perangkat native */
+  body.is-native button.absolute.-right-3\.5 {
+    top: calc(var(--sat) + 2rem) !important;
+  }
+
+  @media (max-width: 639px) {
+    html, body, #root { width: 100%; min-width: 0; overflow-x: hidden; }
+    button, a, input, select, textarea { touch-action: manipulation; }
+  }
+
+  /* Pastikan elemen fixed bottom terdorong ke atas dengan aman */
+  .fixed.bottom-0 {
+    bottom: var(--poni-bawah, var(--sab, 0px)) !important;
+  }
+
+  /* Toast: dorong ke atas aman-area navigation bar di Android */
+  .fixed.bottom-4 {
+    bottom: calc(var(--poni-bawah, var(--sab, 0px)) + 1rem) !important;
+  }
+  .fixed.bottom-4.right-4 {
+    right: max(1rem, var(--poni-kanan, 0px)) !important;
+  }
+  @media (max-width: 639px) {
+    .fixed.bottom-4.left-4 {
+      left: max(1rem, var(--poni-kiri, 0px)) !important;
+    }
+  }
+
+  /* -- MIDTRANS SNAP WINDOW SAFE AREA OVERRIDES (persis Mesen.Ae-Capacitor) -- */
+  body.is-native #snap-midtrans,
+  body.is-native .snap-midtrans,
+  body.is-native div[id*="snap-midtrans"],
+  body.is-native iframe[src*="midtrans.com"],
+  body.is-native iframe[id*="snap-midtrans"],
+  #snap-midtrans,
+  .snap-midtrans,
+  div[id*="snap-midtrans"],
+  iframe[src*="midtrans.com"],
+  iframe[id*="snap-midtrans"] {
+    top: var(--poni-atas, var(--sat)) !important;
+    bottom: var(--poni-bawah, var(--sab)) !important;
+    height: calc(100% - var(--poni-atas, var(--sat)) - var(--poni-bawah, var(--sab))) !important;
+    box-sizing: border-box !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+.login-grid-mask {
+  -webkit-mask-image: radial-gradient(ellipse at center, #000 20%, transparent 100%);
+  mask-image: radial-gradient(ellipse at center, #000 20%, transparent 100%);
+}
+
+.custom-scrollbar {
+  scroll-behavior: smooth;
+}
+
+/* Kolom konten adalah satu-satunya area gulir utama, tanpa gutter permanen. */
+.konten-gulir {
+  min-height: 0;
+}
+
+/* Satu aturan global agar area scroll utama dan panel samping tampak konsisten. */
+@layer base {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(203 213 225) transparent;
+  }
+  .dark * {
+    scrollbar-color: rgb(71 85 105) transparent;
+  }
+  *::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  *::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  *::-webkit-scrollbar-thumb {
+    background: rgb(203 213 225);
+    border-radius: 9999px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+  .dark *::-webkit-scrollbar-thumb {
+    background: rgb(71 85 105);
+  }
+  *::-webkit-scrollbar-thumb:hover {
+    background: rgb(148 163 184);
+    background-clip: content-box;
+  }
+  .dark *::-webkit-scrollbar-thumb:hover {
+    background: rgb(100 116 139);
+  }
+}
+
+/* ─── Animations & Keyframes ──────────────────────────────────────── */
+/*
+ * ⚠️ `@keyframes spin` sengaja tidak ditulis di sini.
+ *
+ * Semula ada, hanya untuk `.animate-spin-slow` — kelas yang tidak pernah
+ * dipakai. Yang tidak terlihat dari diff: utility `animate-spin` milik
+ * Tailwind juga memakai keyframes bernama `spin`, dan utility itu dipakai
+ * di `src/pages/WebPresensi.tsx` untuk spinner saat memuat.
+ *
+ * Karena itu baris `@keyframes spin` tidak boleh ikut dihapus asal-asalan.
+ * Sudah diverifikasi terpisah dengan `@tailwindcss/cli`: utility `animate-spin`
+ * memunculkan keyframes-nya sendiri, jadi tidak bergantung pada berkas ini.
+ */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes popIn {
+  0% { opacity: 0; transform: scale(0.92); }
+  50% { opacity: 1; transform: scale(1.02); }
+  100% { opacity: 1; transform: scale(1); }
+}
+@keyframes captchaShimmer {
+  from { transform: translateX(-120%); }
+  to { transform: translateX(120%); }
+}
+.captcha-shimmer {
+  background: linear-gradient(100deg, transparent 15%, rgb(99 102 241 / 18%) 50%, transparent 85%);
+  animation: captchaShimmer 1.25s ease-in-out infinite;
+}
+.dark .captcha-shimmer {
+  background: linear-gradient(100deg, transparent 15%, rgb(129 140 248 / 24%) 50%, transparent 85%);
+}
+@media (prefers-reduced-motion: reduce) {
+  .captcha-shimmer { animation-duration: 2.5s; }
+}
+.animate-fade-in {
+  animation: fadeIn 0.25s ease-out forwards;
+}
+.animate-pop-in {
+  animation: popIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* ─── Modal: animasi ringan, tanpa blur & tanpa layout shift ────────
+ *
+ * Modal adalah tempat yang paling sering dibuka-tutup, jadi animasinya
+ * harus murah. Tiga hal yang membuat modal terasa berat, dan ketiganya
+ * sudah dihilangkan di sini:
+ *
+ * 1. **`backdrop-filter: blur()`** pada overlay. Ini penyebab utama
+ *    "lemot": browser harus mengambil ulang seluruh isi layar di belakang
+ *    setiap kali frame digambar ulang, lalu mengaburinya — di ponsel dan
+ *    tablet itu bisa ratusan milidetik per frame. Diganti warna pekat
+ *    saja; panel modalnya sendiri tetap berbayang.
+ * 2. **`scale` pada panel.** `transform: scale()` memaksa browser
+ *    menghitung ulang seluruh isi panel tiap frame (bukan cuma
+ *    memindahkan bitmap seperti `translate`). Diganti `translateY` saja,
+ *    yang murni operasi compositor.
+ * 3. **Perubahan `overflow` pada `<body>`.** Shell aplikasi mengunci gulir
+ *    dokumen dan memakai kolom konten sebagai satu-satunya area scroll,
+ *    jadi modal tidak menambah atau menghilangkan scrollbar halaman kedua.
+ *
+ * Semua animasi ini hanya menyentuh `opacity` dan `transform`, jadi
+ * berjalan di thread compositor tanpa memicu layout maupun paint isi.
+ */
+.modal-layer {
+  right: var(--dev-panel-right-offset, 0px) !important;
+}
+
+.modal-layer.fixed.inset-0 {
+  --modal-safe-inset-top: max(1rem, var(--poni-atas, var(--sat, 0px)));
+  --modal-safe-inset-right: max(1rem, var(--poni-kanan, 0px));
+  --modal-safe-inset-bottom: max(1rem, var(--poni-bawah, var(--sab, 0px)));
+  --modal-safe-inset-left: max(1rem, var(--poni-kiri, 0px));
+  padding: var(--modal-safe-inset-top) var(--modal-safe-inset-right)
+    var(--modal-safe-inset-bottom) var(--modal-safe-inset-left);
+}
+
+.modal-layer.fixed.inset-0 > .modal-panel-enter {
+  max-height: calc(100dvh - var(--modal-safe-inset-top) - var(--modal-safe-inset-bottom));
+}
+
+@keyframes modal-overlay-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes modal-panel-in {
+  from { opacity: 0; transform: translate3d(0, 10px, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+.modal-overlay-enter {
+  animation: modal-overlay-in 0.14s ease-out both;
+}
+.modal-panel-enter {
+  animation: modal-panel-in 0.16s cubic-bezier(0.2, 0.8, 0.3, 1) both;
+}
+
+/* Saat menutup, `open` langsung false sehingga elemen dilepas seketika.
+ * Without exit animation, tidak ada jeda "menunggu animasi" yang terasa
+ * saat modal hilang. */
+@media (prefers-reduced-motion: reduce) {
+  .modal-overlay-enter,
+  .modal-panel-enter {
+    animation-duration: 0.01ms;
+  }
+}
+
+/* ─── Popup kalender (DatePicker) ───────────────────────────────────
+ *
+ * Panel ini dirender lewat `createPortal` ke `document.body` dengan
+ * `position: fixed`, jadi animasi masuknya harus `transform`-only supaya
+ * tidak memicu layout. Dipisah dua keyframe karena arah masuk mengikuti
+ * sisi panel: dari atas saat terbuka ke bawah, dari bawah saat terbuka
+ * ke atas. Satu keyframe untuk keduanya akan terlihat melompat.
+ */
+@keyframes popInBelow {
+  from { opacity: 0; transform: translate3d(0, -6px, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+@keyframes popInAbove {
+  from { opacity: 0; transform: translate3d(0, 6px, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+.animate-pop-in-below {
+  animation: popInBelow 0.13s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.animate-pop-in-above {
+  animation: popInAbove 0.13s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-pop-in-below,
+  .animate-pop-in-above {
+    animation-duration: 0.01ms;
+  }
+}
+
+.developer-inspector-layer {
+  isolation: isolate;
+}
+
+/*
+ * ⚠️ Dua blok terakhir di berkas ini sudah dihapus karena tidak dirujuk satu
+ * pun kelas di `src/**`: `.grid-pattern` (dekorasi grid halaman login) dan
+ * `.custom-grid` (grid proyeksi titik absen di `LokasiAbsen.tsx`). Kalau
+ * ternyata masih dipakai, bentuknya bukan gagal diam-diam — gridnya hilang.
+ */

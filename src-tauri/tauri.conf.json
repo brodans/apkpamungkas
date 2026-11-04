@@ -1,0 +1,38 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "PAMUNGKAS",
+  "version": "1.0.0",
+  "identifier": "id.go.madiunkab.pamungkas",
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "beforeBuildCommand": "npm run build",
+    "devUrl": "http://localhost:5173",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "windows": [{
+      "title": "PAMUNGKAS — Portal Presensi Kabupaten Madiun",
+      "width": 1280,
+      "height": 800,
+      "minWidth": 900,
+      "minHeight": 600,
+      "resizable": true
+    }],
+    "security": { "csp": null }
+  },
+  "bundle": {
+    "active": true,
+    "targets": ["appimage", "deb"],
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png"
+    ],
+    "linux": {
+      "appimage": {
+        "bundleMediaFramework": false
+      }
+    },
+    "resources": []
+  }
+}
