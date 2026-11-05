@@ -33,8 +33,6 @@ export interface TabPermissions {
   tabPerizinan: boolean;
   tabLokasiAbsen: boolean;
   tabLaporan: boolean;
-  /** Menu WEB — e-Presensi Kab. Madiun (IMEI, Kehadiran, Detail Pegawai, Perizinan). */
-  tabWeb: boolean;
   /** Menu Preset Otomatisasi (absensi otomatis terjadwal). */
   tabPresetOtomatisasi: boolean;
 
@@ -93,7 +91,6 @@ export const TAB_PERMISSION_LABELS: Record<keyof TabPermissions, string> = {
   tabPerizinan: 'Pengajuan Izin',
   tabLaporan: 'Laporan',
   tabLokasiAbsen: 'Lokasi Absen',
-  tabWeb: 'WEB (e-Presensi Kab. Madiun)',
   tabPresetOtomatisasi: 'Preset Auto',
   aksiAbsen: 'Lakukan Absen',
   aksiAjukanIzin: 'Ajukan Izin',
@@ -113,7 +110,6 @@ export const PERMISSION_GROUPS: { label: string; keys: (keyof TabPermissions)[] 
       'tabPerizinan',
       'tabLaporan',
       'tabLokasiAbsen',
-      'tabWeb',
       'tabPresetOtomatisasi',
     ],
   },
@@ -143,7 +139,6 @@ export const DEFAULT_ADMIN_PERMISSIONS: TabPermissions = {
   tabPerizinan: true,
   tabLaporan: true,
   tabLokasiAbsen: true,
-  tabWeb: true,
   tabPresetOtomatisasi: true,
   aksiAbsen: true,
   aksiAjukanIzin: true,
@@ -161,7 +156,6 @@ export const DEFAULT_USER_PERMISSIONS: TabPermissions = {
   tabPerizinan: true,
   tabLokasiAbsen: true,
   tabLaporan: false,
-  tabWeb: true,
   tabPresetOtomatisasi: true,
   aksiAbsen: true,
   aksiAjukanIzin: true,

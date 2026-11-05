@@ -69,7 +69,6 @@ export const AKSI_WAJIB = [
   'akun:ubah',
   'kredensial:simpan',
   'kredensial:ringkas',
-  'kredensial:web-sendiri',
   'kredensial:ringkas-semua',
   'kredensial:hapus',
   'pusat:login',

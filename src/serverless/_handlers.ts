@@ -18,19 +18,6 @@
  * `build.mts` ikut dikecualikan: ia adalah perkakas build, bukan endpoint.
  * Kalau ikut ter-bundle, `api/build.mts` ter-deploy sebagai handler yang tidak
  * melakukan apa-apa selain menulis bundel baru ke `api/`.
- *
- * `ocr.ts` juga dikecualikan. Handler OCR pernah ada di Vercel untuk memecah
- * captcha otomatis, tapi ia menarik `onnxruntime-node`  844 MB di
- * `node_modules`, dan itu penyebab storage Function melonjak. Produksi kini
- * meminta captcha diketik manual (lihat `OCR_LOKAL` di `WebPresensi.tsx`), jadi
- * handler-nya tidak lagi ada gunanya di server.
- *
- * Berkasnya **tetap ada** di `src/serverless/` karena dua hal:
- *
- * 1. `npm run dev` tetap memakai OCR  `vite.config.ts` melayaninya lewat
- *    `ocr_service.py`, jadi devs lokal tidak kehilangan kemampuan otomatisnya.
- * 2. Menghapus berkasnya menghapus satu-satunya jalan mengembalikan OCR kalau
- *    nanti dibutuhkan. Yang mahal adalah *deploy*-nya, dan itu sudah dihentikan.
  */
 const BUKAN_HANDLER = new Set(['build.mts', '_handlers.ts']);
 

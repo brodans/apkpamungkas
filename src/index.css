@@ -401,14 +401,9 @@
 /*
  * ⚠️ `@keyframes spin` sengaja tidak ditulis di sini.
  *
- * Semula ada, hanya untuk `.animate-spin-slow` — kelas yang tidak pernah
- * dipakai. Yang tidak terlihat dari diff: utility `animate-spin` milik
- * Tailwind juga memakai keyframes bernama `spin`, dan utility itu dipakai
- * di `src/pages/WebPresensi.tsx` untuk spinner saat memuat.
- *
- * Karena itu baris `@keyframes spin` tidak boleh ikut dihapus asal-asalan.
- * Sudah diverifikasi terpisah dengan `@tailwindcss/cli`: utility `animate-spin`
- * memunculkan keyframes-nya sendiri, jadi tidak bergantung pada berkas ini.
+ * Utility `animate-spin` milik Tailwind memakai keyframes bernama `spin`, dan
+ * utility itu dipakai di banyak komponen. Tailwind memunculkan keyframes-nya
+ * sendiri, jadi tidak bergantung pada berkas ini.
  */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(8px); }
@@ -418,20 +413,6 @@
   0% { opacity: 0; transform: scale(0.92); }
   50% { opacity: 1; transform: scale(1.02); }
   100% { opacity: 1; transform: scale(1); }
-}
-@keyframes captchaShimmer {
-  from { transform: translateX(-120%); }
-  to { transform: translateX(120%); }
-}
-.captcha-shimmer {
-  background: linear-gradient(100deg, transparent 15%, rgb(99 102 241 / 18%) 50%, transparent 85%);
-  animation: captchaShimmer 1.25s ease-in-out infinite;
-}
-.dark .captcha-shimmer {
-  background: linear-gradient(100deg, transparent 15%, rgb(129 140 248 / 24%) 50%, transparent 85%);
-}
-@media (prefers-reduced-motion: reduce) {
-  .captcha-shimmer { animation-duration: 2.5s; }
 }
 .animate-fade-in {
   animation: fadeIn 0.25s ease-out forwards;

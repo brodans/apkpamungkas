@@ -303,7 +303,6 @@ var init_userManager = __esm({
       tabPerizinan: true,
       tabLaporan: true,
       tabLokasiAbsen: true,
-      tabWeb: true,
       tabPresetOtomatisasi: true,
       aksiAbsen: true,
       aksiAjukanIzin: true,
@@ -319,7 +318,6 @@ var init_userManager = __esm({
       tabPerizinan: true,
       tabLokasiAbsen: true,
       tabLaporan: false,
-      tabWeb: true,
       tabPresetOtomatisasi: true,
       aksiAbsen: true,
       aksiAjukanIzin: true,
@@ -348,7 +346,6 @@ __export(panelServer_exports, {
   gantiPasswordSendiri: () => gantiPasswordSendiri,
   hapusAkun: () => hapusAkun,
   hapusKredensial: () => hapusKredensial,
-  kredensialWebSendiri: () => kredensialWebSendiri,
   masukPanel: () => masukPanel,
   resetPembatasPercobaan: () => resetPembatasPercobaan,
   ringkasKredensial: () => ringkasKredensial,
@@ -990,21 +987,6 @@ async function ringkasKredensial(token, username) {
       pesan: terbaca ? void 0 : "Kredensial lama belum bisa dibaca server. Simpan ulang password server pusat dari menu Manajemen Akun."
     })
   };
-}
-async function kredensialWebSendiri(token) {
-  const akun = await akunDariToken(token);
-  if (!akun) return { ok: false, kode: 401, pesan: "Sesi tidak valid. Login ulang." };
-  const snap = await (await admin()).collection(COLL_PENGATURAN).doc(dokKredensialTarget(akun.username)).get();
-  if (!snap.exists) {
-    return { ok: false, kode: 404, pesan: "Kredensial server belum diatur." };
-  }
-  const data = snap.data();
-  const nip = String(data.nip ?? "");
-  const password = dekripsi(String(data.passwordEncrypted ?? ""));
-  if (!nip || password === null) {
-    return { ok: false, kode: 422, pesan: "Password server tersimpan tidak dapat dibaca. Simpan ulang kredensial." };
-  }
-  return { ok: true, kode: 200, kredensial: { nip, password } };
 }
 async function ringkasSemuaKredensial(token) {
   const pemanggil = await akunDariToken(token);

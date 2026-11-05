@@ -2,7 +2,6 @@ import React, { Suspense, useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import {
   Camera,
-  Globe,
   MapPin,
   ChevronLeft,
   ChevronRight,
@@ -66,7 +65,6 @@ const pageImporters = {
   tabLaporan: () => import('./pages/Laporan'),
   tabLokasiAbsen: () => import('./pages/LokasiAbsen'),
   tabManajemenAkun: () => import('./pages/ManajemenAkun'),
-  tabWeb: () => import('./pages/WebPresensi'),
   tabPresetOtomatisasi: () => import('./pages/PresetOtomatisasi'),
 } satisfies Record<string, () => Promise<PageModule>>;
 
@@ -98,7 +96,6 @@ const Perizinan = lazyPage('tabPerizinan');
 const Laporan = lazyPage('tabLaporan');
 const LokasiAbsen = lazyPage('tabLokasiAbsen');
 const ManajemenAkun = lazyPage('tabManajemenAkun');
-const WebPresensi = lazyPage('tabWeb');
 const PresetOtomatisasi = lazyPage('tabPresetOtomatisasi');
 
 // ═══════════════════════════════════════════════════════════════════════
@@ -121,7 +118,6 @@ const PAGES: PageDefinition[] = [
   { id: 'tabLaporan', icon: FileText, label: 'Laporan', component: Laporan, path: PAGE_PATHS.tabLaporan, group: 'utama' },
   { id: 'tabLokasiAbsen', icon: MapPin, label: 'Lokasi Absen', component: LokasiAbsen, path: PAGE_PATHS.tabLokasiAbsen, group: 'utama' },
   { id: 'tabPresetOtomatisasi', icon: Zap, label: 'Preset Auto', component: PresetOtomatisasi, path: PAGE_PATHS.tabPresetOtomatisasi, group: 'utama' },
-  { id: 'tabWeb', icon: Globe, label: 'WEB', component: WebPresensi, path: PAGE_PATHS.tabWeb, group: 'utama' },
   // ⚠️ Manajemen Akun hanya untuk admin. Diperiksa dua kali: di
   // `visiblePages` (role) dan di `tabPermissions.tabManajemenAkun`, yang
   // `batasiIzin` paksa `false` untuk semua non-admin.
@@ -175,7 +171,7 @@ function Clock() {
 }
 
 function PageLoading({ pageId }: { pageId: string }) {
-  const { webPresensiState, pegawai, serverAutoLoginPending } = useAppContext();
+  const { pegawai, serverAutoLoginPending } = useAppContext();
   const adaHeaderHalaman =
     pageId === 'tabBeranda' || pageId === 'tabPresensi';
   const header = (
@@ -228,74 +224,6 @@ function PageLoading({ pageId }: { pageId: string }) {
       <SkeletonTable columns={columns} rows={rows} />
     </div>
   );
-  const webTabPanel = (() => {
-    switch (webPresensiState.tab) {
-      case 'imei':
-        return (
-          <div className="space-y-4">
-            <Skeleton className="h-5 w-32" />
-            <Skeleton className="h-16 w-full rounded-xl" />
-          </div>
-        );
-      case 'kehadiran':
-        return (
-          <>
-            <div className="flex items-center justify-between gap-3">
-              <Skeleton className="h-5 w-40" />
-              <Skeleton className="h-8 w-24 rounded-lg" />
-            </div>
-            <SkeletonTable columns={7} rows={5} />
-            <div className="flex justify-center gap-2">
-              <Skeleton className="h-8 w-20 rounded-lg" />
-              <Skeleton className="h-8 w-20 rounded-lg" />
-              <Skeleton className="h-8 w-20 rounded-lg" />
-            </div>
-          </>
-        );
-      case 'detail':
-        return (
-          <div className="space-y-5">
-            <div className="flex items-center justify-between gap-3">
-              <Skeleton className="h-5 w-36" />
-              <Skeleton className="h-8 w-24 rounded-lg" />
-            </div>
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-              {Array.from({ length: 6 }, (_, index) => (
-                <div key={index} className="space-y-2">
-                  <Skeleton className="h-3 w-1/3" />
-                  <Skeleton className="h-4 w-2/3" />
-                </div>
-              ))}
-            </div>
-            {[0, 1, 2].map(section => (
-              <div key={section} className="space-y-3">
-                <Skeleton className="h-3 w-44" />
-                <SkeletonTable columns={section === 2 ? 6 : 4} rows={3} />
-              </div>
-            ))}
-          </div>
-        );
-      case 'perizinan':
-        return (
-          <>
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <Skeleton className="h-5 w-36" />
-              <div className="flex gap-2">
-                <Skeleton className="h-8 w-24 rounded-lg" />
-                <Skeleton className="h-8 w-28 rounded-lg" />
-              </div>
-            </div>
-            <SkeletonTable columns={6} rows={5} />
-            <div className="flex justify-center gap-2">
-              <Skeleton className="h-8 w-20 rounded-lg" />
-              <Skeleton className="h-8 w-20 rounded-lg" />
-              <Skeleton className="h-8 w-20 rounded-lg" />
-            </div>
-          </>
-        );
-    }
-  })();
-
   let content: React.ReactNode;
   if (pageId === 'tabBeranda' && !pegawai && serverAutoLoginPending) {
     content = (
@@ -646,67 +574,6 @@ function PageLoading({ pageId }: { pageId: string }) {
         </div>
       </>
     );
-  } else if (pageId === 'tabWeb') {
-    const login = (
-      <div className="w-full rounded-2xl border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-900 sm:p-6">
-        <div className="mb-4 flex items-center gap-2">
-          <Skeleton className="h-4 w-4 rounded-full" />
-          <Skeleton className="h-4 w-32" />
-        </div>
-        {webPresensiState.sudahLogin ? (
-          <>
-            <div className="flex flex-col gap-3 rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-800/60 sm:flex-row sm:items-center">
-              <Skeleton className="h-5 w-5 shrink-0 rounded-full" />
-              <div className="min-w-0 flex-1 space-y-2">
-                <Skeleton className="h-4 w-32" />
-                <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-                  <Skeleton className="h-14 rounded-lg" />
-                  <Skeleton className="h-14 rounded-lg" />
-                </div>
-              </div>
-            </div>
-            <div className="mt-4 flex gap-3">
-              <Skeleton className="h-10 w-28 rounded-xl" />
-            </div>
-          </>
-        ) : (
-          <div className="space-y-4">
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              {[0, 1].map(item => (
-                <div key={item} className="space-y-2">
-                  <Skeleton className="h-3 w-12" />
-                  <Skeleton className="h-[42px] w-full rounded-xl" />
-                </div>
-              ))}
-            </div>
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-[1fr_auto] sm:items-end sm:gap-2">
-              <div className="order-2 space-y-2 sm:order-1">
-                <Skeleton className="h-3 w-12" />
-                <Skeleton className="h-[42px] w-full rounded-xl" />
-              </div>
-              <div className="order-1 flex items-center gap-2 sm:order-2">
-                <Skeleton className="h-11 w-[191px] shrink-0 rounded-none" />
-                <Skeleton className="h-11 w-11 shrink-0 grow rounded-lg sm:grow-0 sm:w-11" />
-              </div>
-            </div>
-            <Skeleton className="h-10 w-40 rounded-xl" />
-          </div>
-        )}
-      </div>
-    );
-    content = webPresensiState.sudahLogin ? (
-      <>
-        {login}
-        <div className="space-y-4">
-          <div className="flex gap-1 rounded-2xl border border-slate-200 bg-white p-1.5 shadow-sm dark:border-slate-700 dark:bg-slate-900">
-            {Array.from({ length: 4 }, (_, index) => <Skeleton key={index} className="h-9 min-w-0 flex-1 rounded-xl sm:w-28 sm:flex-none" />)}
-          </div>
-          <div className="space-y-4 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-900">
-            {webTabPanel}
-          </div>
-        </div>
-      </>
-    ) : login;
   } else if (false) {
     content = (
       <>

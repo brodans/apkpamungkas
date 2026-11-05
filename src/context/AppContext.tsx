@@ -9,13 +9,6 @@ import {
   UNAUTHENTICATED_PERMISSIONS,
 } from '../lib/userManager';
 import { clearServerSessionCache } from '../lib/cacheManager';
-import type {
-  HasilImei,
-  HasilKehadiran,
-  DetailPegawai,
-  HasilPerizinan,
-  BarisIjin,
-} from '../lib/webPresensi';
 import {
   loadSession,
   saveSession,
@@ -133,22 +126,6 @@ export interface RiwayatPerizinanState {
   hasLoadedOnce: boolean;
 }
 
-export type WebPresensiTab = 'imei' | 'kehadiran' | 'detail' | 'perizinan';
-
-export interface WebPresensiState {
-  sudahLogin: boolean;
-  pemilikSesi: string | null;
-  hasilImei: HasilImei | null;
-  tab: WebPresensiTab;
-  kehadiran: HasilKehadiran | null;
-  detail: DetailPegawai | null;
-  ijinAjax: BarisIjin[] | null;
-  perizinan: HasilPerizinan | null;
-  semuaPerizinan: BarisIjin[] | null;
-  /** Flags apakah tiap tab sudah pernah di-load. */
-  dimuat: { kehadiran: boolean; detail: boolean; perizinan: boolean };
-}
-
 const EMPTY_CONFIG = {
   deviceId: '',
   latitude: '',
@@ -204,8 +181,6 @@ interface AppContextType {
   setLaporanLogState: React.Dispatch<React.SetStateAction<LaporanLogState>>;
   riwayatPerizinanState: RiwayatPerizinanState;
   setRiwayatPerizinanState: React.Dispatch<React.SetStateAction<RiwayatPerizinanState>>;
-  webPresensiState: WebPresensiState;
-  setWebPresensiState: React.Dispatch<React.SetStateAction<WebPresensiState>>;
 
   // Mode pengembang — mengaktifkan panel trafik JSON-RPC.
   developerMode: boolean;
@@ -280,7 +255,6 @@ const PATH_MAP: Record<string, string> = {
   tabLaporan: '/laporan',
   tabLokasiAbsen: '/lokasi-absen',
   tabManajemenAkun: '/manajemen-akun',
-  tabWeb: '/web',
   tabPresetOtomatisasi: '/preset-otomatisasi',
 };
 
@@ -481,18 +455,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
       setConfig(EMPTY_CONFIG);
       setCurrentUserState(null);
       setTabPermissionsState(UNAUTHENTICATED_PERMISSIONS);
-      setWebPresensiState({
-        sudahLogin: false,
-        pemilikSesi: null,
-        hasilImei: null,
-        tab: 'imei',
-        kehadiran: null,
-        detail: null,
-        ijinAjax: null,
-        perizinan: null,
-        semuaPerizinan: null,
-        dimuat: { kehadiran: false, detail: false, perizinan: false },
-      });
       // Status auto-login ikut dibuang. Kalau tidak, entri "sedang berjalan"
       // dan "berhasil" masih milik akun yang baru saja keluar — dan login
       // berikutnya dengan akun sama akan menerima promise lama, bukan
@@ -674,19 +636,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
     hasLoadedOnce: false,
   }));
 
-  const [webPresensiState, setWebPresensiState] = useState<WebPresensiState>(() => ({
-    sudahLogin: false,
-    pemilikSesi: null,
-    hasilImei: null,
-    tab: 'imei',
-    kehadiran: null,
-    detail: null,
-    ijinAjax: null,
-    perizinan: null,
-    semuaPerizinan: null,
-    dimuat: { kehadiran: false, detail: false, perizinan: false },
-  }));
-
   /*
    * Nilai context di-`useMemo`, dan itu **wajib** — bukan "_optimasi_".
    *
@@ -733,8 +682,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
       setLaporanLogState,
       riwayatPerizinanState,
       setRiwayatPerizinanState,
-      webPresensiState,
-      setWebPresensiState,
       currentUser,
       setCurrentUser,
       userRole,
@@ -746,13 +693,13 @@ export function AppProvider({ children }: { children: ReactNode }) {
       // State
       pegawai, serverConnected, serverLoginError, serverAutoLoginPending, serverLogoutRequested,
       loginForm, developerMode, config, activePage,
-      pathname, laporanLogState, riwayatPerizinanState, webPresensiState, currentUser, userRole,
+      pathname, laporanLogState, riwayatPerizinanState, currentUser, userRole,
       tabPermissions, cekingSesi, adaSesiSaatMuat,
       // Setter
       setDeveloperMode, setActivePage, setSubPath, setCurrentUser,
       // Dispatcher useState — stabil, tapi didaftarkan agar lengkap.
       setPegawai, setServerConnected, setServerLoginError, setServerAutoLoginPending, setServerLogoutRequested,
-      setLoginForm, setConfig, setLaporanLogState, setRiwayatPerizinanState, setWebPresensiState,
+      setLoginForm, setConfig, setLaporanLogState, setRiwayatPerizinanState,
     ]
   );
 

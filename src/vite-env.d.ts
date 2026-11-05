@@ -11,8 +11,6 @@ interface ImportMetaEnv {
   readonly VITE_APP_SECRET: string;
   readonly VITE_PAYLOAD_KEY?: string;
   readonly VITE_API_BASE_URL?: string;
-  /** Origin server upstream e-Presensi untuk direct URL gambar captcha. */
-  readonly VITE_EP_ORIGIN?: string;
 }
 
 interface ImportMeta {
